@@ -11,7 +11,7 @@
     "start:dev": "npm run build:live",
     "format": "npx prettier --config ./.prettierrc --write ./src",
     "lint": "prettier --check",
-    "build:live": "nodemon --exec ./node_modules/.bin/ts-node --transpile-only ./src/index.ts"
+    "build:live": "npx nodemon --exec ./node_modules/.bin/ts-node --transpile-only ./src/index.ts"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
