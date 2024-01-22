@@ -10,10 +10,10 @@ class DatabaseMysql {
     try {
       
         this.connection = await createConnection({
-            host: CredentialsMysqlDev.host,
-            user: CredentialsMysqlDev.user,
-            password: CredentialsMysqlDev.password,
-            database: CredentialsMysqlDev.database,
+            host: process.env.HOST,
+            user: process.env.USER,
+            password: process.env.PASSWORD,
+            database: process.env.DATABASE,
         });
         return await this.connection.connect();
         // console.log('Connected to the database');
