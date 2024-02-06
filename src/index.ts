@@ -1,23 +1,23 @@
-/**
- * 
- * Modulos de Extenos
- * 
- */
-require('dotenv').config();
+// /**
+//  * 
+//  * Modulos de Extenos
+//  * 
+//  */
+// require('dotenv').config();
 
 
-/**
- * 
- * Modulos Propios
- * 
- */
-import ServerConfig from './config/server';
+// /**
+//  * 
+//  * Modulos Propios
+//  * 
+//  */
+// import ServerConfig from './config/server';
 
-class Index {
-  public constructor() {
+// class Index {
+//   public constructor() {
     
-    new ServerConfig();
-  }
-}
+//     new ServerConfig();
+//   }
+// }
 
-new Index();
+// new Index();

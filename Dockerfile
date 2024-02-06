@@ -1,6 +1,6 @@
 FROM node:20
 
-WORKDIR .
+WORKDIR app/
 
 COPY package*.json ./
 
@@ -12,8 +12,6 @@ RUN npm install typescript -g
 
 RUN tsc
 
-RUn npm install pm2 -g
+RUN npm install pm2 -g
 
 EXPOSE 3500
-
-CMD ["npm", "start"]
