@@ -1,5 +1,10 @@
 import { createConnection, Connection, Query, QueryOptions } from 'mysql2/promise';
 import { CredentialsMysqlDev } from '../resources/properties.resource'
+
+console.log(process.env.HOST)
+console.log(process.env.USER)
+console.log(process.env.PASSWORD)
+console.log(process.env.DATABASE)
 class DatabaseMysql {
   private connection: any;
 

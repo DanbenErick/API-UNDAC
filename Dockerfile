@@ -8,6 +8,12 @@ RUN npm install
 
 COPY . .
 
+RUN npm install typescript -g
+
+RUN tsc
+
+RUn npm install pm2 -g
+
 EXPOSE 3500
 
-CMD ["npm", "run", "build:live"]
+CMD ["npm", "start"]
