@@ -71,12 +71,44 @@ class ProcesosController {
         res.status(500).json(error)
       }
     }
+    public obtenerInscritosPorArea = async(req: Request, res: Response) => {
+      try {
+        const params = req.body
+        const result: any = await this.procesosService.obtenerInscritosPorArea(params)
+        res.status(200).json(result)
+      }catch(error) {
+        res.status(500).json(error)
+      }
+    }
+    public obtenerInscritosPorCarrera = async(req: Request, res: Response) => {
+      try {
+        const params = req.body
+        const result: any = await this.procesosService.obtenerInscritosPorCarrera(params)
+        res.status(200).json(result)
+      }catch(error) {
+        res.status(500).json(error)
+      }
+    }
+    public obtenerInscritosPorModalidad = async(req: Request, res: Response) => {
+      try {
+        const params = req.body
+        const result: any = await this.procesosService.obtenerInscritosPorModalidad(params)
+        res.status(200).json(result)
+      }catch(error) {
+        res.status(500).json(error)
+      }
+    }
 
     routes() {
       this.router.get('/obtener-procesos', asyncHandler(this.obtenerProcesos))
       this.router.post('/crear-proceso', asyncHandler(this.crearProceso))
       this.router.post('/cerrar-proceso', asyncHandler(this.cerrarProceso))
       this.router.post('/obtener-inscritos-por-sede', asyncHandler(this.obtenerInscritosPorSede))
+
+      this.router.post('/obtener-inscritos-por-carrera', asyncHandler(this.obtenerInscritosPorCarrera))
+      this.router.post('/obtener-inscritos-por-modalidad', asyncHandler(this.obtenerInscritosPorModalidad))
+      this.router.post('/obtener-inscritos-por-area', asyncHandler(this.obtenerInscritosPorArea))
+      
     }
 }
 

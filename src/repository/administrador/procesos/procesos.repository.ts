@@ -72,4 +72,63 @@ export class ProcesosRepository {
             throw error
         }
     }
+    public obtenerInscritosPorCarrera = async(connection: any, params: ProcesosInterface) => {
+        try {
+            const query = `SELECT
+                inscritos.COD_CARRERA,
+                carreras.ESCUELA_COMPLETA AS NOMBRE_CARRERA,
+                COUNT(*) AS CANTIDAD
+            FROM
+                inscritos
+            LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+            WHERE PROCESO = ${params.ID_PROCESO}
+            GROUP BY
+                inscritos.COD_CARRERA,
+                carreras.ESCUELA_COMPLETA;`
+            const [rows] = await connection.promise().query(query)
+            return rows            
+        }catch(error) {
+            logger.error(`ProcesosRepo.obtenerInscritosPorSede =>`, error)
+            throw error
+        }
+    }
+    public obtenerInscritosPorArea = async(connection: any, params: ProcesosInterface) => {
+        try {
+            const query = `SELECT
+                carreras.AREA,
+                COUNT(*) AS CANTIDAD
+            FROM
+                inscritos
+            LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+            WHERE PROCESO = ${params.ID_PROCESO}
+            GROUP BY
+                carreras.AREA;`
+            const [rows] = await connection.promise().query(query)
+            return rows            
+        }catch(error) {
+            logger.error(`ProcesosRepo.obtenerInscritosPorSede =>`, error)
+            throw error
+        }
+    }
+    public obtenerInscritosPorModalidad = async(connection: any, params: ProcesosInterface) => {
+        try {
+            const query = `
+                SELECT
+                    ID_TIPO_MODALIDAD,
+                    opc_modalidades.NOMBRE AS NOMBRE_MODALIDAD,
+                    COUNT(*) AS CANTIDAD
+                FROM
+                    inscritos
+                LEFT JOIN opc_modalidades ON opc_modalidades.ID = inscritos.ID_TIPO_MODALIDAD
+                WHERE PROCESO = ${params.ID_PROCESO}
+                GROUP BY
+                inscritos.ID_TIPO_MODALIDAD
+                `
+            const [rows] = await connection.promise().query(query)
+            return rows            
+        }catch(error) {
+            logger.error(`ProcesosRepo.obtenerInscritosPorSede =>`, error)
+            throw error
+        }
+    }
 }

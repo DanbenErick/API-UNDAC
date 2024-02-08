@@ -71,4 +71,37 @@ export class ProcesosService {
             await dbConnect.close()
         }
     }
+    public obtenerInscritosPorCarrera = async(params: ProcesosInterface) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.procesosRepo.obtenerInscritosPorCarrera(dbConnect, params)
+            return result
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+    }
+    public obtenerInscritosPorArea = async(params: ProcesosInterface) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.procesosRepo.obtenerInscritosPorArea(dbConnect, params)
+            return result
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+    }
+    public obtenerInscritosPorModalidad = async(params: ProcesosInterface) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.procesosRepo.obtenerInscritosPorModalidad(dbConnect, params)
+            return result
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+    }
 }
