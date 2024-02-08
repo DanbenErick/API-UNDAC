@@ -12,13 +12,13 @@ import { EstudianteCompleto } from '../../interfaces/administrador/EstudianteCom
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const nombreSinExtension = file.originalname.split('.')[0];
-        const directorioDestino = `./uploads/${nombreSinExtension}`;
+        const directorioDestino = `./build/uploads/${nombreSinExtension}`;
 
         // Verificar si el directorio existe, y si no, crearlo
         if (!fs.existsSync(directorioDestino)) {
-        fs.mkdirSync(directorioDestino, { recursive: true });
+            fs.mkdirSync(directorioDestino, { recursive: true });
         }
-        cb(null, `./uploads/${nombreSinExtension}`);
+        cb(null, `./build/uploads/${nombreSinExtension}`);
     },
     filename: (req, file, cb) => {
         cb(null, `${file.originalname}`);
@@ -135,24 +135,24 @@ class EstudianteController {
     public authenticateToken = (req: any, res: any, next: any) => {
         try {
           // const token = req.headers.authorization.split(' ')[1]; // Authorization: 'Bearer TOKEN'
-          const token = req.token
-          console.log(token)
-          if (!token) {
+        const token = req.token
+        console.log(token)
+        if (!token) {
             throw new Error('Authentication failed!');
-          }
-          // const verified = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
-          if(!process.env.JWT_TOKEN_SECRET) {
-            throw new Error('JWT_TOKEN_SECRET must be defined');
-          }
-          const verified: any = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
-          if(verified.rol === 'ESTUDIANTE'){ next() }
-          else {res.status(401).json({message: 'No tienes los permisos nesesarios'})}
-        } catch (err) {
-          res.status(401).send({ok: false, message: 'Tu token ya se vencio'});
         }
-      }
+          // const verified = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
+        if(!process.env.JWT_TOKEN_SECRET) {
+            throw new Error('JWT_TOKEN_SECRET must be defined');
+        }
+            const verified: any = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
+            if(verified.rol === 'ESTUDIANTE'){ next() }
+            else {res.status(401).json({message: 'No tienes los permisos nesesarios'})}
+        } catch (err) {
+            res.status(401).send({ok: false, message: 'Tu token ya se vencio'});
+        }
+    }
 
-      public obtenerMisPagos = async(req: Request, res: Response) => {
+    public obtenerMisPagos = async(req: Request, res: Response) => {
         try {
             const params: any = req.body
             const resp = await this.estudianteService.obtenerMisPagos(params);

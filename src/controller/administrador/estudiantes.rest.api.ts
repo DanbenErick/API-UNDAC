@@ -7,13 +7,13 @@ import fs from 'fs';
 const storageEst = multer.diskStorage({
   destination: (req, file, cb) => {
       const nombreSinExtension = file.originalname.split('.')[0];
-      const directorioDestino = `./uploads/${nombreSinExtension}`;
+      const directorioDestino = `./build/uploads/${nombreSinExtension}`;
 
       // Verificar si el directorio existe, y si no, crearlo
       if (!fs.existsSync(directorioDestino)) {
-      fs.mkdirSync(directorioDestino, { recursive: true });
+        fs.mkdirSync(directorioDestino, { recursive: true });
       }
-      cb(null, `./uploads/${nombreSinExtension}`);
+      cb(null, `./build/uploads/${nombreSinExtension}`);
   },
   filename: (req, file, cb) => {
       cb(null, `${file.originalname}`);
@@ -60,7 +60,7 @@ class EstudianteController {
     public registrarEInscribirEstudiante = async(req: Request, res: Response) => {
       try {
         const params = req.body
-        console.log("PARAMETROS", params)
+        // console.log("PARAMETROS", params)
         const resp = await this.estudianteService.registrarEInscribirEstudiante(params)
         res.status(200).json(resp)
       }catch(error) {

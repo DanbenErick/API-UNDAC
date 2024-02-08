@@ -1,6 +1,6 @@
 
 // Modulos Externos
-import express from 'express';
+import express, { Request } from 'express';
 import bearer from 'express-bearer-token'
 // Routes
 import administradorRouting from './controller/administrador/administrador.routing'
@@ -12,8 +12,8 @@ class ApiRoutes {
   public app = express();
 
   public constructor() {
-    this.app.use(express.static('uploads'));
-    this.app.use(express.static('public'));
+    this.app.use(express.static('build/uploads'));
+    this.app.use(express.static('build/public'));
     this.app.use(bearer())
     this.routes();
   }

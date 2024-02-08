@@ -48,4 +48,13 @@ export class EstudianteRepository {
       logger.error('EstudianteRepository.registrarEInscribirEstudiante', error)
     }
   }
+  public registrarActitudEstudianteComoAdmin = async(connection: any, params: any) => {
+    try {
+      const query = await generarConsulta('actitudes', params, null)
+      const resp = await connection.promise().execute(query, params)
+      return resp 
+    }catch(error) {
+      logger.error('EstudianteRepository.registrarActitudEstudianteComoAdmin', error)
+    }
+  }
 }
