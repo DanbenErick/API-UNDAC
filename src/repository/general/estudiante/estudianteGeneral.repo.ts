@@ -66,6 +66,18 @@ export class EstudianteGeneralRepository {
         throw error
       }
     }
+    public registrarPago = async(connection: any, params: any) => {
+      try {
+        const query = await generarConsulta('pagos', params, null)
+        const data = Object.values(params)
+        console.log(query, data)
+        const resp = await connection.promise().execute(query, data)
+        return resp
+      }catch(error) {
+        logger.error('EstudianteGeneralRepository.registrarPago => ', error)
+        throw error
+      }
+    }
     public obtenerMisPagos = async(connection: any, params: any) => {
       try {
         const query  = `
@@ -74,7 +86,8 @@ export class EstudianteGeneralRepository {
           procesos.NOMBRE AS NOMBRE_PROCESO	
         FROM pagos 
         LEFT JOIN procesos ON procesos.ID = pagos.ID_PROCESO
-        WHERE DNI = ${params.DNI};
+        WHERE DNI = ${params.DNI}
+        ORDER BY pagos.ID DESC
         `
         const [rows]: any = await connection.promise().query(query)
         return rows

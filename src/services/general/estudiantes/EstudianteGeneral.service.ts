@@ -46,6 +46,18 @@ export class EstudiantesGeneralService {
       await dbConex.close()
     }
   }
+  public registrarPago = async(params: any) => {
+    const dbConex: any = await connectMysql.connectMysql()
+    try {
+      const result: [] = await this.estudianteRepo.registrarPago(dbConex, params)
+      if(result.length > 0) return { ok: true, message: 'Se registro el pago' }
+      return { ok: false, message: 'No se registro el pago' }
+    }catch(error) {
+      await dbConex.rollback()
+    }finally {
+      await dbConex.close()
+    }
+  }
   public verificarTestpsicologicoInscrito = async(params: any) => {
     const dbConex: any = await connectMysql.connectMysql()
     try {
