@@ -170,6 +170,15 @@ class EstudianteController {
             res.status(500).json(err)
         }
     }
+    public verificarPagoRequisitos = async(req: Request, res: Response) => {
+        try {
+            const params: any = req.body
+            const resp = await this.estudianteService.verificarPagoRequisitos(params);
+            res.status(200).json(resp)
+        }catch (err) {
+            res.status(500).json(err)
+        }
+    }
     public routes() {
         this.router.post('/consultar-dni', asyncHandler(this.consultarEstudianteExiste))
         this.router.post('/registrar-estudiante', asyncHandler(this.registrarEstudiante))
@@ -181,6 +190,8 @@ class EstudianteController {
         this.router.post('/verificar-inscripcion-estudiante', this.authenticateToken, asyncHandler(this.verificarInscripcionEstudiante))
         this.router.post('/verificar-registro-complementario-estudiante', this.authenticateToken, asyncHandler(this.verificarDatosCompletamerioEstudiante))
         
+        this.router.post('/verificar-pago-requisitos', this.authenticateToken, asyncHandler(this.verificarPagoRequisitos))
+
         this.router.post('/obtener-mis-pagos', this.authenticateToken, asyncHandler(this.obtenerMisPagos))
         this.router.post('/registrar-pago', this.authenticateToken, asyncHandler(this.registrarPago))
     }

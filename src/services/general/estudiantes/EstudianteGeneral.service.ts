@@ -34,6 +34,19 @@ export class EstudiantesGeneralService {
       await dbConex.close()
     }
   }
+  public verificarPagoRequisitos = async(params: any) => {
+    const dbConex: any = await connectMysql.connectMysql()
+    try {
+      const result:[] = await this.estudianteRepo.verificarPagoRequisitos(dbConex, params)
+      if(result.length > 0) return { ok: true, message: 'Se encontro el pago del estudiante' }
+      return { ok: false, message: 'No se encontro el pago del estudiante' }
+      return result
+    }catch(error) {
+      await dbConex.rollback()
+    }finally {
+      await dbConex.close()
+    }
+  }
   public obtenerMisPagos = async(params: any) => {
     const dbConex: any = await connectMysql.connectMysql()
     try {
@@ -93,8 +106,8 @@ export class EstudiantesGeneralService {
       params.COD_CARRERA || '',
       params.PROCESO || '',
       params.SEDE_EXAM || '',
-      params.PAGO_1 || '',
-      params.PAGO_2 || '',
+      params.PAGO_1 || null,
+      params.PAGO_2 || null,
       params.PREPARATORIA || '',
       params.ID_AULA || '',
       params.ID_TIPO_MODALIDAD || null,

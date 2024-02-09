@@ -6,7 +6,11 @@ import { generarConsulta } from '../../../util/util'
 export class EstudianteGeneralRepository {
     public verificarInscripcionEstudiante = async(connection: any, params: any) => {
       try {
-        const query = `SELECT ID FROM inscritos WHERE DNI = '${params.DNI}' AND PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1 AND TIPO_PROCESO = '${params.TIPO_PROCESO}')`
+        const query = `SELECT 
+            ID 
+          FROM inscritos 
+          WHERE DNI = '${params.DNI}' 
+          AND PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1 AND TIPO_PROCESO = '${params.TIPO_PROCESO}')`
         const [rows]: any = await connection.promise().query(query)
         console.log(query)
         return rows
@@ -23,7 +27,16 @@ export class EstudianteGeneralRepository {
       }catch(error) {
         logger.error('EstudianteGeneralRepository.verificarDatosCompletamerioEstudiante =>', error)
       }
-
+    }
+    public verificarPagoRequisitos = async(connection: any, params: any ) => {
+      try {
+        const query = `SELECT * FROM pagos WHERE DNI = '${params.DNI}' AND ID_PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1);`
+        const [rows]: any = await connection.promise().query(query)
+        console.log(query)
+        return rows
+      } catch(error) {
+        logger.error('EstudianteGeneralRepository.verificarPagoRequisitos =>', error)
+      }
     }
     public verificarTestpsicologicoInscrito = async(connection: any, params: any) => {
       try {
