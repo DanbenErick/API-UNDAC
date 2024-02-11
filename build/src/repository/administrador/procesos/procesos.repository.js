@@ -87,6 +87,68 @@ class ProcesosRepository {
                 throw error;
             }
         });
+        this.obtenerInscritosPorCarrera = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT
+                inscritos.COD_CARRERA,
+                carreras.ESCUELA_COMPLETA AS NOMBRE_CARRERA,
+                COUNT(*) AS CANTIDAD
+            FROM
+                inscritos
+            LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+            WHERE PROCESO = ${params.ID_PROCESO}
+            GROUP BY
+                inscritos.COD_CARRERA,
+                carreras.ESCUELA_COMPLETA;`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error(`ProcesosRepo.obtenerInscritosPorSede =>`, error);
+                throw error;
+            }
+        });
+        this.obtenerInscritosPorArea = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT
+                carreras.AREA,
+                COUNT(*) AS CANTIDAD
+            FROM
+                inscritos
+            LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+            WHERE PROCESO = ${params.ID_PROCESO}
+            GROUP BY
+                carreras.AREA;`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error(`ProcesosRepo.obtenerInscritosPorSede =>`, error);
+                throw error;
+            }
+        });
+        this.obtenerInscritosPorModalidad = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+                SELECT
+                    ID_TIPO_MODALIDAD,
+                    opc_modalidades.NOMBRE AS NOMBRE_MODALIDAD,
+                    COUNT(*) AS CANTIDAD
+                FROM
+                    inscritos
+                LEFT JOIN opc_modalidades ON opc_modalidades.ID = inscritos.ID_TIPO_MODALIDAD
+                WHERE PROCESO = ${params.ID_PROCESO}
+                GROUP BY
+                inscritos.ID_TIPO_MODALIDAD
+                `;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error(`ProcesosRepo.obtenerInscritosPorSede =>`, error);
+                throw error;
+            }
+        });
     }
 }
 exports.ProcesosRepository = ProcesosRepository;

@@ -16,7 +16,11 @@ class EstudianteGeneralRepository {
     constructor() {
         this.verificarInscripcionEstudiante = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT ID FROM inscritos WHERE DNI = '${params.DNI}' AND PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1 AND TIPO_PROCESO = '${params.TIPO_PROCESO}')`;
+                const query = `SELECT 
+            ID 
+          FROM inscritos 
+          WHERE DNI = '${params.DNI}' 
+          AND PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1 AND TIPO_PROCESO = '${params.TIPO_PROCESO}')`;
                 const [rows] = yield connection.promise().query(query);
                 console.log(query);
                 return rows;
@@ -34,6 +38,28 @@ class EstudianteGeneralRepository {
             }
             catch (error) {
                 manager_log_resource_1.logger.error('EstudianteGeneralRepository.verificarDatosCompletamerioEstudiante =>', error);
+            }
+        });
+        this.verificarPagoRequisitos = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT * FROM pagos WHERE DNI = '${params.DNI}' AND ID_PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1);`;
+                const [rows] = yield connection.promise().query(query);
+                console.log(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.verificarPagoRequisitos =>', error);
+            }
+        });
+        this.obtenerDatosEstudianteCarnet = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT * FROM vista_datos_generales_estudiante_qr WHERE UUID = '${params.UUID}';`;
+                const [rows] = yield connection.promise().query(query);
+                console.log(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.obtenerDatosEstudianteCarnet =>', error);
             }
         });
         this.verificarTestpsicologicoInscrito = (connection, params) => __awaiter(this, void 0, void 0, function* () {
@@ -81,6 +107,19 @@ class EstudianteGeneralRepository {
                 throw error;
             }
         });
+        this.registrarPago = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = yield (0, util_1.generarConsulta)('pagos', params, null);
+                const data = Object.values(params);
+                console.log(query, data);
+                const resp = yield connection.promise().execute(query, data);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.registrarPago => ', error);
+                throw error;
+            }
+        });
         this.obtenerMisPagos = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `
@@ -89,7 +128,8 @@ class EstudianteGeneralRepository {
           procesos.NOMBRE AS NOMBRE_PROCESO	
         FROM pagos 
         LEFT JOIN procesos ON procesos.ID = pagos.ID_PROCESO
-        WHERE DNI = ${params.DNI};
+        WHERE DNI = ${params.DNI}
+        ORDER BY pagos.ID DESC
         `;
                 const [rows] = yield connection.promise().query(query);
                 return rows;

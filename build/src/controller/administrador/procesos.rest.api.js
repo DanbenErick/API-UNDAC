@@ -82,6 +82,36 @@ class ProcesosController {
                 res.status(500).json(error);
             }
         });
+        this.obtenerInscritosPorArea = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const result = yield this.procesosService.obtenerInscritosPorArea(params);
+                res.status(200).json(result);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
+        this.obtenerInscritosPorCarrera = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const result = yield this.procesosService.obtenerInscritosPorCarrera(params);
+                res.status(200).json(result);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
+        this.obtenerInscritosPorModalidad = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const result = yield this.procesosService.obtenerInscritosPorModalidad(params);
+                res.status(200).json(result);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.procesosService = new Procesos_service_1.ProcesosService();
         this.router = (0, express_1.Router)();
         this.routes();
@@ -91,6 +121,9 @@ class ProcesosController {
         this.router.post('/crear-proceso', (0, express_async_handler_1.default)(this.crearProceso));
         this.router.post('/cerrar-proceso', (0, express_async_handler_1.default)(this.cerrarProceso));
         this.router.post('/obtener-inscritos-por-sede', (0, express_async_handler_1.default)(this.obtenerInscritosPorSede));
+        this.router.post('/obtener-inscritos-por-carrera', (0, express_async_handler_1.default)(this.obtenerInscritosPorCarrera));
+        this.router.post('/obtener-inscritos-por-modalidad', (0, express_async_handler_1.default)(this.obtenerInscritosPorModalidad));
+        this.router.post('/obtener-inscritos-por-area', (0, express_async_handler_1.default)(this.obtenerInscritosPorArea));
     }
 }
 exports.ProcesosController = ProcesosController;

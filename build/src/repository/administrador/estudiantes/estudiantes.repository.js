@@ -61,6 +61,16 @@ class EstudianteRepository {
                 manager_log_resource_1.logger.error('EstudianteRepository.registrarEInscribirEstudiante', error);
             }
         });
+        this.registrarActitudEstudianteComoAdmin = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = yield (0, util_1.generarConsulta)('actitudes', params, null);
+                const resp = yield connection.promise().execute(query, params);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteRepository.registrarActitudEstudianteComoAdmin', error);
+            }
+        });
     }
 }
 exports.EstudianteRepository = EstudianteRepository;

@@ -179,6 +179,16 @@ class EstudianteController {
             res.status(500).json(err)
         }
     }
+    public obtenerDatosEstudianteCarnet = async(req: Request, res: Response) => {
+        try {
+            const params: any = req.body
+            console.log(params)
+            const resp = await this.estudianteService.obtenerDatosEstudianteCarnet(params);
+            res.status(200).json(resp)
+        }catch (err) {
+            res.status(500).json(err)
+        }
+    }
     public routes() {
         this.router.post('/consultar-dni', asyncHandler(this.consultarEstudianteExiste))
         this.router.post('/registrar-estudiante', asyncHandler(this.registrarEstudiante))
@@ -194,6 +204,8 @@ class EstudianteController {
 
         this.router.post('/obtener-mis-pagos', this.authenticateToken, asyncHandler(this.obtenerMisPagos))
         this.router.post('/registrar-pago', this.authenticateToken, asyncHandler(this.registrarPago))
+
+        this.router.post('/obtener-datos-estudiante-carnet', this.authenticateToken, asyncHandler(this.obtenerDatosEstudianteCarnet))
     }
 }
 export default EstudianteController

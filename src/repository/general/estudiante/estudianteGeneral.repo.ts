@@ -38,6 +38,16 @@ export class EstudianteGeneralRepository {
         logger.error('EstudianteGeneralRepository.verificarPagoRequisitos =>', error)
       }
     }
+    public obtenerDatosEstudianteCarnet = async(connection: any, params: any) => {
+      try {
+        const query = `SELECT * FROM vista_datos_generales_estudiante_qr WHERE UUID = '${params.UUID}';`
+        const [rows]: any = await connection.promise().query(query)
+        console.log(query)
+        return rows
+      } catch(error) {
+        logger.error('EstudianteGeneralRepository.obtenerDatosEstudianteCarnet =>', error)
+      }
+    }
     public verificarTestpsicologicoInscrito = async(connection: any, params: any) => {
       try {
         const query = `SELECT ID FROM actitudes WHERE DNI = '${params.DNI}'`

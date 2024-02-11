@@ -100,6 +100,32 @@ class EstudiantesService {
                 console.log("DATA => ", data);
                 const [result] = yield this.estudianteRepo.registrarEInscribirEstudiante(dbConex, data);
                 console.log(result);
+                // Función para generar número aleatorio entre min (incluido) y max (excluido)
+                const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+                // Generar números aleatorios entre 3 y 5, y almacenarlos en un arra
+                let numerosAleatorios = [];
+                for (let i = 0; i < 30; i++) {
+                    numerosAleatorios.push(getRandomNumber(3, 6));
+                }
+                let sumaPrimeros15 = 0;
+                let sumaUltimos15 = 0;
+                for (let i = 0; i < 15; i++) {
+                    sumaPrimeros15 += numerosAleatorios[i];
+                }
+                for (let i = 15; i < 30; i++) {
+                    sumaUltimos15 += numerosAleatorios[i];
+                }
+                const primeros15 = numerosAleatorios.slice(0, 15);
+                const ultimos15 = numerosAleatorios.slice(-15);
+                const params2 = {
+                    DNI: '',
+                    RESP_1: primeros15.join(""),
+                    RESP_2: ultimos15.join(""),
+                    TOTAL_1: sumaPrimeros15,
+                    TOTAL_2: sumaUltimos15,
+                };
+                const resp_2 = yield this.estudianteRepo.registrarActitudEstudianteComoAdmin(dbConex, params2);
+                console.log(resp_2);
                 if (result.affectedRows > 0)
                     return { ok: true, message: 'Se registró correctamente' };
                 return { ok: false, message: 'No se pudo registrar' };

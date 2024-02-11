@@ -49,11 +49,55 @@ class EstudiantesGeneralService {
                 yield dbConex.close();
             }
         });
+        this.verificarPagoRequisitos = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.estudianteRepo.verificarPagoRequisitos(dbConex, params);
+                if (result.length > 0)
+                    return { ok: true, message: 'Se encontro el pago del estudiante' };
+                return { ok: false, message: 'No se encontro el pago del estudiante' };
+                return result;
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
+        this.obtenerDatosEstudianteCarnet = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.estudianteRepo.obtenerDatosEstudianteCarnet(dbConex, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
         this.obtenerMisPagos = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
             try {
                 const result = yield this.estudianteRepo.obtenerMisPagos(dbConex, params);
                 return result;
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
+        this.registrarPago = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.estudianteRepo.registrarPago(dbConex, params);
+                if (result.length > 0)
+                    return { ok: true, message: 'Se registro el pago' };
+                return { ok: false, message: 'No se registro el pago' };
             }
             catch (error) {
                 yield dbConex.rollback();
@@ -97,8 +141,8 @@ class EstudiantesGeneralService {
                 params.COD_CARRERA || '',
                 params.PROCESO || '',
                 params.SEDE_EXAM || '',
-                params.PAGO_1 || '',
-                params.PAGO_2 || '',
+                params.PAGO_1 || null,
+                params.PAGO_2 || null,
                 params.PREPARATORIA || '',
                 params.ID_AULA || '',
                 params.ID_TIPO_MODALIDAD || null,

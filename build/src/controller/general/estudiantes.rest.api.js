@@ -170,6 +170,37 @@ class EstudianteController {
                 res.status(500).json(error);
             }
         });
+        this.registrarPago = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const resp = yield this.estudianteService.registrarPago(params);
+                res.status(200).json(resp);
+            }
+            catch (err) {
+                res.status(500).json(err);
+            }
+        });
+        this.verificarPagoRequisitos = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const resp = yield this.estudianteService.verificarPagoRequisitos(params);
+                res.status(200).json(resp);
+            }
+            catch (err) {
+                res.status(500).json(err);
+            }
+        });
+        this.obtenerDatosEstudianteCarnet = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                console.log(params);
+                const resp = yield this.estudianteService.obtenerDatosEstudianteCarnet(params);
+                res.status(200).json(resp);
+            }
+            catch (err) {
+                res.status(500).json(err);
+            }
+        });
         this.estudianteService = new EstudianteGeneral_service_1.EstudiantesGeneralService();
         this.router = (0, express_1.Router)();
         this.routes();
@@ -184,7 +215,10 @@ class EstudianteController {
         this.router.post('/verificar-test-psicologico-inscrito', this.authenticateToken, (0, express_async_handler_1.default)(this.verificarTestpsicologicoInscrito));
         this.router.post('/verificar-inscripcion-estudiante', this.authenticateToken, (0, express_async_handler_1.default)(this.verificarInscripcionEstudiante));
         this.router.post('/verificar-registro-complementario-estudiante', this.authenticateToken, (0, express_async_handler_1.default)(this.verificarDatosCompletamerioEstudiante));
+        this.router.post('/verificar-pago-requisitos', this.authenticateToken, (0, express_async_handler_1.default)(this.verificarPagoRequisitos));
         this.router.post('/obtener-mis-pagos', this.authenticateToken, (0, express_async_handler_1.default)(this.obtenerMisPagos));
+        this.router.post('/registrar-pago', this.authenticateToken, (0, express_async_handler_1.default)(this.registrarPago));
+        this.router.post('/obtener-datos-estudiante-carnet', this.authenticateToken, (0, express_async_handler_1.default)(this.obtenerDatosEstudianteCarnet));
     }
 }
 exports.default = EstudianteController;

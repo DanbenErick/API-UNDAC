@@ -86,6 +86,45 @@ class ProcesosService {
                 yield dbConnect.close();
             }
         });
+        this.obtenerInscritosPorCarrera = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.procesosRepo.obtenerInscritosPorCarrera(dbConnect, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
+        this.obtenerInscritosPorArea = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.procesosRepo.obtenerInscritosPorArea(dbConnect, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
+        this.obtenerInscritosPorModalidad = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.procesosRepo.obtenerInscritosPorModalidad(dbConnect, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
         this.procesosRepo = new procesos_repository_1.ProcesosRepository();
         // this.asignarOpcionesRolRepository = new MantenimientoOpcionesRolRepository();
     }

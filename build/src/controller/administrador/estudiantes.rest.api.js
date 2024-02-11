@@ -66,7 +66,7 @@ class EstudianteController {
         this.registrarEInscribirEstudiante = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const params = req.body;
-                console.log("PARAMETROS", params);
+                // console.log("PARAMETROS", params)
                 const resp = yield this.estudianteService.registrarEInscribirEstudiante(params);
                 res.status(200).json(resp);
             }
