@@ -49,7 +49,7 @@ class SistemaRepository {
         });
         this.loginUsuarioEstudiante = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT * FROM registros WHERE DNI = '${params.USUARIO}'`;
+                const query = `SELECT ID, DNI, NOMBRES, UUID, DNI, PASSWORD FROM registros WHERE DNI = '${params.USUARIO}'`;
                 const [rows] = yield connection.promise().execute(query);
                 return rows;
             }

@@ -116,6 +116,7 @@ class SistemaService {
                 ok: true, 
                 message: 'Se autentico correctamente',
                 name: result[0].NOMBRES || 'USUARIO',
+                uuid: result[0].UUID || null,
                 dni: result[0].DNI,
                 rol: result[0].ROL,
                 token,

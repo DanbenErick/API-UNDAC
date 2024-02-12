@@ -37,7 +37,7 @@ class SistemaRepository {
     }
     public loginUsuarioEstudiante = async(connection: any, params:any) => {
         try {
-            const query = `SELECT * FROM registros WHERE DNI = '${params.USUARIO}'`
+            const query = `SELECT ID, DNI, NOMBRES, UUID, DNI, PASSWORD FROM registros WHERE DNI = '${params.USUARIO}'`
             const [rows] = await connection.promise().execute(query)
             return rows
         }catch(error) {
