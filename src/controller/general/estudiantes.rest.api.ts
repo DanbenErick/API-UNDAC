@@ -6,7 +6,7 @@ import multer from 'multer'
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
 import { EstudianteCompleto } from '../../interfaces/administrador/EstudianteCompleto.interface'
-
+import ip from 'ip'
 
 
 const storage = multer.diskStorage({
@@ -47,8 +47,8 @@ class EstudianteController {
     public registrarEstudiante = async(req: Request, res: Response) => {
         try {
             const params: EstudianteInterface = req.body
-            params.IP_DIRECCION = req.ip
-            console.log(req.ip)
+            params.IP_DIRECCION = ip.address()
+            console.log(ip.address())
             const resp = await this.estudianteService.registrarEstudiante(params)
             res.status(200).json(resp)
         }catch(error) {

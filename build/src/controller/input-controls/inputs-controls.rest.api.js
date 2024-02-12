@@ -17,6 +17,7 @@ const express_1 = require("express");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const inputs_controls_service_1 = require("../../services/inputs-controls/inputs-controls.service");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const ip_1 = __importDefault(require("ip"));
 class InputsControlsController {
     constructor() {
         this.obtenerProcesos = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -183,7 +184,9 @@ class InputsControlsController {
             }
         };
         this.obtenerIp = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            res.json(req.ip);
+            res.json({
+                ip: ip_1.default.address(),
+            });
         });
         this.obtenerModalidades = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {

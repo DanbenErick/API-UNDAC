@@ -18,6 +18,7 @@ const EstudianteGeneral_service_1 = require("../../services/general/estudiantes/
 const multer_1 = __importDefault(require("multer"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const fs_1 = __importDefault(require("fs"));
+const ip_1 = __importDefault(require("ip"));
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
         const nombreSinExtension = file.originalname.split('.')[0];
@@ -48,8 +49,8 @@ class EstudianteController {
         this.registrarEstudiante = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const params = req.body;
-                params.IP_DIRECCION = req.ip;
-                console.log(req.ip);
+                params.IP_DIRECCION = ip_1.default.address();
+                console.log(ip_1.default.address());
                 const resp = yield this.estudianteService.registrarEstudiante(params);
                 res.status(200).json(resp);
             }

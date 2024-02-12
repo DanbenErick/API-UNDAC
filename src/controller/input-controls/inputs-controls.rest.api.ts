@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import asyncHandler from "express-async-handler";
 import { InputsControlsService } from "../../services/inputs-controls/inputs-controls.service";
 import jwt from "jsonwebtoken";
+import ip from 'ip'
 
 class InputsControlsController {
   public router: Router;
@@ -160,7 +161,9 @@ class InputsControlsController {
     }
   }
   public obtenerIp = async (req: Request, res: Response) => {
-    res.json(req.ip)
+    res.json({
+      ip: ip.address(),
+    })
   }
   public obtenerModalidades = async (req: Request, res: Response) => {
     try {
