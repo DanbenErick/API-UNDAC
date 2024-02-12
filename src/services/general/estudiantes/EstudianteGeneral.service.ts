@@ -164,6 +164,7 @@ export class EstudiantesGeneralService {
       const [result] = await this.estudianteRepo.registrarEstudiante(dbConex,params);
       console.log(result);
       if (result.affectedRows > 0) {
+        const [resp] = await this.estudianteRepo.obtenerUUIDEstudiante(dbConex, params);
         if(!process.env.JWT_TOKEN_SECRET) {
           throw new Error('JWT_TOKEN_SECRET must be defined');
         }
@@ -175,6 +176,7 @@ export class EstudiantesGeneralService {
             ok: true, 
             message: 'Se autentico correctamente',
             user: params.DNI,
+            uuid: resp.UUID,
             name: params.NOMBRES || 'USUARIO',
             rol: 'ESTUDIANTE',
             token,

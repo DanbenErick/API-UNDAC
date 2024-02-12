@@ -95,6 +95,17 @@ class EstudianteGeneralRepository {
                 throw error;
             }
         });
+        this.obtenerUUIDEstudiante = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT UUID FROM registros WHERE DNI = '${params.DNI}'`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.obtenerUUIDEstudiante =>', error);
+                throw error;
+            }
+        });
         this.registrarEstudiante = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = yield (0, util_1.generarConsulta)('registros', params, null);

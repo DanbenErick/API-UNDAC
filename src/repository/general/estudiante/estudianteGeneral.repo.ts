@@ -78,6 +78,16 @@ export class EstudianteGeneralRepository {
         throw error
       }
     }
+    public obtenerUUIDEstudiante = async(connection: any, params: any) => {
+      try {
+        const query = `SELECT UUID FROM registros WHERE DNI = '${params.DNI}'`
+        const [rows]: any = await connection.promise().query(query)
+        return rows
+      }catch(error) {
+        logger.error('EstudianteGeneralRepository.obtenerUUIDEstudiante =>', error)
+        throw error
+      }
+    }
     public registrarEstudiante = async(connection: any, params: EstudianteInterface) => {
       try {
         const query = await generarConsulta('registros', params, null)
