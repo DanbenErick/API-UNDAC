@@ -161,6 +161,30 @@ class EstudianteController {
                 res.status(401).send({ ok: false, message: 'Tu token ya se vencio' });
             }
         };
+        this.authenticateToken2 = (req, res, next) => {
+            try {
+                // const token = req.headers.authorization.split(' ')[1]; // Authorization: 'Bearer TOKEN'
+                const token = req.token;
+                console.log(token);
+                if (!token) {
+                    throw new Error('Authentication failed!');
+                }
+                // const verified = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
+                if (!process.env.JWT_TOKEN_SECRET) {
+                    throw new Error('JWT_TOKEN_SECRET must be defined');
+                }
+                const verified = jsonwebtoken_1.default.verify(token, process.env.JWT_TOKEN_SECRET);
+                if (verified.rol === 'ESTUDIANTE' || verified.rol === 'ADMINISTRADOR') {
+                    next();
+                }
+                else {
+                    res.status(401).json({ message: 'No tienes los permisos nesesarios' });
+                }
+            }
+            catch (err) {
+                res.status(401).send({ ok: false, message: 'Tu token ya se vencio' });
+            }
+        };
         this.obtenerMisPagos = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const params = req.body;
@@ -219,7 +243,7 @@ class EstudianteController {
         this.router.post('/verificar-pago-requisitos', this.authenticateToken, (0, express_async_handler_1.default)(this.verificarPagoRequisitos));
         this.router.post('/obtener-mis-pagos', this.authenticateToken, (0, express_async_handler_1.default)(this.obtenerMisPagos));
         this.router.post('/registrar-pago', this.authenticateToken, (0, express_async_handler_1.default)(this.registrarPago));
-        this.router.post('/obtener-datos-estudiante-carnet', this.authenticateToken, (0, express_async_handler_1.default)(this.obtenerDatosEstudianteCarnet));
+        this.router.post('/obtener-datos-estudiante-carnet', this.authenticateToken2, (0, express_async_handler_1.default)(this.obtenerDatosEstudianteCarnet));
     }
 }
 exports.default = EstudianteController;

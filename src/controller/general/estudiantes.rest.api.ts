@@ -151,6 +151,25 @@ class EstudianteController {
             res.status(401).send({ok: false, message: 'Tu token ya se vencio'});
         }
     }
+    public authenticateToken2 = (req: any, res: any, next: any) => {
+        try {
+          // const token = req.headers.authorization.split(' ')[1]; // Authorization: 'Bearer TOKEN'
+        const token = req.token
+        console.log(token)
+        if (!token) {
+            throw new Error('Authentication failed!');
+        }
+          // const verified = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
+        if(!process.env.JWT_TOKEN_SECRET) {
+            throw new Error('JWT_TOKEN_SECRET must be defined');
+        }
+            const verified: any = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
+            if(verified.rol === 'ESTUDIANTE' || verified.rol === 'ADMINISTRADOR'){ next() }
+            else {res.status(401).json({message: 'No tienes los permisos nesesarios'})}
+        } catch (err) {
+            res.status(401).send({ok: false, message: 'Tu token ya se vencio'});
+        }
+    }
 
     public obtenerMisPagos = async(req: Request, res: Response) => {
         try {
@@ -205,7 +224,7 @@ class EstudianteController {
         this.router.post('/obtener-mis-pagos', this.authenticateToken, asyncHandler(this.obtenerMisPagos))
         this.router.post('/registrar-pago', this.authenticateToken, asyncHandler(this.registrarPago))
 
-        this.router.post('/obtener-datos-estudiante-carnet', this.authenticateToken, asyncHandler(this.obtenerDatosEstudianteCarnet))
+        this.router.post('/obtener-datos-estudiante-carnet', this.authenticateToken2, asyncHandler(this.obtenerDatosEstudianteCarnet))
     }
 }
 export default EstudianteController

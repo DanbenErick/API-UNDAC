@@ -16,7 +16,7 @@ class InscritosRepository {
     constructor() {
         this.obtenerInscritos = (connection) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT * FROM vista_obtener_inscritos_admin ORDER BY ID DESC`;
+                const query = `SELECT * FROM vista_obtener_inscritos_admin ORDER BY ID DESC LIMIT 30`;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }
