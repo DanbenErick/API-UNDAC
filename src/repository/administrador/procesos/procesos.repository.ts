@@ -92,6 +92,16 @@ export class ProcesosRepository {
             throw error
         }
     }
+    public obtenerInscritosEstudianteDatos = async (connection: any, params: any) => {
+        try {
+            const query = `SELECT * FROM view_csv_inscritos`;
+            const [rows] = await connection.promise().query(query)
+            return rows
+        }catch(error) {
+            logger.error(`ProcesosRepo.obtenerInscritosPorSede =>`, error)
+            throw error
+        }
+    }
     public obtenerInscritosPorArea = async(connection: any, params: ProcesosInterface) => {
         try {
             const query = `SELECT

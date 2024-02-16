@@ -112,6 +112,16 @@ class ProcesosController {
                 res.status(500).json(error);
             }
         });
+        this.obtenerInscritosEstudianteDatos = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const result = yield this.procesosService.obtenerInscritosEstudianteDatos(params);
+                res.status(200).json(result);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.procesosService = new Procesos_service_1.ProcesosService();
         this.router = (0, express_1.Router)();
         this.routes();
@@ -124,6 +134,7 @@ class ProcesosController {
         this.router.post('/obtener-inscritos-por-carrera', (0, express_async_handler_1.default)(this.obtenerInscritosPorCarrera));
         this.router.post('/obtener-inscritos-por-modalidad', (0, express_async_handler_1.default)(this.obtenerInscritosPorModalidad));
         this.router.post('/obtener-inscritos-por-area', (0, express_async_handler_1.default)(this.obtenerInscritosPorArea));
+        this.router.post('/obtener-inscritos-datos-estudiante', (0, express_async_handler_1.default)(this.obtenerInscritosEstudianteDatos));
     }
 }
 exports.ProcesosController = ProcesosController;

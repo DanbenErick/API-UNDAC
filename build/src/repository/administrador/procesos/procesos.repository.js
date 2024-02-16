@@ -108,6 +108,17 @@ class ProcesosRepository {
                 throw error;
             }
         });
+        this.obtenerInscritosEstudianteDatos = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT * FROM view_csv_inscritos`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error(`ProcesosRepo.obtenerInscritosPorSede =>`, error);
+                throw error;
+            }
+        });
         this.obtenerInscritosPorArea = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `SELECT

@@ -93,6 +93,17 @@ export class ProcesosService {
             await dbConnect.close()
         }
     }
+    public obtenerInscritosEstudianteDatos = async(params: any) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.procesosRepo.obtenerInscritosEstudianteDatos(dbConnect, params)
+            return result
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+    }
     public obtenerInscritosPorModalidad = async(params: ProcesosInterface) => {
         const dbConnect: any = await connectMysql.connectMysql()
         try {

@@ -98,7 +98,15 @@ class ProcesosController {
         res.status(500).json(error)
       }
     }
-
+    public obtenerInscritosEstudianteDatos = async (req: Request, res: Response) => {
+      try {
+        const params = req.body
+        const result: any = await this.procesosService.obtenerInscritosEstudianteDatos(params)
+        res.status(200).json(result)
+      }catch(error) {
+        res.status(500).json(error)
+      }
+    }
     routes() {
       this.router.get('/obtener-procesos', asyncHandler(this.obtenerProcesos))
       this.router.post('/crear-proceso', asyncHandler(this.crearProceso))
@@ -109,6 +117,7 @@ class ProcesosController {
       this.router.post('/obtener-inscritos-por-modalidad', asyncHandler(this.obtenerInscritosPorModalidad))
       this.router.post('/obtener-inscritos-por-area', asyncHandler(this.obtenerInscritosPorArea))
       
+      this.router.post('/obtener-inscritos-datos-estudiante', asyncHandler(this.obtenerInscritosEstudianteDatos))
     }
 }
 

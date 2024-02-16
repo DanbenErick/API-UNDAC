@@ -112,6 +112,19 @@ class ProcesosService {
                 yield dbConnect.close();
             }
         });
+        this.obtenerInscritosEstudianteDatos = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.procesosRepo.obtenerInscritosEstudianteDatos(dbConnect, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
         this.obtenerInscritosPorModalidad = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConnect = yield connection_mysqldb_1.default.connectMysql();
             try {
