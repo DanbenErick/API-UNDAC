@@ -36,6 +36,40 @@ class EstudianteRepository {
                 throw error;
             }
         });
+        this.obtenerDatosComplementariosEstudiante = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT * FROM dat_complementarios WHERE DNI = '${params.DNI}'`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteRepository.obtenerDatosComplementariosEstudiante =>', error);
+                throw error;
+            }
+        });
+        this.modificarDatosComplementariosEstudiante = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = yield (0, util_1.generarConsulta)('dat_complementarios', params, `DNI = ${params.DNI}`);
+                const data = Object.values(params);
+                const result = yield connection.promise().execute(query, data);
+                return result;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteRepository.modificarDatosComplementariosEstudiante =>', error);
+                throw error;
+            }
+        });
+        this.resetearPassword = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `UPDATE registros SET PASSWORD = '${params.PASSWORD}' WHERE DNI = '${params.DNI}'`;
+                const result = yield connection.promise().execute(query);
+                return result;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteRepository.resetearPassword =>', error);
+                throw error;
+            }
+        });
         this.modificarEstudiante = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { ID } = params;

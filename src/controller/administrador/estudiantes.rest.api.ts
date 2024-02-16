@@ -67,6 +67,24 @@ class EstudianteController {
         res.status(500).json(error)
       }
     }
+    public resetearPassword = async(req: Request, res: Response) => {
+      try {
+        const params = req.body
+        const resp = await this.estudianteService.resetearPassword(params)
+        res.status(200).json(resp)
+      }catch(error) {
+        res.status(500).json(error)
+      }
+    }
+    public modificarDatosComplementariosEstudiante = async(req: Request, res: Response) => {
+      try {
+        const params = req.body
+        const resp = await this.estudianteService.modificarDatosComplementariosEstudiante(params)
+        res.status(200).json(resp)
+      }catch(error) {
+        res.status(500).json(error)
+      }
+    }
     public editarFotoEstudiante = async(req: any, res: Response) => {
       console.log("NUEVOS MENSAJES", req.body); // contenido texto del form   
       console.log(req.file); // archivo subido procesado por Multer
@@ -80,6 +98,16 @@ class EstudianteController {
       } catch (error) {
           res.status(500).json(error);
       }
+  }
+
+  public obtenerDatosComplementariosEstudiante = async(req: Request, res: Response) => {
+    try {
+      const params = req.body
+      const resp = await this.estudianteService.obtenerDatosComplementariosEstudiante(params)
+      res.status(200).json(resp)
+    }catch(error) {
+      res.status(500).json(error)
+    }
   }
 
   public editarDocumentacionEstudiante = async(req: any, res: Response) => {
@@ -98,10 +126,12 @@ class EstudianteController {
     
     public routes() {
         this.router.get('/obtener-estudiantes', asyncHandler(this.obtenerEstudiantes))
+        this.router.post('/obtener-datos-complementarios-estudiante', asyncHandler(this.obtenerDatosComplementariosEstudiante))
         this.router.post('/buscar-estudiante', asyncHandler(this.buscarEstudiante))
         this.router.put('/modificar-estudiante', asyncHandler(this.modificarEstudiante))
         this.router.post('/registrar-inscribir-estudiante', asyncHandler(this.registrarEInscribirEstudiante))
-
+        this.router.post('/resetear-password', asyncHandler(this.resetearPassword))
+        this.router.post('/modificar-datos-complementarios-estudiante', asyncHandler(this.modificarDatosComplementariosEstudiante))
         // this.router.post('/editar-documento-estudiante', asyncHandler(this.editarDocumentacionEstudiante))
         this.router.post('/editar-documento-estudiante', upload.single('archivo'), asyncHandler(this.editarDocumentacionEstudiante))
         this.router.post('/editar-foto-estudiante', upload.single('fotoEstudiante'), asyncHandler(this.editarFotoEstudiante))

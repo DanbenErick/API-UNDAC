@@ -13,6 +13,17 @@ exports.InputsControlsRepository = void 0;
 const manager_log_resource_1 = require("../../resources/manager-log.resource");
 class InputsControlsRepository {
     constructor() {
+        this.obtenerLugarAutocomplete = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT DISTRITO, UBIGEO as value, CONCAT(DEPARTAMENTO, ', ', PROVINCIA, ' ,', DISTRITO) AS label FROM ubicaciones WHERE DISTRITO LIKE '%${params.DISTRITO}%' LIMIT 5`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('InputsControlsRepository.obtenerLugarAutocomplete =>', error);
+                throw error;
+            }
+        });
         this.obtenerProcesos = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `SELECT ID as value, NOMBRE as label FROM procesos ORDER BY id DESC`;

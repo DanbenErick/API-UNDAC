@@ -74,6 +74,26 @@ class EstudianteController {
                 res.status(500).json(error);
             }
         });
+        this.resetearPassword = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const resp = yield this.estudianteService.resetearPassword(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
+        this.modificarDatosComplementariosEstudiante = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const resp = yield this.estudianteService.modificarDatosComplementariosEstudiante(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.editarFotoEstudiante = (req, res) => __awaiter(this, void 0, void 0, function* () {
             console.log("NUEVOS MENSAJES", req.body); // contenido texto del form   
             console.log(req.file); // archivo subido procesado por Multer
@@ -82,6 +102,16 @@ class EstudianteController {
                     res.status(400).json({ error: 'No se proporcionó ningún archivo.' });
                 }
                 res.status(200).json({ ok: true, message: 'Foto subido correctamente' });
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
+        this.obtenerDatosComplementariosEstudiante = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const resp = yield this.estudianteService.obtenerDatosComplementariosEstudiante(params);
+                res.status(200).json(resp);
             }
             catch (error) {
                 res.status(500).json(error);
@@ -106,9 +136,12 @@ class EstudianteController {
     }
     routes() {
         this.router.get('/obtener-estudiantes', (0, express_async_handler_1.default)(this.obtenerEstudiantes));
+        this.router.post('/obtener-datos-complementarios-estudiante', (0, express_async_handler_1.default)(this.obtenerDatosComplementariosEstudiante));
         this.router.post('/buscar-estudiante', (0, express_async_handler_1.default)(this.buscarEstudiante));
         this.router.put('/modificar-estudiante', (0, express_async_handler_1.default)(this.modificarEstudiante));
         this.router.post('/registrar-inscribir-estudiante', (0, express_async_handler_1.default)(this.registrarEInscribirEstudiante));
+        this.router.post('/resetear-password', (0, express_async_handler_1.default)(this.resetearPassword));
+        this.router.post('/modificar-datos-complementarios-estudiante', (0, express_async_handler_1.default)(this.modificarDatosComplementariosEstudiante));
         // this.router.post('/editar-documento-estudiante', asyncHandler(this.editarDocumentacionEstudiante))
         this.router.post('/editar-documento-estudiante', upload.single('archivo'), (0, express_async_handler_1.default)(this.editarDocumentacionEstudiante));
         this.router.post('/editar-foto-estudiante', upload.single('fotoEstudiante'), (0, express_async_handler_1.default)(this.editarFotoEstudiante));

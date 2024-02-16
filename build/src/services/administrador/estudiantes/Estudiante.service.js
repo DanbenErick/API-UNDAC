@@ -59,6 +59,52 @@ class EstudiantesService {
                 yield dbConex.close();
             }
         });
+        this.resetearPassword = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const salt = yield bcrypt_1.default.genSalt(10);
+                const password_encript = yield bcrypt_1.default.hash(params.PASSWORD || '', salt);
+                params.PASSWORD = password_encript;
+                const [result] = yield this.estudianteRepo.resetearPassword(dbConex, params);
+                if (result.affectedRows > 0)
+                    return { ok: true, message: 'Se modifico correctamente' };
+                return { ok: false, message: 'No se pudo modificar' };
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
+        this.modificarDatosComplementariosEstudiante = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const [result] = yield this.estudianteRepo.modificarDatosComplementariosEstudiante(dbConex, params);
+                if (result.affectedRows > 0)
+                    return { ok: true, message: 'Se modifico correctamente' };
+                return { ok: false, message: 'No se pudo modificar' };
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
+        this.obtenerDatosComplementariosEstudiante = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.estudianteRepo.obtenerDatosComplementariosEstudiante(dbConex, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
         this.registrarEInscribirEstudiante = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
             try {

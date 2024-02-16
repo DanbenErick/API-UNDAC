@@ -7,6 +7,17 @@ export class InputsControlsService {
     public constructor() {
         this.inputsControlsRepo = new InputsControlsRepository()
     }
+    public obtenerLugarAutocomplete = async(params: any) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.inputsControlsRepo.obtenerLugarAutocomplete(dbConnect, params)
+            return result
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+    }
     public obtenerProcesos = async(params: any) => {
         const dbConex: any = await connectMysql.connectMysql()
         try {

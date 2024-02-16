@@ -51,7 +51,44 @@ export class EstudiantesService {
             await dbConex.close()
         }
     }
-
+    public resetearPassword = async(params: any) => {
+        const dbConex: any = await connectMysql.connectMysql()
+        try {
+            const salt = await bcrypt.genSalt(10);
+            const password_encript: any = await bcrypt.hash(params.PASSWORD || '', salt);
+            params.PASSWORD = password_encript
+            const [result] = await this.estudianteRepo.resetearPassword(dbConex, params)
+            if(result.affectedRows > 0) return { ok: true, message: 'Se modifico correctamente' }
+            return { ok: false, message: 'No se pudo modificar' }
+        }catch(error) {
+            await dbConex.rollback()
+        }finally {
+            await dbConex.close()
+        }
+    }
+    public modificarDatosComplementariosEstudiante = async(params: any) => {
+        const dbConex: any = await connectMysql.connectMysql()
+        try {
+            const [result] = await this.estudianteRepo.modificarDatosComplementariosEstudiante(dbConex, params)
+            if(result.affectedRows > 0) return { ok: true, message: 'Se modifico correctamente' }
+            return { ok: false, message: 'No se pudo modificar' }
+        }catch(error) {
+            await dbConex.rollback()
+        }finally {
+            await dbConex.close()
+        }
+    }
+    public obtenerDatosComplementariosEstudiante = async(params: any) => {
+        const dbConex: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.estudianteRepo.obtenerDatosComplementariosEstudiante(dbConex, params)
+            return result
+        }catch(error) {
+            await dbConex.rollback()
+        }finally {
+            await dbConex.close()
+        }
+    }
     public registrarEInscribirEstudiante = async(params: EstudianteCompleto) => {
         const dbConex: any = await connectMysql.connectMysql()
         try {

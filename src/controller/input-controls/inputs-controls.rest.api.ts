@@ -182,8 +182,18 @@ class InputsControlsController {
       res.status(500).json(error);
     }
   }
+  public obtenerLugarAutocomplete = async (req: Request, res: Response) => {
+    try {
+      const params = req.body
+      const resp = await this.inputsControlsService.obtenerLugarAutocomplete(params)
+      res.status(200).json(resp)
+    }catch(error) {
+      res.status(500).json(error);
+    }
+  }
   public routes() {
     //TODO: Revisar cuales son los endpoints que nesesitan permisos
+    this.router.post('/obtener-ubicacion-autocomplete', asyncHandler(this.obtenerLugarAutocomplete))
     this.router.post('/obtener-carreras-por-modalidades', asyncHandler(this.obtenerCarrerasPorModalidades))
     this.router.get('/obtener-modalidades', asyncHandler(this.obtenerModalidades))
     this.router.get('/obtener-todos-procesos-activo', asyncHandler(this.obtenerTodosLosProcesosActivos))

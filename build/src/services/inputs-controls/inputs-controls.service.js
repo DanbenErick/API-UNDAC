@@ -17,6 +17,19 @@ const connection_mysqldb_1 = __importDefault(require("../../config/connection.my
 const inputs_controls_repository_1 = require("../../repository/inputs-controls/inputs-controls.repository");
 class InputsControlsService {
     constructor() {
+        this.obtenerLugarAutocomplete = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.inputsControlsRepo.obtenerLugarAutocomplete(dbConnect, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
         this.obtenerProcesos = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
             try {

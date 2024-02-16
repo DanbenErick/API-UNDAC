@@ -1,6 +1,16 @@
 import { logger } from '../../resources/manager-log.resource'
 
 export class InputsControlsRepository {
+    public obtenerLugarAutocomplete = async(connection: any, params: any) => {
+        try {
+            const query = `SELECT DISTRITO, UBIGEO as value, CONCAT(DEPARTAMENTO, ', ', PROVINCIA, ' ,', DISTRITO) AS label FROM ubicaciones WHERE DISTRITO LIKE '%${params.DISTRITO}%' LIMIT 5`
+            const [rows]: any = await connection.promise().query(query)
+            return rows
+        }catch(error) {
+            logger.error('InputsControlsRepository.obtenerLugarAutocomplete =>', error)
+            throw error
+        }
+    }
     public obtenerProcesos = async(connection: any, params: any) => {
         try {
             const query = `SELECT ID as value, NOMBRE as label FROM procesos ORDER BY id DESC`;

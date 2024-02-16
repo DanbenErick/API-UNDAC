@@ -207,12 +207,23 @@ class InputsControlsController {
                 res.status(500).json(error);
             }
         });
+        this.obtenerLugarAutocomplete = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const resp = yield this.inputsControlsService.obtenerLugarAutocomplete(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.inputsControlsService = new inputs_controls_service_1.InputsControlsService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
     routes() {
         //TODO: Revisar cuales son los endpoints que nesesitan permisos
+        this.router.post('/obtener-ubicacion-autocomplete', (0, express_async_handler_1.default)(this.obtenerLugarAutocomplete));
         this.router.post('/obtener-carreras-por-modalidades', (0, express_async_handler_1.default)(this.obtenerCarrerasPorModalidades));
         this.router.get('/obtener-modalidades', (0, express_async_handler_1.default)(this.obtenerModalidades));
         this.router.get('/obtener-todos-procesos-activo', (0, express_async_handler_1.default)(this.obtenerTodosLosProcesosActivos));
