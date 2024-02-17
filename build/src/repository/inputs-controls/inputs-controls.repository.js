@@ -26,7 +26,7 @@ class InputsControlsRepository {
         });
         this.obtenerPadronEstudiantes = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT * FROM view_padron_estudiantes LIMIT ${params.inicio}, ${params.fin}`;
+                const query = `SELECT * FROM view_padron_estudiantes WHERE AREA = ${params.area} LIMIT ${params.inicio}, ${params.fin}`;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }

@@ -195,7 +195,8 @@ class InputsControlsController {
     try {
       const params = {
         inicio: req.params.inicio,
-        fin: req.params.fin
+        fin: req.params.fin,
+        area: req.params.area
       }
       const resp = await this.inputsControlsService.obtenerPadronEstudiantes(params)
       res.status(200).json(resp)
@@ -215,7 +216,7 @@ class InputsControlsController {
     this.router.post('/buscar-aula-por-turno', asyncHandler(this.buscarAulaPorTurno))
     this.router.get('/obtener-ips', asyncHandler(this.obtenerIp))
 
-    this.router.get('/obtener-padron-estudiantes/:inicio/:fin', asyncHandler(this.obtenerPadronEstudiantes))
+    this.router.get('/obtener-padron-estudiantes/:inicio/:fin/:area', asyncHandler(this.obtenerPadronEstudiantes))
 
     this.router.get(
       "/obtener-carreras-codigo",
