@@ -13,7 +13,7 @@ export class InputsControlsRepository {
     }
     public obtenerPadronEstudiantes = async(connection: any, params: any) => {
         try {
-            const query = `SELECT * FROM view_padron_estudiantes WHERE AREA = ${params.area} LIMIT ${params.inicio}, ${params.fin}`
+            const query = `SELECT * FROM view_padron_estudiantes WHERE AREA = ${params.area} ORDER BY DNI ASC LIMIT ${params.inicio}, ${params.fin}`
             const [rows]: any = await connection.promise().query(query)
             return rows
         }catch(error) {
