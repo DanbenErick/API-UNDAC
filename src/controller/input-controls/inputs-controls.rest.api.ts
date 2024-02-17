@@ -191,6 +191,18 @@ class InputsControlsController {
       res.status(500).json(error);
     }
   }
+  public obtenerPadronEstudiantes = async(req: Request, res: Response) => {
+    try {
+      const params = {
+        inicio: req.params.inicio,
+        fin: req.params.fin
+      }
+      const resp = await this.inputsControlsService.obtenerPadronEstudiantes(params)
+      res.status(200).json(resp)
+    }catch(error) {
+      res.status(500).json(error);
+    }
+  }
   public routes() {
     //TODO: Revisar cuales son los endpoints que nesesitan permisos
     this.router.post('/obtener-ubicacion-autocomplete', asyncHandler(this.obtenerLugarAutocomplete))
@@ -202,6 +214,9 @@ class InputsControlsController {
     this.router.get("/obtener-carreras", asyncHandler(this.obtenerCarreras));
     this.router.post('/buscar-aula-por-turno', asyncHandler(this.buscarAulaPorTurno))
     this.router.get('/obtener-ips', asyncHandler(this.obtenerIp))
+
+    this.router.get('/obtener-padron-estudiantes/:inicio/:fin', asyncHandler(this.obtenerPadronEstudiantes))
+
     this.router.get(
       "/obtener-carreras-codigo",
       asyncHandler(this.obtenerCarrerasCodigo)

@@ -24,6 +24,17 @@ class InputsControlsRepository {
                 throw error;
             }
         });
+        this.obtenerPadronEstudiantes = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT * FROM view_padron_estudiantes LIMIT ${params.inicio}, ${params.fin}`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('InputsControlsRepository.obtenerPadronEstudiantes =>', error);
+                throw error;
+            }
+        });
         this.obtenerProcesos = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `SELECT ID as value, NOMBRE as label FROM procesos ORDER BY id DESC`;

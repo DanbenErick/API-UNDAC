@@ -11,6 +11,16 @@ export class InputsControlsRepository {
             throw error
         }
     }
+    public obtenerPadronEstudiantes = async(connection: any, params: any) => {
+        try {
+            const query = `SELECT * FROM view_padron_estudiantes LIMIT ${params.inicio}, ${params.fin}`
+            const [rows]: any = await connection.promise().query(query)
+            return rows
+        }catch(error) {
+            logger.error('InputsControlsRepository.obtenerPadronEstudiantes =>', error)
+            throw error
+        }
+    }
     public obtenerProcesos = async(connection: any, params: any) => {
         try {
             const query = `SELECT ID as value, NOMBRE as label FROM procesos ORDER BY id DESC`;
