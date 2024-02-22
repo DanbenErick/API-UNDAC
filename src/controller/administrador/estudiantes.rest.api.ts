@@ -48,6 +48,21 @@ class EstudianteController {
         res.status(500).json(error)
       }
     }
+    public buscarEstudiantePorNombre = async(req: Request, res: Response) => {
+      try {
+        const { DNI, NOMBRE, CELULAR } = req.query
+        const params = {
+          DNI: DNI || '',
+          NOMBRE: NOMBRE || '',
+          CELULAR: CELULAR || '',
+        }
+        console.log(params)
+        const resp = await this.estudianteService.buscarEstudiantePorNombre(params)
+        res.status(200).json(resp)
+      }catch(error) {
+        res.status(500).json(error)
+      }
+    }
     public modificarEstudiante = async(req: Request, res: Response) => {
       try {
         const params = req.body
@@ -135,6 +150,7 @@ class EstudianteController {
         // this.router.post('/editar-documento-estudiante', asyncHandler(this.editarDocumentacionEstudiante))
         this.router.post('/editar-documento-estudiante', upload.single('archivo'), asyncHandler(this.editarDocumentacionEstudiante))
         this.router.post('/editar-foto-estudiante', upload.single('fotoEstudiante'), asyncHandler(this.editarFotoEstudiante))
+        this.router.get('/buscar-estudiante-por-nombre', asyncHandler(this.buscarEstudiantePorNombre))
         // this.router.post('/editar-foto-estudiante',  asyncHandler(this.editarFotoEstudiante))
     }
 }

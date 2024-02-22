@@ -77,6 +77,19 @@ class EstudiantesService {
                 yield dbConex.close();
             }
         });
+        this.buscarEstudiantePorNombre = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.estudianteRepo.buscarEstudiantePorNombre(dbConex, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
         this.modificarDatosComplementariosEstudiante = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
             try {

@@ -76,8 +76,13 @@ export class EstudiantesGeneralService {
       const result: [] = await this.estudianteRepo.registrarPago(dbConex, params)
       if(result.length > 0) return { ok: true, message: 'Se registro el pago' }
       return { ok: false, message: 'No se registro el pago' }
-    }catch(error) {
-      await dbConex.rollback()
+    }catch(error: any) {
+      if (error.code && error.code === 'ER_DUP_ENTRY') {
+        return { ok: false, message: "El codigo se encuentra registrado para otro estudiante" };
+      }else {
+
+        await dbConex.rollback()
+      }
     }finally {
       await dbConex.close()
     }

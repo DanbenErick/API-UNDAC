@@ -6,7 +6,9 @@ import VoucherController from './voucher.rest.api';
 import EstudianteController from './estudiantes.rest.api';
 import InscritosController from './inscritos.routing';
 import AulasController from './aulas.rest.api';
+import ResultadosAdministradorController from './resultados.rest.api'
 import jwt from 'jsonwebtoken'
+
 class AdministradorRouting {
 
   public router: Router;
@@ -17,6 +19,7 @@ class AdministradorRouting {
     public estudiantes: EstudianteController
     public inscritos: InscritosController
     public aulas: AulasController
+    public resultados: ResultadosAdministradorController
 
   public constructor() {
     this.procesos = new ProcesosController()
@@ -26,6 +29,7 @@ class AdministradorRouting {
     this.estudiantes = new EstudianteController()
     this.inscritos = new InscritosController()
     this.aulas = new AulasController()
+    this.resultados = new ResultadosAdministradorController()
 
     this.router = Router();
     this.routes();
@@ -59,6 +63,7 @@ class AdministradorRouting {
     this.router.use('/estudiantes', this.estudiantes.router)
     this.router.use('/inscritos', this.inscritos.router)
     this.router.use('/aulas', this.aulas.router)
+    this.router.use('/resultados', this.resultados.router)
   }
 }
 

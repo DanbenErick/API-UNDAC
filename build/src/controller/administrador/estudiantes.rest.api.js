@@ -53,6 +53,22 @@ class EstudianteController {
                 res.status(500).json(error);
             }
         });
+        this.buscarEstudiantePorNombre = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { DNI, NOMBRE, CELULAR } = req.query;
+                const params = {
+                    DNI: DNI || '',
+                    NOMBRE: NOMBRE || '',
+                    CELULAR: CELULAR || '',
+                };
+                console.log(params);
+                const resp = yield this.estudianteService.buscarEstudiantePorNombre(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.modificarEstudiante = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const params = req.body;
@@ -145,6 +161,7 @@ class EstudianteController {
         // this.router.post('/editar-documento-estudiante', asyncHandler(this.editarDocumentacionEstudiante))
         this.router.post('/editar-documento-estudiante', upload.single('archivo'), (0, express_async_handler_1.default)(this.editarDocumentacionEstudiante));
         this.router.post('/editar-foto-estudiante', upload.single('fotoEstudiante'), (0, express_async_handler_1.default)(this.editarFotoEstudiante));
+        this.router.get('/buscar-estudiante-por-nombre', (0, express_async_handler_1.default)(this.buscarEstudiantePorNombre));
         // this.router.post('/editar-foto-estudiante',  asyncHandler(this.editarFotoEstudiante))
     }
 }

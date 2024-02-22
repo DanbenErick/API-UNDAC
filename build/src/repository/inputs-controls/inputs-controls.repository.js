@@ -24,6 +24,42 @@ class InputsControlsRepository {
                 throw error;
             }
         });
+        this.obtenerResultadosModalidades = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT 
+            inscritos.DNI, 
+            CONCAT(registros.AP_PATERNO, ' ', registros.AP_MATERNO, ' ', registros.NOMBRES) AS NOMBRE_COMPLETO,
+            carreras.ESCUELA_COMPLETA,
+            resultados.PUNT_T AS PUNTAJE_TOTAL,
+            resultados.EST_1OPCION AS ESTADO,
+            resultados.ASISTENCIA1 AS ASISTENCIA
+            FROM inscritos
+            LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+            LEFT JOIN registros ON registros.DNI = inscritos.DNI
+            LEFT JOIN resultados ON resultados.PROCESO = inscritos.DNI
+            WHERE ID_TIPO_MODALIDAD = ${params.modalidad}
+            AND
+            OLD_COD_CARRERA = resultados.P_OPCION
+            ORDER BY carreras.ESCUELA_COMPLETA ASC, resultados.PUNT_T DESC`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('InputsControlsRepository.obtenerResultadosModalidades =>', error);
+                throw error;
+            }
+        });
+        this.obtenerSedes = (connection) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT NOMBRE, NOMBRE as value, NOMBRE as label FROM sedes LIMIT 30`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('InputsControlsRepository.obtenerSedes =>', error);
+                throw error;
+            }
+        });
         this.obtenerPadronEstudiantes = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `SELECT * FROM view_padron_estudiantes WHERE AREA = ${params.area} ORDER BY DNI ASC LIMIT ${params.inicio}, ${params.fin}`;

@@ -11,6 +11,41 @@ export class InputsControlsRepository {
             throw error
         }
     }
+    public obtenerResultadosModalidades = async(connection: any, params: any) => {
+        try {
+            const query = `SELECT 
+            inscritos.DNI, 
+            CONCAT(registros.AP_PATERNO, ' ', registros.AP_MATERNO, ' ', registros.NOMBRES) AS NOMBRE_COMPLETO,
+            carreras.ESCUELA_COMPLETA,
+            resultados.PUNT_T AS PUNTAJE_TOTAL,
+            resultados.EST_1OPCION AS ESTADO,
+            resultados.ASISTENCIA1 AS ASISTENCIA
+            FROM inscritos
+            LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+            LEFT JOIN registros ON registros.DNI = inscritos.DNI
+            LEFT JOIN resultados ON resultados.PROCESO = inscritos.DNI
+            WHERE ID_TIPO_MODALIDAD = ${params.modalidad}
+            AND
+            OLD_COD_CARRERA = resultados.P_OPCION
+            ORDER BY carreras.ESCUELA_COMPLETA ASC, resultados.PUNT_T DESC`
+            const [rows]: any = await connection.promise().query(query)
+            return rows
+        }catch(error) {
+            logger.error('InputsControlsRepository.obtenerResultadosModalidades =>', error)
+            throw error
+        }
+    }
+    public obtenerSedes = async(connection: any) => {
+        try {
+            const query = `SELECT NOMBRE, NOMBRE as value, NOMBRE as label FROM sedes LIMIT 30`
+            
+            const [rows]: any = await connection.promise().query(query)
+            return rows
+        }catch(error) {
+            logger.error('InputsControlsRepository.obtenerSedes =>', error)
+            throw error
+        }
+    }
     public obtenerPadronEstudiantes = async(connection: any, params: any) => {
         try {
             const query = `SELECT * FROM view_padron_estudiantes WHERE AREA = ${params.area} ORDER BY DNI ASC LIMIT ${params.inicio}, ${params.fin}`

@@ -1,7 +1,7 @@
 import connectMysql from "../../../config/connection.mysqldb";
 import { ResultadoGeneralRepository } from "../../../repository/general/resultado/resultado.repo";
 
-export class ResultadosService {
+export class ResultadosGeneralService {
   public resultadosRepo: ResultadoGeneralRepository;
   public constructor() {
     this.resultadosRepo = new ResultadoGeneralRepository();

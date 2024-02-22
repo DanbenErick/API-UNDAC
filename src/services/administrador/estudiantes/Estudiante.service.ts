@@ -66,6 +66,17 @@ export class EstudiantesService {
             await dbConex.close()
         }
     }
+    public buscarEstudiantePorNombre = async(params: any) => {
+        const dbConex: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.estudianteRepo.buscarEstudiantePorNombre(dbConex, params)
+            return result
+        }catch(error) {
+            await dbConex.rollback()
+        }finally {
+            await dbConex.close()
+        }
+    }
     public modificarDatosComplementariosEstudiante = async(params: any) => {
         const dbConex: any = await connectMysql.connectMysql()
         try {

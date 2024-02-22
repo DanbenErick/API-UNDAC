@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const express_1 = require("express");
 const resultados_service_1 = require("../../services/general/resultados/resultados.service");
-class ResultadoController {
+class ResultadoGeneralController {
     constructor() {
         this.obtenerResultadosPorCarreraYProceso = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
@@ -27,7 +27,7 @@ class ResultadoController {
                 res.status(500).json(error);
             }
         });
-        this.resultadoService = new resultados_service_1.ResultadosService();
+        this.resultadoService = new resultados_service_1.ResultadosGeneralService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
@@ -35,4 +35,4 @@ class ResultadoController {
         this.router.get('/obtener-resultados-carrera/:carrera', (0, express_async_handler_1.default)(this.obtenerResultadosPorCarreraYProceso));
     }
 }
-exports.default = ResultadoController;
+exports.default = ResultadoGeneralController;

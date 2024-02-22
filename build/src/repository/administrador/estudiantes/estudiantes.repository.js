@@ -25,6 +25,24 @@ class EstudianteRepository {
                 throw error;
             }
         });
+        this.buscarEstudiantePorNombre = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+        SELECT *, CONCAT(AP_PATERNO, ' ', AP_MATERNO, ' ', NOMBRES) as NOMBRE_COMPLETO
+        FROM registros
+        WHERE
+          CONCAT(UPPER(AP_PATERNO), ' ', UPPER(AP_MATERNO), ' ', UPPER(NOMBRES)) LIKE UPPER('%${params.NOMBRE}%')
+          AND DNI LIKE '%${params.DNI}%'
+          AND CELULAR LIKE '%${params.CELULAR}%';
+        `;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error("EstudianteRepository.buscarEstudiantePorNombre =>", (error));
+                throw error;
+            }
+        });
         this.buscarEstudiante = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `SELECT *, CONCAT(AP_PATERNO, ' ', AP_MATERNO, ' ', NOMBRES) as NOMBRE_COMPLETO FROM registros WHERE DNI LIKE '%${params.DNI}%' AND CORREO LIKE '%${params.CORREO}%' AND CELULAR LIKE '%${params.CELULAR}%'`;

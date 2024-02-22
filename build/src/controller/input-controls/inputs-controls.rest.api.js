@@ -231,6 +231,27 @@ class InputsControlsController {
                 res.status(500).json(error);
             }
         });
+        this.obtenerResultadosModalidades = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = {
+                    modalidad: req.params.modalidad
+                };
+                const resp = yield this.inputsControlsService.obtenerResultadosModalidades(params);
+                res.status(200).json(resp);
+            }
+            catch (err) {
+                res.status(500).json(err);
+            }
+        });
+        this.obtenerSedes = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const resp = yield this.inputsControlsService.obtenerSedes();
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.inputsControlsService = new inputs_controls_service_1.InputsControlsService();
         this.router = (0, express_1.Router)();
         this.routes();
@@ -246,6 +267,8 @@ class InputsControlsController {
         this.router.get("/obtener-carreras", (0, express_async_handler_1.default)(this.obtenerCarreras));
         this.router.post('/buscar-aula-por-turno', (0, express_async_handler_1.default)(this.buscarAulaPorTurno));
         this.router.get('/obtener-ips', (0, express_async_handler_1.default)(this.obtenerIp));
+        this.router.get('/obtener-sedes', (0, express_async_handler_1.default)(this.obtenerSedes));
+        this.router.get('/obtener-resultados-modalidades/:modalidad', (0, express_async_handler_1.default)(this.obtenerResultadosModalidades));
         this.router.get('/obtener-padron-estudiantes/:inicio/:fin/:area', (0, express_async_handler_1.default)(this.obtenerPadronEstudiantes));
         this.router.get("/obtener-carreras-codigo", (0, express_async_handler_1.default)(this.obtenerCarrerasCodigo));
         this.router.get("/obtener-facultades", (0, express_async_handler_1.default)(this.obtenerFacultades));

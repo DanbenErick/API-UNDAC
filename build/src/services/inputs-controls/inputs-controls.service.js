@@ -43,6 +43,32 @@ class InputsControlsService {
                 yield dbConexion.close();
             }
         });
+        this.obtenerSedes = () => __awaiter(this, void 0, void 0, function* () {
+            const dbConexion = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.inputsControlsRepo.obtenerSedes(dbConexion);
+                return result;
+            }
+            catch (error) {
+                yield dbConexion.rollback();
+            }
+            finally {
+                yield dbConexion.close();
+            }
+        });
+        this.obtenerResultadosModalidades = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConexion = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.inputsControlsRepo.obtenerResultadosModalidades(dbConexion, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConexion.rollback();
+            }
+            finally {
+                yield dbConexion.close();
+            }
+        });
         this.obtenerProcesos = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
             try {

@@ -29,6 +29,28 @@ export class InputsControlsService {
             await dbConexion.close()
         }
     }
+    public obtenerSedes = async() => {
+        const dbConexion: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.inputsControlsRepo.obtenerSedes(dbConexion)
+            return result
+        }catch(error) {
+            await dbConexion.rollback()
+        }finally {
+            await dbConexion.close()
+        }
+    }
+    public obtenerResultadosModalidades = async(params: any) => {
+        const dbConexion: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.inputsControlsRepo.obtenerResultadosModalidades(dbConexion, params)
+            return result
+        }catch(error) {
+            await dbConexion.rollback()
+        }finally {
+            await dbConexion.close()
+        }
+    }
     public obtenerProcesos = async(params: any) => {
         const dbConex: any = await connectMysql.connectMysql()
         try {

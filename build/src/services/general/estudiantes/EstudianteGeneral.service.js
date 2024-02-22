@@ -100,7 +100,12 @@ class EstudiantesGeneralService {
                 return { ok: false, message: 'No se registro el pago' };
             }
             catch (error) {
-                yield dbConex.rollback();
+                if (error.code && error.code === 'ER_DUP_ENTRY') {
+                    return { ok: false, message: "El codigo se encuentra registrado para otro estudiante" };
+                }
+                else {
+                    yield dbConex.rollback();
+                }
             }
             finally {
                 yield dbConex.close();

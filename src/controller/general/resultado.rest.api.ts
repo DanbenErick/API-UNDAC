@@ -1,15 +1,15 @@
 import asyncHandler from 'express-async-handler'
 import { Router, Request, Response } from "express"
 import { EstudiantesGeneralService } from "../../services/general/estudiantes/EstudianteGeneral.service"
-import { ResultadosService } from '../../services/general/resultados/resultados.service'
+import { ResultadosGeneralService } from '../../services/general/resultados/resultados.service'
 
 
-class ResultadoController {
+class ResultadoGeneralController {
   public router: Router
-  public resultadoService: ResultadosService
+  public resultadoService: ResultadosGeneralService
   
   public constructor() {
-      this.resultadoService = new ResultadosService()
+      this.resultadoService = new ResultadosGeneralService()
       this.router = Router()
       this.routes()
   }
@@ -28,4 +28,4 @@ class ResultadoController {
       this.router.get('/obtener-resultados-carrera/:carrera', asyncHandler(this.obtenerResultadosPorCarreraYProceso))
   }
 }
-export default ResultadoController
+export default ResultadoGeneralController

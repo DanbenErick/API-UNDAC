@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResultadosService = void 0;
+exports.ResultadosGeneralService = void 0;
 const connection_mysqldb_1 = __importDefault(require("../../../config/connection.mysqldb"));
 const resultado_repo_1 = require("../../../repository/general/resultado/resultado.repo");
-class ResultadosService {
+class ResultadosGeneralService {
     constructor() {
         this.obtenerResultadosPorCarreraYProceso = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
@@ -35,4 +35,4 @@ class ResultadosService {
         this.resultadosRepo = new resultado_repo_1.ResultadoGeneralRepository();
     }
 }
-exports.ResultadosService = ResultadosService;
+exports.ResultadosGeneralService = ResultadosGeneralService;
