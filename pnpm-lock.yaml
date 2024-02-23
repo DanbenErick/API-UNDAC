@@ -23,9 +23,6 @@ dependencies:
   bcrypt:
     specifier: ^5.1.1
     version: 5.1.1
-  console-log-colors:
-    specifier: ^0.4.0
-    version: 0.4.0
   cors:
     specifier: ^2.8.5
     version: 2.8.5
@@ -749,11 +746,6 @@ packages:
 
   /console-control-strings@1.1.0:
     resolution: {integrity: sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==}
-    dev: false
-
-  /console-log-colors@0.4.0:
-    resolution: {integrity: sha512-XX0qO0MUzbREpPrutavmOLML8h8IokzKTzJqMwvykBcL9D7bMbj5P17+driOjy4RaA99aIAkMDo8holIxYbbpQ==}
-    engines: {node: '>= 4.1.0'}
     dev: false
 
   /content-disposition@0.5.4:

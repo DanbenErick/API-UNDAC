@@ -1,2 +1,0 @@
-Ingresar a mysql
-mysql -uroot -p

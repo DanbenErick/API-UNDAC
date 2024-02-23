@@ -37,3 +37,23 @@ LEFT JOIN pagos pg_1 ON pg_1.ID = i.PAGO_1
 LEFT JOIN pagos pg_2 ON pg_2.ID = i.PAGO_2;
 
 SELECT * FROM vista_obtener_inscritos_admin ORDER BY ID DESC;
+
+
+CREATE OR REPLACE VIEW vista_obtener_inscritos_admin AS 
+SELECT 
+	i.ID
+    ,i.DNI
+    ,i.COD_CARRERA
+    ,i.PROCESO
+    ,i.SEDE_EXAM
+    ,i.PREPARATORIA
+    ,i.YEAR_CONCLU
+    ,i.FECHA_REGISTRO
+    ,ca.ESCUELA_COMPLETA
+    ,po.NOMBRE AS NOMBRE_PROCESO
+    ,CONCAT(re.AP_PATERNO, ' ', re.AP_MATERNO, ' ', re.NOMBRES) AS NOMBRE_COMPLETO
+FROM 
+    inscritos i
+LEFT JOIN carreras ca ON ca.CODIGO_ESCUELA = i.COD_CARRERA
+LEFT JOIN procesos po ON po.ID = i.PROCESO
+LEFT JOIN registros re ON re.DNI = i.DNI;

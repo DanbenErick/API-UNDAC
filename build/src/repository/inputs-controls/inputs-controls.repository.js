@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InputsControlsRepository = void 0;
 const manager_log_resource_1 = require("../../resources/manager-log.resource");
-const console_log_colors_1 = require("console-log-colors");
 class InputsControlsRepository {
     constructor() {
         this.obtenerLugarAutocomplete = (connection, params) => __awaiter(this, void 0, void 0, function* () {
@@ -53,7 +52,6 @@ class InputsControlsRepository {
         this.obtenerSedes = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `SELECT NOMBRE, NOMBRE as value, NOMBRE as label FROM sedes WHERE TIPO = '${params.TIPO_PROCESO}'  LIMIT 30`;
-                console.log((0, console_log_colors_1.bg16)((0, console_log_colors_1.color)(`PROCESOS => ${query}`, 'green')));
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }
