@@ -8,82 +8,82 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.obtenerQuery = exports.generarConsulta = exports.generarPdfAula = exports.construirPdfAula = void 0;
+exports.obtenerQuery = exports.generarConsulta = exports.construirPdfAula = void 0;
 const manager_log_resource_1 = require("../resources/manager-log.resource");
-const puppeteer_1 = __importDefault(require("puppeteer"));
-const pdfkit_table_1 = __importDefault(require("pdfkit-table"));
+// import PDFDocument from "pdfkit-table";
 const construirPdfAula = (dataCallback, endCallback, data, cabecera) => __awaiter(void 0, void 0, void 0, function* () {
-    const doc = new pdfkit_table_1.default({
-        size: 'A4',
-        font: 'Helvetica',
-        margins: {
-            top: 40,
-            bottom: 40,
-            left: 30,
-            right: 30
-        }
-    });
-    doc.on("data", dataCallback);
-    doc.on("end", endCallback);
-    doc.text(`${cabecera.PROCESO}`, { align: 'center', width: 535, height: 30 })
-        .moveDown(1.5);
-    const arrayData = [];
-    data.forEach((element) => {
-        arrayData.push(Object.values(element));
-    });
-    const tableArray = {
-        title: `AULA: ${cabecera.AULA}`,
-        subtitle: `TURNO: ${cabecera.TURNO}`,
-        headers: [
-            { label: 'DNI', width: 60, headerAlign: "center", align: 'center', headerColor: "#A8A8A8", headerOpacity: 0.5 },
-            { label: 'NOMBRE COMPLETO', width: 250, headerAlign: "center", align: 'center', headerColor: "#A8A8A8", headerOpacity: 0.5 },
-            { label: 'CELULAR', width: 86, headerAlign: "center", align: 'center', headerColor: "#A8A8A8", headerOpacity: 0.5 },
-            { label: 'CELULAR APODERADO', width: 138, headerAlign: "center", align: 'center', headerColor: "#A8A8A8", headerOpacity: 0.5 }
-        ],
-        rows: arrayData,
-    };
-    doc.table(tableArray, { width: 535 });
-    doc.end();
+    // const doc = new PDFDocument({
+    //   size: 'A4',
+    //   font: 'Helvetica',
+    //   margins: {
+    //       top: 40,
+    //       bottom: 40,
+    //       left: 30,
+    //       right: 30
+    //   }
+    // });
+    // doc.on("data", dataCallback);
+    // doc.on("end", endCallback);
+    // doc.text(
+    //   `${cabecera.PROCESO}`,
+    //   {align: 'center', width: 535, height: 30}
+    // )
+    // .moveDown(1.5)
+    // const arrayData: any = [];
+    // data.forEach((element: any) => {
+    //   arrayData.push(Object.values(element));
+    // });
+    // const tableArray = {
+    //   title: `AULA: ${cabecera.AULA}`,
+    //   subtitle: `TURNO: ${cabecera.TURNO}`,
+    //   headers: [
+    //       {label: 'DNI', width: 60, headerAlign:"center", align: 'center', headerColor:"#A8A8A8", headerOpacity:0.5},
+    //       {label: 'NOMBRE COMPLETO', width: 250, headerAlign:"center", align: 'center', headerColor:"#A8A8A8", headerOpacity:0.5},
+    //       {label: 'CELULAR', width: 86, headerAlign:"center", align: 'center', headerColor:"#A8A8A8", headerOpacity:0.5},
+    //       {label: 'CELULAR APODERADO', width: 138, headerAlign:"center", align: 'center', headerColor:"#A8A8A8", headerOpacity:0.5}
+    //   ],
+    //   rows: arrayData,
+    // };
+    // doc.table(tableArray, { width: 535 });
+    // doc.end();
 });
 exports.construirPdfAula = construirPdfAula;
-const generarPdfAula = (params) => __awaiter(void 0, void 0, void 0, function* () {
-    const browser = yield puppeteer_1.default.launch({
-        headless: true,
-        defaultViewport: {
-            width: 750,
-            height: 500,
-            deviceScaleFactor: 1,
-            isMobile: true,
-            hasTouch: false,
-            isLandscape: false,
-        },
-    });
-    const page = yield browser.newPage();
-    yield page.goto(params, {
-        waitUntil: "networkidle0",
-    });
-    yield page.emulateMediaType("screen");
-    const pdf = yield page.pdf({
-        format: "A4",
-        printBackground: true,
-        margin: {
-            top: "1cm",
-            right: "1cm",
-            bottom: "1cm",
-            left: "1cm",
-        },
-        displayHeaderFooter: true,
-        headerTemplate: '<div style="text-align: center; font-size: 12px; font-family: sans-serif;"><span style="font-size: 12px; font-family: sans-serif;">Reporte de Aulas</span></div>',
-        footerTemplate: '<div style="text-align: center; font-size: 12px; font-family: sans-serif;"><span style="font-size: 12px; font-family: sans-serif;">Reporte de Aulas</span></div>',
-    });
-    yield browser.close();
-    return pdf;
-});
-exports.generarPdfAula = generarPdfAula;
+// export const generarPdfAula = async (params: string) => {
+//   const browser: any = await puppeteer.launch({
+//     headless: true,
+//     defaultViewport: {
+//       width: 750,
+//       height: 500,
+//       deviceScaleFactor: 1,
+//       isMobile: true,
+//       hasTouch: false,
+//       isLandscape: false,
+//     },
+//   });
+//   const page = await browser.newPage();
+//   await page.goto(params, {
+//     waitUntil: "networkidle0",
+//   });
+//   await page.emulateMediaType("screen");
+//   const pdf = await page.pdf({
+//     format: "A4",
+//     printBackground: true,
+//     margin: {
+//       top: "1cm",
+//       right: "1cm",
+//       bottom: "1cm",
+//       left: "1cm",
+//     },
+//     displayHeaderFooter: true,
+//     headerTemplate:
+//       '<div style="text-align: center; font-size: 12px; font-family: sans-serif;"><span style="font-size: 12px; font-family: sans-serif;">Reporte de Aulas</span></div>',
+//     footerTemplate:
+//       '<div style="text-align: center; font-size: 12px; font-family: sans-serif;"><span style="font-size: 12px; font-family: sans-serif;">Reporte de Aulas</span></div>',
+//   });
+//   await browser.close();
+//   return pdf;
+// };
 class SeguridadUtil {
     constructor() {
         this.fetchRowsFromRS = (resultSet, numRows) => __awaiter(this, void 0, void 0, function* () {

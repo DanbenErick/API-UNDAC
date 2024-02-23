@@ -2,8 +2,8 @@
 import connectMysql from '../../../config/connection.mysqldb'
 import { AulasInterface } from '../../../interfaces/administrador/aulas.interface'
 import { AulasRepository } from '../../../repository/administrador/aulas/aulas.repository'
-import { construirPdfAula, generarPdfAula } from '../../../util/util'
-import handlebars from 'handlebars'
+import { construirPdfAula } from '../../../util/util'
+
 
 
 
