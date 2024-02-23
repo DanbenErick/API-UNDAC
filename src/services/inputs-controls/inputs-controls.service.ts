@@ -29,10 +29,10 @@ export class InputsControlsService {
             await dbConexion.close()
         }
     }
-    public obtenerSedes = async() => {
+    public obtenerSedes = async(params: any) => {
         const dbConexion: any = await connectMysql.connectMysql()
         try {
-            const result = await this.inputsControlsRepo.obtenerSedes(dbConexion)
+            const result = await this.inputsControlsRepo.obtenerSedes(dbConexion, params)
             return result
         }catch(error) {
             await dbConexion.rollback()

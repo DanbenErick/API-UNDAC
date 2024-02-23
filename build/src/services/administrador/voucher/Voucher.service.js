@@ -33,7 +33,12 @@ class VoucherService {
         this.buscarVoucher = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
             try {
-                const resp = yield this.voucherRepo.buscarVoucher(dbConex, params);
+                const data = {
+                    DNI: params.DNI || '',
+                    ID_PROCESO: params.ID_PROCESO || '',
+                    CODIGO: params.CODIGO || ''
+                };
+                const resp = yield this.voucherRepo.buscarVoucher(dbConex, data);
                 return resp;
             }
             catch (error) {

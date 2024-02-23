@@ -218,7 +218,8 @@ class InputsControlsController {
   }
   public obtenerSedes = async(req: Request, res: Response) => {
     try {
-      const resp = await this.inputsControlsService.obtenerSedes()
+      const params = req.params
+      const resp = await this.inputsControlsService.obtenerSedes(params)
       res.status(200).json(resp)
     }catch(error) {
       res.status(500).json(error);
@@ -235,7 +236,7 @@ class InputsControlsController {
     this.router.get("/obtener-carreras", asyncHandler(this.obtenerCarreras));
     this.router.post('/buscar-aula-por-turno', asyncHandler(this.buscarAulaPorTurno))
     this.router.get('/obtener-ips', asyncHandler(this.obtenerIp))
-    this.router.get('/obtener-sedes', asyncHandler(this.obtenerSedes))
+    this.router.get('/obtener-sedes/:TIPO_PROCESO', asyncHandler(this.obtenerSedes))
 
     this.router.get('/obtener-resultados-modalidades/:modalidad', asyncHandler(this.obtenerResultadosModalidades))
 

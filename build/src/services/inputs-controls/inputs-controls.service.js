@@ -43,10 +43,10 @@ class InputsControlsService {
                 yield dbConexion.close();
             }
         });
-        this.obtenerSedes = () => __awaiter(this, void 0, void 0, function* () {
+        this.obtenerSedes = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConexion = yield connection_mysqldb_1.default.connectMysql();
             try {
-                const result = yield this.inputsControlsRepo.obtenerSedes(dbConexion);
+                const result = yield this.inputsControlsRepo.obtenerSedes(dbConexion, params);
                 return result;
             }
             catch (error) {

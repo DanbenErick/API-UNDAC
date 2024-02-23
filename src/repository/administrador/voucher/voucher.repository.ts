@@ -9,10 +9,13 @@ class VoucherRepository {
             const query = `
                 SELECT 
                     pagos.*,
-                    CONCAT(registros.AP_PATERNO, ' ', registros.AP_MATERNO, ' ', registros.NOMBRES) AS NOMBRE_COMPLETO
+                    CONCAT(registros.AP_PATERNO, ' ', registros.AP_MATERNO, ' ', registros.NOMBRES) AS NOMBRE_COMPLETO,
+                    procesos.NOMBRE AS NOMBRE_PROCESO
                 FROM pagos
                 LEFT JOIN registros ON pagos.dni = registros.dni
+                LEFT JOIN procesos ON procesos.ID = pagos.ID_PROCESO
                 ORDER BY ID DESC
+                LIMIT 20
             `
             const [rows]: any = await connection.promise().query(query)
             return rows
@@ -33,7 +36,17 @@ class VoucherRepository {
     }
     public buscarVoucher = async(connection: any, params: VoucherInterface) => {
       try {
-        const query = `SELECT * FROM pagos WHERE ID_PROCESO LIKE '%${params.ID_PROCESO}%' AND CODIGO LIKE '%${params.CODIGO}%' AND DNI LIKE '%${params.DNI}%'`
+        const query = `SELECT 
+            pagos.*,  
+            CONCAT(registros.AP_PATERNO, ' ', registros.AP_MATERNO, ' ', registros.NOMBRES) AS NOMBRE_COMPLETO,
+            procesos.NOMBRE AS NOMBRE_PROCESO
+            FROM pagos 
+            LEFT JOIN registros ON pagos.dni = registros.dni
+            LEFT JOIN procesos ON procesos.ID = pagos.ID_PROCESO
+            WHERE pagos.ID_PROCESO LIKE '%${params.ID_PROCESO}%' 
+            AND pagos.CODIGO LIKE '%${params.CODIGO}%' 
+            AND pagos.DNI LIKE '%${params.DNI}%'`
+        console.log("QUERY => ", query)
         const [rows]: any = await connection.promise().query(query)
         return rows
       }catch(error) {

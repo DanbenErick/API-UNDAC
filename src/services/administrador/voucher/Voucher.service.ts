@@ -21,7 +21,12 @@ export class VoucherService {
   public buscarVoucher = async (params: VoucherInterface) => {
     const dbConex: any = await connectMysql.connectMysql();
     try {
-      const resp = await this.voucherRepo.buscarVoucher(dbConex, params);
+      const data = {
+        DNI: params.DNI || '',
+        ID_PROCESO: params.ID_PROCESO || '',
+        CODIGO: params.CODIGO || ''
+      }
+      const resp = await this.voucherRepo.buscarVoucher(dbConex, data);
       return resp;
     } catch (error) {
       await dbConex.rollback();

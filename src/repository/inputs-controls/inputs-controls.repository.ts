@@ -1,4 +1,5 @@
 import { logger } from '../../resources/manager-log.resource'
+import { color, bg16 } from 'console-log-colors'
 
 export class InputsControlsRepository {
     public obtenerLugarAutocomplete = async(connection: any, params: any) => {
@@ -35,9 +36,10 @@ export class InputsControlsRepository {
             throw error
         }
     }
-    public obtenerSedes = async(connection: any) => {
+    public obtenerSedes = async(connection: any, params: any) => {
         try {
-            const query = `SELECT NOMBRE, NOMBRE as value, NOMBRE as label FROM sedes LIMIT 30`
+            const query = `SELECT NOMBRE, NOMBRE as value, NOMBRE as label FROM sedes WHERE TIPO = '${params.TIPO_PROCESO}'  LIMIT 30`
+            console.log(bg16(color(`PROCESOS => ${query}`, 'green')))
             
             const [rows]: any = await connection.promise().query(query)
             return rows
