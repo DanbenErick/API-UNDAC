@@ -101,6 +101,7 @@ class ProcesosController {
     public obtenerInscritosEstudianteDatos = async (req: Request, res: Response) => {
       try {
         const params = req.body
+        // ID_PROCESO
         const result: any = await this.procesosService.obtenerInscritosEstudianteDatos(params)
         res.status(200).json(result)
       }catch(error) {

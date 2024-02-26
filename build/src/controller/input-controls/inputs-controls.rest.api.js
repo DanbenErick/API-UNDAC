@@ -220,9 +220,13 @@ class InputsControlsController {
         this.obtenerPadronEstudiantes = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const params = {
-                    inicio: req.params.inicio,
-                    fin: req.params.fin,
-                    area: req.params.area
+                    id_proceso: req.query.id_proceso,
+                    inicio: req.query.inicio,
+                    fin: req.query.fin,
+                    area: req.query.area,
+                    aula: req.query.aula,
+                    fecha: req.query.fecha,
+                    sede: req.query.sede,
                 };
                 const resp = yield this.inputsControlsService.obtenerPadronEstudiantes(params);
                 res.status(200).json(resp);
@@ -270,7 +274,7 @@ class InputsControlsController {
         this.router.get('/obtener-ips', (0, express_async_handler_1.default)(this.obtenerIp));
         this.router.get('/obtener-sedes/:TIPO_PROCESO', (0, express_async_handler_1.default)(this.obtenerSedes));
         this.router.get('/obtener-resultados-modalidades/:modalidad', (0, express_async_handler_1.default)(this.obtenerResultadosModalidades));
-        this.router.get('/obtener-padron-estudiantes/:inicio/:fin/:area', (0, express_async_handler_1.default)(this.obtenerPadronEstudiantes));
+        this.router.get('/obtener-padron-estudiantes', (0, express_async_handler_1.default)(this.obtenerPadronEstudiantes));
         this.router.get("/obtener-carreras-codigo", (0, express_async_handler_1.default)(this.obtenerCarrerasCodigo));
         this.router.get("/obtener-facultades", (0, express_async_handler_1.default)(this.obtenerFacultades));
         this.router.get("/obtener-discapacidades", (0, express_async_handler_1.default)(this.obtenerDiscapacidades));

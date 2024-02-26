@@ -110,7 +110,8 @@ class ProcesosRepository {
         });
         this.obtenerInscritosEstudianteDatos = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT * FROM view_csv_inscritos`;
+                const query = `SELECT * FROM view_csv_inscritos WHERE PROCESO = ${params.ID_PROCESO}`;
+                console.log("CONSULTA =>", query);
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }

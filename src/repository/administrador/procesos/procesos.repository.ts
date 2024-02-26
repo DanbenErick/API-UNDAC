@@ -94,7 +94,8 @@ export class ProcesosRepository {
     }
     public obtenerInscritosEstudianteDatos = async (connection: any, params: any) => {
         try {
-            const query = `SELECT * FROM view_csv_inscritos`;
+            const query = `SELECT * FROM view_csv_inscritos WHERE PROCESO = ${params.ID_PROCESO}`;
+            console.log("CONSULTA =>", query)
             const [rows] = await connection.promise().query(query)
             return rows
         }catch(error) {

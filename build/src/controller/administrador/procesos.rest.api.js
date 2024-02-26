@@ -115,6 +115,7 @@ class ProcesosController {
         this.obtenerInscritosEstudianteDatos = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const params = req.body;
+                // ID_PROCESO
                 const result = yield this.procesosService.obtenerInscritosEstudianteDatos(params);
                 res.status(200).json(result);
             }
