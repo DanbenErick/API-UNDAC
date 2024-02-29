@@ -66,10 +66,50 @@ export class ResultadosAdministradorRepository {
       logger.error('EstudianteGeneralRepository.establecerNotasPorDaraCode =>', error)
     }
   }
+  public establecerOrdenMeritoIngresantesOrdinario = async(connection: any, params: any) => {
+    try {
+      const query = `
+      UPDATE resultados r
+      INNER JOIN 
+      (
+        SELECT id, ROW_NUMBER() OVER (PARTITION BY COD_CARRERA ORDER BY PUNT_T DESC) AS nuevo_orden
+        FROM resultados 
+        WHERE EST_OPCION = 'INGRESO'
+      ) x ON x.id = r.id
+      SET r.ORDEN_MERITO_1 = x.nuevo_orden
+      WHERE r.EST_OPCION = 'INGRESO' WHERE PROCESO = ${params.ID_PROCESO};
+      `
+      const resp : any = await connection.promise().query(query)
+      return resp
+    }catch(error) {
+      logger.error('EstudianteGeneralRepository.establecerOrdenMeritoIngresantesOrdinario =>', error)
+    }
+  }
+  public establecerOrdenMeritoDiferentesAIngresantes = async(connection: any, params: any) => {
+    try {
+      const query = `
+      UPDATE resultados r 
+      INNER JOIN
+      (
+        SELECT 
+          id, 
+          ROW_NUMBER() OVER (PARTITION BY COD_CARRERA ORDER BY PUNT_T DESC) + ${params.LIMIT} AS nuevo_orden  
+        FROM resultados
+        WHERE EST_OPCION <> 'INGRESO'
+      ) x ON x.id = r.id
+      SET r.ORDEN_MERITO_1 = x.nuevo_orden 
+      WHERE r.EST_OPCION <> 'INGRESO'AND r.PROCESO = ${params.ID_PROCESO}
+      `
+      const resp : any = await connection.promise().query(query)
+      return resp
+    }catch(error) {
+      logger.error('EstudianteGeneralRepository.establecerOrdenMeritoDiferentesAIngresantes =>', error)
+    }
+  }
   public obtenerVacantesPorCarreraOrdinario = async(connection: any, params: any) => {
     try {
       const query = `
-      SELECT 
+      SELECT
         vacantes.ID_CARRERA,
         vacantes.CANTIDAD,
         vacantes.ID_PROCESO,

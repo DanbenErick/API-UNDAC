@@ -79,10 +79,52 @@ class ResultadosAdministradorRepository {
                 manager_log_resource_1.logger.error('EstudianteGeneralRepository.establecerNotasPorDaraCode =>', error);
             }
         });
+        this.establecerOrdenMeritoIngresantesOrdinario = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+      UPDATE resultados r
+      INNER JOIN 
+      (
+        SELECT id, ROW_NUMBER() OVER (PARTITION BY COD_CARRERA ORDER BY PUNT_T DESC) AS nuevo_orden
+        FROM resultados 
+        WHERE EST_OPCION = 'INGRESO'
+      ) x ON x.id = r.id
+      SET r.ORDEN_MERITO_1 = x.nuevo_orden
+      WHERE r.EST_OPCION = 'INGRESO' WHERE PROCESO = ${params.ID_PROCESO};
+      `;
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.establecerOrdenMeritoIngresantesOrdinario =>', error);
+            }
+        });
+        this.establecerOrdenMeritoDiferentesAIngresantes = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+      UPDATE resultados r 
+      INNER JOIN
+      (
+        SELECT 
+          id, 
+          ROW_NUMBER() OVER (PARTITION BY COD_CARRERA ORDER BY PUNT_T DESC) + ${params.LIMIT} AS nuevo_orden  
+        FROM resultados
+        WHERE EST_OPCION <> 'INGRESO'
+      ) x ON x.id = r.id
+      SET r.ORDEN_MERITO_1 = x.nuevo_orden 
+      WHERE r.EST_OPCION <> 'INGRESO'AND r.PROCESO = ${params.ID_PROCESO}
+      `;
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.establecerOrdenMeritoDiferentesAIngresantes =>', error);
+            }
+        });
         this.obtenerVacantesPorCarreraOrdinario = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `
-      SELECT 
+      SELECT
         vacantes.ID_CARRERA,
         vacantes.CANTIDAD,
         vacantes.ID_PROCESO,
