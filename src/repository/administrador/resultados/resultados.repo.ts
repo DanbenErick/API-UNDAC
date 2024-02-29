@@ -71,7 +71,7 @@ export class ResultadosAdministradorRepository {
       FROM vacantes
       LEFT JOIN carreras ON carreras.ID = vacantes.ID_CARRERA
       WHERE ID_PROCESO = ${params.ID_PROCESO} AND ID_MODALIDAD = 4
-      ORDER BY ID_CARRERA DESC
+      ORDER BY ID_CARRERA ASC
       `
       const [rows]: any = await connection.promise().query(query)
       return rows
@@ -87,7 +87,7 @@ export class ResultadosAdministradorRepository {
         WHERE 
           COD_CARRERA = '${params.COD_CARRERA}' AND
           PROCESO = '${params.PROCESO}'
-        ORDER BY PUNT_T ASC
+        ORDER BY PUNT_T DESC
         LIMIT ${params.LIMIT}
       `
       console.log("Consulta0. ", query)
