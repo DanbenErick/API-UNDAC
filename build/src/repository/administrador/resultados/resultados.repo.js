@@ -25,24 +25,93 @@ class ResultadosAdministradorRepository {
                 manager_log_resource_1.logger.error('EstudianteGeneralRepository.verificarInscripcionEstudiante =>', error);
             }
         });
-        // public obtenerResultadosPorCarreraYProceso = async(connection: any, params: any) => {
-        //   try {
-        //     const query = `
-        //     SELECT *,
-        //       CONCAT(registros.AP_PATERNO, ' ', registros.AP_MATERNO, ' ', registros.NOMBRES) AS NOMBRE_COMPLETO,
-        //       carreras.ESCUELA_COMPLETA
-        //     FROM resultados_example 
-        //     LEFT JOIN registros ON registros.DNI = resultados_example.PROCESO
-        //     LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados_example.P_OPCION
-        //     WHERE P_OPCION = ${params.P_OPCION} ORDER BY PUNT_T DESC;
-        //   `
-        //     const [rows]: any = await connection.promise().query(query)
-        //     console.log(query)
-        //     return rows
-        //   }catch(error) {
-        //     logger.error('EstudianteGeneralRepository.verificarInscripcionEstudiante =>', error)
-        //   }
-        // }
+        this.duplicarDNIInscritosAResultados = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+        INSERT resultados(DNI, PROCESO, COD_CARRERA, SEDE)
+        SELECT inscritos.DNI, inscritos.PROCESO, inscritos.COD_CARRERA, inscritos.SEDE_EXAM
+        FROM inscritos  
+        WHERE inscritos.PROCESO = ${params.ID_PROCESO};
+      `;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.duplicarDNIInscritosAResultados =>', error);
+            }
+        });
+        this.actualizarDaraCodePorDNI = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+        UPDATE resultados
+        SET
+        DARACOD = ${params.DARACOD},
+        ASISTENCIA = 'SE PRESENTO',
+        AULA = ${params.AULA}
+        WHERE DNI = ${params.DNI};
+      `;
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.actualizarDaraCodePorDNI =>', error);
+            }
+        });
+        this.establecerNotasPorDaraCode = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+        UPDATE resultados
+        SET
+        PUNT_T = ${params['Nota directa'].substring(0, 6).replace(',', '.')},
+        EST_OPCION = 'NO INGRESO'
+        WHERE DARACOD = ${params.DARACOD};
+      `;
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.establecerNotasPorDaraCode =>', error);
+            }
+        });
+        this.obtenerVacantesPorCarreraOrdinario = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+      SELECT 
+        vacantes.ID_CARRERA,
+        vacantes.CANTIDAD,
+        vacantes.ID_PROCESO,
+        carreras.CODIGO_ESCUELA
+      FROM vacantes
+      LEFT JOIN carreras ON carreras.ID = vacantes.ID_CARRERA
+      WHERE ID_PROCESO = ${params.ID_PROCESO} AND ID_MODALIDAD = 4
+      ORDER BY ID_CARRERA ASC
+      `;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.obtenerVacantesPorCarrera', error);
+            }
+        });
+        this.establecerIngresantesPorCarreraOrdinario = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+        UPDATE resultados 
+        SET EST_OPCION = 'INGRESO' 
+        WHERE 
+          COD_CARRERA = '${params.COD_CARRERA}' AND
+          PROCESO = '${params.PROCESO}'
+        ORDER BY PUNT_T ASC
+        LIMIT ${params.LIMIT}
+      `;
+                console.log("Consulta0. ", query);
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.establecerIngresantesPorCarreraOrdinario =>', error);
+            }
+        });
     }
 }
 exports.ResultadosAdministradorRepository = ResultadosAdministradorRepository;

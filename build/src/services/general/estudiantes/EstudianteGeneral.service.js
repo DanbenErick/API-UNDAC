@@ -141,6 +141,9 @@ class EstudiantesGeneralService {
         });
         this.inscribirEstudianteProcedimientoAlmacenado = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            const date = new Date();
+            const year = date.getFullYear();
+            const prepa = params.YEAR_CONCLU >= year ? 1 : 0;
             const data = [
                 params.DNI || '',
                 params.COD_CARRERA || '',
@@ -148,7 +151,7 @@ class EstudiantesGeneralService {
                 params.SEDE_EXAM || '',
                 params.PAGO_1 || null,
                 params.PAGO_2 || null,
-                params.PREPARATORIA || '',
+                prepa || '',
                 params.ID_AULA || '',
                 params.ID_TIPO_MODALIDAD || null,
                 params.YEAR_CONCLU || '',

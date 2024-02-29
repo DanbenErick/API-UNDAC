@@ -32,6 +32,94 @@ class ResultadosAdministradorService {
                 yield dbConnect.close();
             }
         });
+        this.duplicarDNIInscritosAResultados = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.resultadosRepo.duplicarDNIInscritosAResultados(dbConnect, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
+        this.establecerNotasPorDaraCode = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConexion = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const total_params = params.length;
+                let i = 0;
+                for (const element of params) {
+                    const result = yield this.resultadosRepo.establecerNotasPorDaraCode(dbConexion, element);
+                    if (result && result[0].affectedRows === 1) {
+                        i++;
+                    }
+                }
+                console.log("contenido de indices", total_params, i);
+                if (total_params === i) {
+                    return { ok: true, message: 'Se registro las notas de los estudiantes' };
+                }
+                return { ok: false, message: 'No se registro completamente las notas de los estudiantes' };
+            }
+            catch (error) {
+                yield dbConexion.rollback();
+            }
+            finally {
+                yield dbConexion.close();
+            }
+        });
+        this.actualizarDaraCodePorDNI = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const total_params = params.length;
+                let i = 0;
+                for (const element of params) {
+                    const result = yield this.resultadosRepo.actualizarDaraCodePorDNI(dbConnect, element);
+                    if (result && result[0].affectedRows === 1) {
+                        i++;
+                    }
+                }
+                if (total_params === i) {
+                    return { ok: true, message: 'Se registro correctamente todos los daracodes' };
+                }
+                return { ok: false, message: 'Ocurrio un error al registrar los daracodes' };
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
+        this.asignarIngresantesPorCarreraOrdinario = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const resp_vacantes_por_carrera = yield this.resultadosRepo.obtenerVacantesPorCarreraOrdinario(dbConnect, { ID_PROCESO: 26 });
+                let i = 0;
+                for (const vacante of resp_vacantes_por_carrera) {
+                    const params_ingresantes = {
+                        COD_CARRERA: vacante.CODIGO_ESCUELA,
+                        PROCESO: vacante.ID_PROCESO,
+                        LIMIT: vacante.CANTIDAD
+                    };
+                    const resp_asignar_ingresante_por_carrera = yield this.resultadosRepo.establecerIngresantesPorCarreraOrdinario(dbConnect, params_ingresantes);
+                    if (resp_asignar_ingresante_por_carrera[0].affectedRows) {
+                        i++;
+                    }
+                }
+                if (resp_vacantes_por_carrera.length === i) {
+                    return { ok: true, data: 'Se registraron los ingresantes' };
+                }
+                return { ok: false, data: 'No se registraron los ingresantes' };
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
         this.resultadosRepo = new resultados_repo_1.ResultadosAdministradorRepository();
     }
 }
