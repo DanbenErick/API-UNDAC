@@ -90,7 +90,7 @@ class ResultadosAdministradorRepository {
         WHERE EST_OPCION = 'INGRESO'
       ) x ON x.id = r.id
       SET r.ORDEN_MERITO_1 = x.nuevo_orden
-      WHERE r.EST_OPCION = 'INGRESO' WHERE PROCESO = ${params.ID_PROCESO};
+      WHERE r.EST_OPCION = 'INGRESO' AND PROCESO = ${params.ID_PROCESO};
       `;
                 const resp = yield connection.promise().query(query);
                 return resp;
@@ -112,7 +112,7 @@ class ResultadosAdministradorRepository {
         WHERE EST_OPCION <> 'INGRESO'
       ) x ON x.id = r.id
       SET r.ORDEN_MERITO_1 = x.nuevo_orden 
-      WHERE r.EST_OPCION <> 'INGRESO'AND r.PROCESO = ${params.ID_PROCESO}
+      WHERE r.EST_OPCION <> 'INGRESO' AND r.PROCESO = ${params.ID_PROCESO}
       `;
                 const resp = yield connection.promise().query(query);
                 return resp;
