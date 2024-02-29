@@ -96,10 +96,10 @@ export class ResultadosAdministradorRepository {
           id, 
           ROW_NUMBER() OVER (PARTITION BY COD_CARRERA ORDER BY PUNT_T DESC) + ${params.LIMIT} + 1 AS nuevo_orden  
         FROM resultados
-        WHERE EST_OPCION <> 'INGRESO'
+        WHERE EST_OPCION <> 'INGRESO' AND COD_CARRERA = '${params.CODIGO_ESCUELA}'
       ) x ON x.id = r.id
       SET r.ORDEN_MERITO_1 = x.nuevo_orden 
-      WHERE r.EST_OPCION <> 'INGRESO' AND r.PROCESO = ${params.ID_PROCESO}
+      WHERE r.EST_OPCION <> 'INGRESO' AND r.PROCESO = ${params.ID_PROCESO} AND COD_CARRERA = '${params.CODIGO_ESCUELA}'
       `
       console.log("establecerOrdenMeritoDiferentesAIngresantes", query)
       const resp : any = await connection.promise().query(query)
