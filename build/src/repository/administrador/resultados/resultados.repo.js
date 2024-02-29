@@ -84,7 +84,7 @@ class ResultadosAdministradorRepository {
       FROM vacantes
       LEFT JOIN carreras ON carreras.ID = vacantes.ID_CARRERA
       WHERE ID_PROCESO = ${params.ID_PROCESO} AND ID_MODALIDAD = 4
-      ORDER BY ID_CARRERA ASC
+      ORDER BY ID_CARRERA DESC
       `;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
