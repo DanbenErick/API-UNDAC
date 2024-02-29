@@ -77,8 +77,9 @@ export class ResultadosAdministradorRepository {
         WHERE EST_OPCION = 'INGRESO'
       ) x ON x.id = r.id
       SET r.ORDEN_MERITO_1 = x.nuevo_orden
-      WHERE r.EST_OPCION = 'INGRESO' AND PROCESO = ${params.ID_PROCESO};
+      WHERE r.EST_OPCION = 'INGRESO' AND r.PROCESO = ${params.ID_PROCESO};
       `
+      console.log("establecerOrdenMeritoIngresantesOrdinario", query)
       const resp : any = await connection.promise().query(query)
       return resp
     }catch(error) {
