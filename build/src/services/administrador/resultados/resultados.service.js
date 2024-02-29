@@ -108,6 +108,18 @@ class ResultadosAdministradorService {
                         i++;
                     }
                 }
+                for (const vacante of resp_vacantes_por_carrera) {
+                    const params_ingresantes = {
+                        ID_PROCESO: vacante.ID_PROCESO,
+                        COD_CARRERA: vacante.CODIGO_ESCUELA,
+                        PROCESO: vacante.ID_PROCESO,
+                        LIMIT: vacante.CANTIDAD
+                    };
+                    console.log("Actualizando orden de merito");
+                    const resp_orden_merito_ingresantes_ordinario = yield this.resultadosRepo.establecerOrdenMeritoIngresantesOrdinario(dbConnect, params_ingresantes);
+                    const resp_orden_merito_no_ingresantes_ordinario = yield this.resultadosRepo.establecerOrdenMeritoDiferentesAIngresantes(dbConnect, params_ingresantes);
+                    console.log(resp_orden_merito_ingresantes_ordinario, resp_orden_merito_no_ingresantes_ordinario);
+                }
                 if (resp_vacantes_por_carrera.length === i) {
                     return { ok: true, data: 'Se registraron los ingresantes' };
                 }
