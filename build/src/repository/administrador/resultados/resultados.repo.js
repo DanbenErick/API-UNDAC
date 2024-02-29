@@ -108,7 +108,7 @@ class ResultadosAdministradorRepository {
       (
         SELECT 
           id, 
-          ROW_NUMBER() OVER (PARTITION BY COD_CARRERA ORDER BY PUNT_T DESC) + ${params.LIMIT} + 1 AS nuevo_orden  
+          ROW_NUMBER() OVER (PARTITION BY COD_CARRERA ORDER BY PUNT_T DESC) + ${params.LIMIT} AS nuevo_orden  
         FROM resultados
         WHERE EST_OPCION <> 'INGRESO' AND COD_CARRERA = '${params.COD_CARRERA}'
       ) x ON x.id = r.id
