@@ -28,8 +28,12 @@ class ResultadosAdministradorRepository {
         this.duplicarDNIInscritosAResultados = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `
-        INSERT resultados(DNI, PROCESO, COD_CARRERA, SEDE)
-        SELECT inscritos.DNI, inscritos.PROCESO, inscritos.COD_CARRERA, inscritos.SEDE_EXAM
+        INSERT resultados(DNI, PROCESO, COD_CARRERA, SEDE, EST_OPCION)
+        SELECT inscritos.DNI, inscritos.PROCESO, inscritos.COD_CARRERA, inscritos.SEDE_EXAM, 
+          CASE
+            WHEN PREPARATORIA = 1 THEN 'PREPARATORIA'
+            ELSE ''
+          END AS TIPO
         FROM inscritos  
         WHERE inscritos.PROCESO = ${params.ID_PROCESO};
       `;
@@ -102,7 +106,8 @@ class ResultadosAdministradorRepository {
         SET EST_OPCION = 'INGRESO' 
         WHERE 
           COD_CARRERA = '${params.COD_CARRERA}' AND
-          PROCESO = '${params.PROCESO}'
+          PROCESO = '${params.PROCESO}' AND
+          EST_OPCION != 'PREPARATORIA'
         ORDER BY PUNT_T DESC
         LIMIT ${params.LIMIT}
       `;
