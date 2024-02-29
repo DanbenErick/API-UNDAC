@@ -50,6 +50,8 @@ export class ResultadosAdministradorRepository {
       const query = `
         UPDATE resultados
         SET
+        ACIERTOS = ${params['Aciertos']},
+        ERRORES = ${params['Errores']},
         PUNT_T = ${params['Nota directa'].substring(0,6).replace(',','.')},
         EST_OPCION = 'NO INGRESO'
         WHERE DARACOD = ${params.DARACOD};
