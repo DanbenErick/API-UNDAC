@@ -81,14 +81,14 @@ class ResultadosAdministradorController {
         .on('end', async() => {
           // console.log(jsonArray)
           req.query.ID_PROCESO = 26
-          // const resp_duplicado_dni = await this.resultadosService.duplicarDNIInscritosAResultados({ID_PROCESO: req.query.ID_PROCESO})
-          // console.log("Console 1: ",resp_duplicado_dni)
-          // console.log("Console 2: ",resp_duplicado_dni.affectedRows)
+          const resp_duplicado_dni = await this.resultadosService.duplicarDNIInscritosAResultados({ID_PROCESO: req.query.ID_PROCESO})
+          console.log("Console 1: ",resp_duplicado_dni)
+          console.log("Console 2: ",resp_duplicado_dni.affectedRows)
 
-          // const resp_notas_daras: any = await this.resultadosService.establecerNotasPorDaraCode(jsonArray)
-          // res.status(200).json(resp_notas_daras)
+          const resp_notas_daras: any = await this.resultadosService.establecerNotasPorDaraCode(jsonArray)
           const params = {}
           const resp_asignarIngresantes: any = await this.resultadosService.asignarIngresantesPorCarreraOrdinario(params)
+          res.status(200).json(resp_notas_daras)
 
         })
         .on('error', (error) => {
