@@ -117,6 +117,10 @@ export class EstudiantesGeneralService {
 
   public inscribirEstudianteProcedimientoAlmacenado = async(params: any) => {
     const dbConex: any = await connectMysql.connectMysql();
+    
+    const date = new Date();
+    const year = date.getFullYear();
+    const prepa = params.YEAR_CONCLU >= year ? 1 : 0;
     const data = [
       params.DNI || '',
       params.COD_CARRERA || '',
@@ -124,7 +128,7 @@ export class EstudiantesGeneralService {
       params.SEDE_EXAM || '',
       params.PAGO_1 || null,
       params.PAGO_2 || null,
-      params.PREPARATORIA || '',
+      prepa || '',
       params.ID_AULA || '',
       params.ID_TIPO_MODALIDAD || null,
       params.YEAR_CONCLU || '',
