@@ -86,9 +86,6 @@ class ResultadosAdministradorController {
                     .on('end', () => __awaiter(this, void 0, void 0, function* () {
                     // console.log(jsonArray)
                     req.query.ID_PROCESO = 26;
-                    const resp_duplicado_dni = yield this.resultadosService.duplicarDNIInscritosAResultados({ ID_PROCESO: req.query.ID_PROCESO });
-                    console.log("Console 1: ", resp_duplicado_dni);
-                    console.log("Console 2: ", resp_duplicado_dni.affectedRows);
                     const resp_notas_daras = yield this.resultadosService.establecerNotasPorDaraCode(jsonArray);
                     const params = {};
                     const resp_asignarIngresantes = yield this.resultadosService.asignarIngresantesPorCarreraOrdinario(params);
