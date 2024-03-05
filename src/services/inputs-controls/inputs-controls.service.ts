@@ -51,6 +51,17 @@ export class InputsControlsService {
             await dbConexion.close()
         }
     }
+    public obtenerResultadosOrdinario = async(params: any) => {
+        const dbConexion: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.inputsControlsRepo.obtenerResultadosOrdinario(dbConexion, params)
+            return result
+        }catch(error) {
+            await dbConexion.rollback()
+        }finally {
+            await dbConexion.close()
+        }
+    }
     public obtenerProcesos = async(params: any) => {
         const dbConex: any = await connectMysql.connectMysql()
         try {

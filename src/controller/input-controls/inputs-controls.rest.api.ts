@@ -220,6 +220,14 @@ class InputsControlsController {
       res.status(500).json(err);
     }
   }
+  public obtenerResultadosOrdinario = async(req: Request, res: Response) => {
+    try {
+      const resp = await this.inputsControlsService.obtenerResultadosOrdinario(req.params)
+      res.status(200).json(resp)
+    }catch (err) {
+      res.status(500).json(err);
+    }
+  }
   public obtenerSedes = async(req: Request, res: Response) => {
     try {
       const params = req.params
@@ -243,6 +251,7 @@ class InputsControlsController {
     this.router.get('/obtener-sedes/:TIPO_PROCESO', asyncHandler(this.obtenerSedes))
 
     this.router.get('/obtener-resultados-modalidades/:modalidad', asyncHandler(this.obtenerResultadosModalidades))
+    this.router.get('/obtener-resultados-ordinario/:id_proceso', asyncHandler(this.obtenerResultadosOrdinario))
 
 
     this.router.get('/obtener-padron-estudiantes', asyncHandler(this.obtenerPadronEstudiantes))

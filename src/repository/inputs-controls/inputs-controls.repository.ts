@@ -36,6 +36,18 @@ export class InputsControlsRepository {
             throw error
         }
     }
+    public obtenerResultadosOrdinario = async(connection: any, params: any) => {
+        try {
+            const query = `
+                SELECT * FROM vista_resultados_ordinario WHERE PROCESO = ${params.proceso}
+            `
+            const [rows] = await connection.promise().query(query)
+            return rows
+        }catch(error) {
+            logger.error('InputsControlsRepository.obtenerResultadosOrdinario =>', error)
+            throw error
+        }
+    }
     public obtenerSedes = async(connection: any, params: any) => {
         try {
             const query = `SELECT NOMBRE, NOMBRE as value, NOMBRE as label FROM sedes WHERE TIPO = '${params.TIPO_PROCESO}'  LIMIT 30`

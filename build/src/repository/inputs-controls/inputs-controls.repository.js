@@ -49,6 +49,19 @@ class InputsControlsRepository {
                 throw error;
             }
         });
+        this.obtenerResultadosOrdinario = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+                SELECT * FROM vista_resultados_ordinario WHERE PROCESO = ${params.proceso}
+            `;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('InputsControlsRepository.obtenerResultadosOrdinario =>', error);
+                throw error;
+            }
+        });
         this.obtenerSedes = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `SELECT NOMBRE, NOMBRE as value, NOMBRE as label FROM sedes WHERE TIPO = '${params.TIPO_PROCESO}'  LIMIT 30`;
