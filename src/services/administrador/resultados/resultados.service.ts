@@ -28,6 +28,12 @@ export class ResultadosAdministradorService {
     public duplicarDNIInscritosAResultados = async(params: any) => {
         const dbConnect: any = await connectMysql.connectMysql()
         try {
+
+            const [siHayResultadoRegistrado] = await this.resultadosRepo.verificarSiHayResultadosDelProceso(dbConnect, params)
+            if(siHayResultadoRegistrado.CANTIDAD > 0) {
+                await this.resultadosRepo.eliminarRegistroDeUnProcesoResultados(dbConnect, params)
+                
+            }
             const result = await this.resultadosRepo.duplicarDNIInscritosAResultados(dbConnect, params)
             return result
         }catch(error) {

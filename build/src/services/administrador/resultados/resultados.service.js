@@ -35,6 +35,10 @@ class ResultadosAdministradorService {
         this.duplicarDNIInscritosAResultados = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConnect = yield connection_mysqldb_1.default.connectMysql();
             try {
+                const [siHayResultadoRegistrado] = yield this.resultadosRepo.verificarSiHayResultadosDelProceso(dbConnect, params);
+                if (siHayResultadoRegistrado.CANTIDAD > 0) {
+                    yield this.resultadosRepo.eliminarRegistroDeUnProcesoResultados(dbConnect, params);
+                }
                 const result = yield this.resultadosRepo.duplicarDNIInscritosAResultados(dbConnect, params);
                 return result;
             }

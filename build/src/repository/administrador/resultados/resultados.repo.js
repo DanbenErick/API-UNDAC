@@ -25,6 +25,26 @@ class ResultadosAdministradorRepository {
                 manager_log_resource_1.logger.error('EstudianteGeneralRepository.verificarInscripcionEstudiante =>', error);
             }
         });
+        this.verificarSiHayResultadosDelProceso = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT COUNT(*) AS CANTIDAD FROM resultados WHERE PROCESO = '${params.ID_PROCESO}'`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.verificarSiHayResultadosDelProceso =>', error);
+            }
+        });
+        this.eliminarRegistroDeUnProcesoResultados = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `DELETE FROM resultados WHERE PROCESO = '${params.ID_PROCESO}'`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.eliminarRegistroDeUnProcesoResultados =>', error);
+            }
+        });
         this.duplicarDNIInscritosAResultados = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `

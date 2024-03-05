@@ -50,15 +50,18 @@ class ResultadosAdministradorController {
                     jsonArray.push(jsonObject);
                 })
                     .on('end', () => __awaiter(this, void 0, void 0, function* () {
-                    req.query.ID_PROCESO = 26;
+                    console.log(req.query);
                     const resp_duplicado_dni = yield this.resultadosService.duplicarDNIInscritosAResultados({ ID_PROCESO: req.query.ID_PROCESO });
                     console.log("Console 1: ", resp_duplicado_dni);
                     console.log("Console 2: ", resp_duplicado_dni.affectedRows);
+                    console.log("Console 3: ", jsonArray.length);
+                    console.log("Console 4: ", resp_duplicado_dni.affectedRows >= jsonArray.length);
                     if (resp_duplicado_dni.affectedRows >= jsonArray.length) {
                         const resp_actualiza_daracod_dni = yield this.resultadosService.actualizarDaraCodePorDNI(jsonArray);
-                        if (resp_actualiza_daracod_dni) {
-                            res.status(200).json(resp_actualiza_daracod_dni);
-                        }
+                        res.status(200).json(resp_actualiza_daracod_dni);
+                    }
+                    else {
+                        res.status(200).json({ ok: false, message: 'Hay mas estudiantes en la solapa que la cantidad de inscritos para este proceso' });
                     }
                 }))
                     .on('error', (error) => {

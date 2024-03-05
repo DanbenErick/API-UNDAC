@@ -58,6 +58,17 @@ export class EstudiantesGeneralService {
       await dbConex.close()
     }
   }
+  public consultarDatosDNIPorProceso = async(params: any) => {
+    const dbConex: any = await connectMysql.connectMysql()
+    try {
+      const result:[] = await this.estudianteRepo.consultarDatosDNIPorProceso(dbConex, params)
+      return result
+    }catch(error) {
+      await dbConex.rollback()
+    }finally {
+      await dbConex.close()
+    }
+  }
   public obtenerMisPagos = async(params: any) => {
     const dbConex: any = await connectMysql.connectMysql()
     try {

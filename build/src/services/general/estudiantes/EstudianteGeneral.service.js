@@ -78,6 +78,19 @@ class EstudiantesGeneralService {
                 yield dbConex.close();
             }
         });
+        this.consultarDatosDNIPorProceso = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.estudianteRepo.consultarDatosDNIPorProceso(dbConex, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
         this.obtenerMisPagos = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
             try {

@@ -48,6 +48,28 @@ export class EstudianteGeneralRepository {
         logger.error('EstudianteGeneralRepository.obtenerDatosEstudianteCarnet =>', error)
       }
     }
+    public consultarDatosDNIPorProceso = async(connection: any, params: any) => {
+      try {
+        const query = await `
+        SELECT
+          inscritos.DNI,
+          registros.AP_PATERNO,
+          registros.AP_MATERNO,
+          registros.NOMBRES,
+          procesos.NOMBRE AS NOMBRE_PROCESO,
+          carreras.ESCUELA_COMPLETA AS CARRERA	
+        FROM inscritos
+        LEFT JOIN procesos ON procesos.ID = inscritos.PROCESO
+        LEFT JOIN registros ON registros.DNI = inscritos.DNI
+        LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+        WHERE inscritos.DNI = ${params.DNI} AND inscritos.PROCESO = ${params.ID_PROCESO}
+        `
+        const [rows] = await connection.promise().query(query)
+        return rows
+      }catch(error) {
+        logger.error('EstudianteGeneralRepository.consultarDatosDNIPorProceso =>', error)
+      }
+    }
     public verificarTestpsicologicoInscrito = async(connection: any, params: any) => {
       try {
         const query = `SELECT ID FROM actitudes WHERE DNI = '${params.DNI}'`

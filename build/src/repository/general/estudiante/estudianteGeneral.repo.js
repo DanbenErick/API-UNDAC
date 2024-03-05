@@ -62,6 +62,29 @@ class EstudianteGeneralRepository {
                 manager_log_resource_1.logger.error('EstudianteGeneralRepository.obtenerDatosEstudianteCarnet =>', error);
             }
         });
+        this.consultarDatosDNIPorProceso = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = yield `
+        SELECT
+          inscritos.DNI,
+          registros.AP_PATERNO,
+          registros.AP_MATERNO,
+          registros.NOMBRES,
+          procesos.NOMBRE AS NOMBRE_PROCESO,
+          carreras.ESCUELA_COMPLETA AS CARRERA	
+        FROM inscritos
+        LEFT JOIN procesos ON procesos.ID = inscritos.PROCESO
+        LEFT JOIN registros ON registros.DNI = inscritos.DNI
+        LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+        WHERE inscritos.DNI = ${params.DNI} AND inscritos.PROCESO = ${params.ID_PROCESO}
+        `;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.consultarDatosDNIPorProceso =>', error);
+            }
+        });
         this.verificarTestpsicologicoInscrito = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `SELECT ID FROM actitudes WHERE DNI = '${params.DNI}'`;

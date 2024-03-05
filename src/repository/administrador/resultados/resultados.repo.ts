@@ -15,6 +15,26 @@ export class ResultadosAdministradorRepository {
     }
   }
 
+  public verificarSiHayResultadosDelProceso = async(connection: any, params: any) => {
+    try {
+      const query = `SELECT COUNT(*) AS CANTIDAD FROM resultados WHERE PROCESO = '${params.ID_PROCESO}'`
+      const [rows]: any = await connection.promise().query(query)
+      return rows
+    }catch(error) {
+      logger.error('EstudianteGeneralRepository.verificarSiHayResultadosDelProceso =>', error)
+    }
+  }
+
+  public eliminarRegistroDeUnProcesoResultados = async(connection: any, params: any) => {
+    try {
+      const query = `DELETE FROM resultados WHERE PROCESO = '${params.ID_PROCESO}'`
+      const [rows]: any = await connection.promise().query(query)
+      return rows
+    }catch(error) {
+      logger.error('EstudianteGeneralRepository.eliminarRegistroDeUnProcesoResultados =>', error)
+    }
+  }
+
   public duplicarDNIInscritosAResultados = async(connection: any, params: any) => {
     try {
       const query = `
