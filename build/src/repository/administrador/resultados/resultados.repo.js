@@ -157,6 +157,7 @@ class ResultadosAdministradorRepository {
       WHERE ID_PROCESO = ${params.ID_PROCESO}
       ORDER BY ID_CARRERA ASC
       `;
+                console.log(query);
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }
