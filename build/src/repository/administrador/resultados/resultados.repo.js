@@ -52,7 +52,7 @@ class ResultadosAdministradorRepository {
         SELECT inscritos.DNI, inscritos.PROCESO, inscritos.COD_CARRERA, inscritos.SEDE_EXAM, 
           CASE
             WHEN PREPARATORIA = 1 THEN 'PREPARATORIA'
-            ELSE ''
+            ELSE 'NO INGRESO'
           END AS TIPO
         FROM inscritos  
         WHERE inscritos.PROCESO = ${params.ID_PROCESO};
@@ -144,6 +144,7 @@ class ResultadosAdministradorRepository {
             }
         });
         this.obtenerVacantesPorCarreraOrdinario = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            //TODO: Actualizar este codigo para jalar las vacantes de ordinario
             try {
                 const query = `
       SELECT
@@ -153,7 +154,7 @@ class ResultadosAdministradorRepository {
         carreras.CODIGO_ESCUELA
       FROM vacantes
       LEFT JOIN carreras ON carreras.ID = vacantes.ID_CARRERA
-      WHERE ID_PROCESO = ${params.ID_PROCESO} AND ID_MODALIDAD = 4
+      WHERE ID_PROCESO = ${params.ID_PROCESO}
       ORDER BY ID_CARRERA ASC
       `;
                 const [rows] = yield connection.promise().query(query);

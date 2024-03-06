@@ -88,11 +88,11 @@ class ResultadosAdministradorController {
                 })
                     .on('end', () => __awaiter(this, void 0, void 0, function* () {
                     // console.log(jsonArray)
-                    req.query.ID_PROCESO = 26;
+                    // req.query.ID_PROCESO = 26
                     const resp_notas_daras = yield this.resultadosService.establecerNotasPorDaraCode(jsonArray);
                     const params = {};
-                    const resp_asignarIngresantes = yield this.resultadosService.asignarIngresantesPorCarreraOrdinario(params);
-                    res.status(200).json(resp_notas_daras);
+                    const resp_asignarIngresantes = yield this.resultadosService.asignarIngresantesPorCarreraOrdinario(req.query);
+                    res.status(200).json(resp_notas_daras, resp_asignarIngresantes);
                 }))
                     .on('error', (error) => {
                     console.log('Error al procesar el csv', error);

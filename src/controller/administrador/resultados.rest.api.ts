@@ -82,13 +82,13 @@ class ResultadosAdministradorController {
         })
         .on('end', async() => {
           // console.log(jsonArray)
-          req.query.ID_PROCESO = 26
+          // req.query.ID_PROCESO = 26
           
 
           const resp_notas_daras: any = await this.resultadosService.establecerNotasPorDaraCode(jsonArray)
           const params = {}
-          const resp_asignarIngresantes: any = await this.resultadosService.asignarIngresantesPorCarreraOrdinario(params)
-          res.status(200).json(resp_notas_daras)
+          const resp_asignarIngresantes: any = await this.resultadosService.asignarIngresantesPorCarreraOrdinario(req.query)
+          res.status(200).json(resp_notas_daras, resp_asignarIngresantes)
 
         })
         .on('error', (error) => {

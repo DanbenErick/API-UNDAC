@@ -84,7 +84,9 @@ export class ProcesosRepository {
             WHERE PROCESO = ${params.ID_PROCESO}
             GROUP BY
                 inscritos.COD_CARRERA,
-                carreras.ESCUELA_COMPLETA;`
+                carreras.ESCUELA_COMPLETA
+            ORDER BY
+                carreras.ESCUELA_COMPLETA ASC`
             const [rows] = await connection.promise().query(query)
             return rows            
         }catch(error) {
@@ -113,7 +115,9 @@ export class ProcesosRepository {
             LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
             WHERE PROCESO = ${params.ID_PROCESO}
             GROUP BY
-                carreras.AREA;`
+                carreras.AREA
+            ORDER BY
+                carreras.AREA ASC`
             const [rows] = await connection.promise().query(query)
             return rows            
         }catch(error) {

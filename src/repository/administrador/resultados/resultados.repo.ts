@@ -42,7 +42,7 @@ export class ResultadosAdministradorRepository {
         SELECT inscritos.DNI, inscritos.PROCESO, inscritos.COD_CARRERA, inscritos.SEDE_EXAM, 
           CASE
             WHEN PREPARATORIA = 1 THEN 'PREPARATORIA'
-            ELSE ''
+            ELSE 'NO INGRESO'
           END AS TIPO
         FROM inscritos  
         WHERE inscritos.PROCESO = ${params.ID_PROCESO};
@@ -129,6 +129,8 @@ export class ResultadosAdministradorRepository {
     }
   }
   public obtenerVacantesPorCarreraOrdinario = async(connection: any, params: any) => {
+
+    //TODO: Actualizar este codigo para jalar las vacantes de ordinario
     try {
       const query = `
       SELECT
@@ -138,9 +140,10 @@ export class ResultadosAdministradorRepository {
         carreras.CODIGO_ESCUELA
       FROM vacantes
       LEFT JOIN carreras ON carreras.ID = vacantes.ID_CARRERA
-      WHERE ID_PROCESO = ${params.ID_PROCESO} AND ID_MODALIDAD = 4
+      WHERE ID_PROCESO = ${params.ID_PROCESO}
       ORDER BY ID_CARRERA ASC
       `
+      
       const [rows]: any = await connection.promise().query(query)
       return rows
     }catch(error) {

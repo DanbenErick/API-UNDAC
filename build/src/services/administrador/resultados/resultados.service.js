@@ -99,7 +99,7 @@ class ResultadosAdministradorService {
         this.asignarIngresantesPorCarreraOrdinario = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConnect = yield connection_mysqldb_1.default.connectMysql();
             try {
-                const resp_vacantes_por_carrera = yield this.resultadosRepo.obtenerVacantesPorCarreraOrdinario(dbConnect, { ID_PROCESO: 26 });
+                const resp_vacantes_por_carrera = yield this.resultadosRepo.obtenerVacantesPorCarreraOrdinario(dbConnect, { ID_PROCESO: params });
                 let i = 0;
                 for (const vacante of resp_vacantes_por_carrera) {
                     const params_ingresantes = {
