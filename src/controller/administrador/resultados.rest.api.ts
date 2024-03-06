@@ -88,7 +88,7 @@ class ResultadosAdministradorController {
           const resp_notas_daras: any = await this.resultadosService.establecerNotasPorDaraCode(jsonArray)
           const params = {}
           const resp_asignarIngresantes: any = await this.resultadosService.asignarIngresantesPorCarreraOrdinario(req.query)
-          res.status(200).json(resp_notas_daras, resp_asignarIngresantes)
+          res.status(200).json({...resp_notas_daras, ...resp_asignarIngresantes})
 
         })
         .on('error', (error) => {
