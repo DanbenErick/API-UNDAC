@@ -173,7 +173,8 @@ class ResultadosAdministradorRepository {
         WHERE 
           COD_CARRERA = '${params.COD_CARRERA}' AND
           PROCESO = '${params.PROCESO}' AND
-          EST_OPCION != 'PREPARATORIA'
+          EST_OPCION != 'PREPARATORIA' AND
+          ASISTENCIA != 'NSP'
         ORDER BY PUNT_T DESC
         LIMIT ${params.LIMIT}
       `;
