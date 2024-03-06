@@ -39,7 +39,7 @@ export class InputsControlsRepository {
     public obtenerResultadosOrdinario = async(connection: any, params: any) => {
         try {
             const query = `
-                SELECT * FROM vista_resultados_ordinario WHERE PROCESO = ${params.proceso}
+                SELECT * FROM vista_resultados_ordinario WHERE PROCESO = ${params.id_proceso}
             `
             const [rows] = await connection.promise().query(query)
             return rows

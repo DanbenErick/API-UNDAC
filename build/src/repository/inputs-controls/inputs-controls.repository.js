@@ -52,7 +52,7 @@ class InputsControlsRepository {
         this.obtenerResultadosOrdinario = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `
-                SELECT * FROM vista_resultados_ordinario WHERE PROCESO = ${params.proceso}
+                SELECT * FROM vista_resultados_ordinario WHERE PROCESO = ${params.id_proceso}
             `;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
