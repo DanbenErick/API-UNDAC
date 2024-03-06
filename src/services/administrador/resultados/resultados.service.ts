@@ -89,7 +89,7 @@ export class ResultadosAdministradorService {
     public asignarIngresantesPorCarreraOrdinario = async(params: any) => {
         const dbConnect: any = await connectMysql.connectMysql()
         try {
-            const resp_vacantes_por_carrera = await this.resultadosRepo.obtenerVacantesPorCarreraOrdinario(dbConnect ,{ID_PROCESO: params})
+            const resp_vacantes_por_carrera = await this.resultadosRepo.obtenerVacantesPorCarreraOrdinario(dbConnect ,params)
             let i = 0
             for(const vacante of resp_vacantes_por_carrera) {
                 const params_ingresantes = { 
