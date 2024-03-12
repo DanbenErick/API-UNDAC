@@ -12,6 +12,7 @@ const estudiantes_rest_api_1 = __importDefault(require("./estudiantes.rest.api")
 const inscritos_routing_1 = __importDefault(require("./inscritos.routing"));
 const aulas_rest_api_1 = __importDefault(require("./aulas.rest.api"));
 const resultados_rest_api_1 = __importDefault(require("./resultados.rest.api"));
+const cordinador_rest_api_1 = __importDefault(require("./cordinador.rest.api"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class AdministradorRouting {
     constructor() {
@@ -48,6 +49,7 @@ class AdministradorRouting {
         this.inscritos = new inscritos_routing_1.default();
         this.aulas = new aulas_rest_api_1.default();
         this.resultados = new resultados_rest_api_1.default();
+        this.cordinadores = new cordinador_rest_api_1.default();
         this.router = (0, express_1.Router)();
         this.routes();
     }
@@ -61,6 +63,7 @@ class AdministradorRouting {
         this.router.use('/inscritos', this.inscritos.router);
         this.router.use('/aulas', this.aulas.router);
         this.router.use('/resultados', this.resultados.router);
+        this.router.use('/cordinadores', this.cordinadores.router);
     }
 }
 exports.default = new AdministradorRouting().router;

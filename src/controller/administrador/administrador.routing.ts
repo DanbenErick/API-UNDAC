@@ -7,6 +7,7 @@ import EstudianteController from './estudiantes.rest.api';
 import InscritosController from './inscritos.routing';
 import AulasController from './aulas.rest.api';
 import ResultadosAdministradorController from './resultados.rest.api'
+import CordinadorController from './cordinador.rest.api'
 import jwt from 'jsonwebtoken'
 
 class AdministradorRouting {
@@ -20,6 +21,7 @@ class AdministradorRouting {
     public inscritos: InscritosController
     public aulas: AulasController
     public resultados: ResultadosAdministradorController
+    public cordinadores: CordinadorController
 
   public constructor() {
     this.procesos = new ProcesosController()
@@ -30,6 +32,7 @@ class AdministradorRouting {
     this.inscritos = new InscritosController()
     this.aulas = new AulasController()
     this.resultados = new ResultadosAdministradorController()
+    this.cordinadores = new CordinadorController()
 
     this.router = Router();
     this.routes();
@@ -54,6 +57,7 @@ class AdministradorRouting {
       res.status(401).send({ok: 'error', message: 'Se vencio tu token'});
     }
   }
+  
   public routes() {
     this.router.use(this.authenticateToken)
     this.router.use('/procesos', this.procesos.router)
@@ -64,6 +68,7 @@ class AdministradorRouting {
     this.router.use('/inscritos', this.inscritos.router)
     this.router.use('/aulas', this.aulas.router)
     this.router.use('/resultados', this.resultados.router)
+    this.router.use('/cordinadores', this.cordinadores.router)
   }
 }
 
