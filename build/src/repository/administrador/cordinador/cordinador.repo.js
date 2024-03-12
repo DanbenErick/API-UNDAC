@@ -27,7 +27,7 @@ class CordinadorRepository {
         });
         this.buscarCordinadorPorUsuario = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT * FROM usuarios WHERE USUARIO LIKE '%${params.USUARIO}%' && DNI LIKE '%${params.USUARIO}%' && ROL = 3`;
+                const query = `SELECT * FROM usuarios WHERE USUARIO LIKE '%${params.USUARIO}%' && DNI LIKE '%${params.DNI}%' && ROL = 3`;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }

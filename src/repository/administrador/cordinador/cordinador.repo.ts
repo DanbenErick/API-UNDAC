@@ -15,7 +15,7 @@ export class CordinadorRepository {
     }
     public buscarCordinadorPorUsuario = async(connection: any, params: any) => {
       try {
-        const query = `SELECT * FROM usuarios WHERE USUARIO LIKE '%${params.USUARIO}%' && DNI LIKE '%${params.USUARIO}%' && ROL = 3`
+        const query = `SELECT * FROM usuarios WHERE USUARIO LIKE '%${params.USUARIO}%' && DNI LIKE '%${params.DNI}%' && ROL = 3`
         const [rows]: any = await connection.promise().query(query)
         return rows
       }catch(err) {

@@ -40,6 +40,34 @@ export class InputsControlsService {
             await dbConexion.close()
         }
     }
+    public validarCordinador = async(params: any) => {
+        const dbConexion: any = await connectMysql.connectMysql()
+        try {
+            params = {
+                USUARIO: params.CODIGO ||  params.DNI || '',
+            }
+            console.log(params, "patams")
+            const resp = await this.inputsControlsRepo.validarCordinador(dbConexion, params)
+            if(resp.length > 0) {
+                return {
+                    ok: true,
+                    message: 'Bienvenido ' + resp[0].NOMBRES,
+                    result : {...resp[0]}
+                }
+            }else {
+                return {
+                    ok: false,
+                    message: 'Cordinador desconocido'
+                }
+            }
+            
+            
+        }catch(error) {
+            await dbConexion.rollback()
+        }finally {
+            await dbConexion.close()
+        }
+    }
     public obtenerResultadosModalidades = async(params: any) => {
         const dbConexion: any = await connectMysql.connectMysql()
         try {

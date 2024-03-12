@@ -73,6 +73,18 @@ class InputsControlsRepository {
                 throw error;
             }
         });
+        this.validarCordinador = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT * FROM usuarios WHERE DNI LIKE '%${params.USUARIO}%' OR USUARIO LIKE '%${params.USUARIO}%' AND ROL = 3`;
+                console.log(query);
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('InputsControlsRepository.validarCordinador =>', error);
+                throw error;
+            }
+        });
         this.obtenerPadronEstudiantes = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `SELECT * FROM view_padron_estudiantes WHERE ID_PROCESO = ${params.id_proceso} AND AREA = ${params.area} ORDER BY DNI ASC LIMIT ${params.inicio}, ${params.fin}`;

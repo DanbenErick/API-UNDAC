@@ -58,6 +58,17 @@ export class InputsControlsRepository {
             throw error
         }
     }
+    public validarCordinador = async(connection: any, params: any) => {
+        try {
+            const query = `SELECT * FROM usuarios WHERE DNI LIKE '%${params.USUARIO}%' OR USUARIO LIKE '%${params.USUARIO}%' AND ROL = 3`
+            console.log(query)
+            const [rows]: any = await connection.promise().query(query)
+            return rows
+        }catch(error) {
+            logger.error('InputsControlsRepository.validarCordinador =>', error)
+            throw error
+        }
+    }
     public obtenerPadronEstudiantes = async(connection: any, params: any) => {
         try {
             const query = `SELECT * FROM view_padron_estudiantes WHERE ID_PROCESO = ${params.id_proceso} AND AREA = ${params.area} ORDER BY DNI ASC LIMIT ${params.inicio}, ${params.fin}`

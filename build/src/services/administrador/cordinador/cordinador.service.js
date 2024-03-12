@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CordinadorService = void 0;
 const connection_mysqldb_1 = __importDefault(require("../../../config/connection.mysqldb"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const cordinador_repo_1 = require("../../../repository/administrador/cordinador/cordinador.repo");
 class CordinadorService {
     constructor() {
@@ -33,8 +34,14 @@ class CordinadorService {
         this.crearCordinador = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConnect = yield connection_mysqldb_1.default.connectMysql();
             try {
+                const salt = yield bcrypt_1.default.genSalt(10);
+                const password_encript = yield bcrypt_1.default.hash(params.PASSWORD || '', salt);
+                params.PASSWORD = password_encript;
                 const result = yield this.cordinadorRepo.crearCordinador(dbConnect, params);
-                return result;
+                if (result[0].affectedRows > 0) {
+                    return { ok: true, message: 'Cordinador registrado correctamente' };
+                }
+                return { ok: false, message: 'Cordinador no se registrado correctamente' };
             }
             catch (error) {
                 yield dbConnect.rollback();
@@ -46,6 +53,10 @@ class CordinadorService {
         this.buscarCordinador = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConnect = yield connection_mysqldb_1.default.connectMysql();
             try {
+                params = {
+                    USUARIO: params.USUARIO || '',
+                    DNI: params.DNI || ''
+                };
                 const result = yield this.cordinadorRepo.buscarCordinadorPorUsuario(dbConnect, params);
                 return result;
             }

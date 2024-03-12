@@ -56,6 +56,35 @@ class InputsControlsService {
                 yield dbConexion.close();
             }
         });
+        this.validarCordinador = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConexion = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                params = {
+                    USUARIO: params.CODIGO || params.DNI || '',
+                };
+                console.log(params, "patams");
+                const resp = yield this.inputsControlsRepo.validarCordinador(dbConexion, params);
+                if (resp.length > 0) {
+                    return {
+                        ok: true,
+                        message: 'Bienvenido ' + resp[0].NOMBRES,
+                        result: Object.assign({}, resp[0])
+                    };
+                }
+                else {
+                    return {
+                        ok: false,
+                        message: 'Cordinador desconocido'
+                    };
+                }
+            }
+            catch (error) {
+                yield dbConexion.rollback();
+            }
+            finally {
+                yield dbConexion.close();
+            }
+        });
         this.obtenerResultadosModalidades = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConexion = yield connection_mysqldb_1.default.connectMysql();
             try {
