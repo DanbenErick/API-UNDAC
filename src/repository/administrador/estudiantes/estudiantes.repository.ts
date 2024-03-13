@@ -7,7 +7,7 @@ import { generarConsulta, obtenerQuery } from '../../../util/util'
 export class EstudianteRepository {
     public obtenerEstudiantes = async(connection: any) => {
         try {
-            const query = `SELECT *, CONCAT(AP_PATERNO, ' ', AP_MATERNO, ' ', NOMBRES) as NOMBRE_COMPLETO FROM registros`;
+            const query = `SELECT *, CONCAT(AP_PATERNO, ' ', AP_MATERNO, ' ', NOMBRES) as NOMBRE_COMPLETO FROM registros ORDER BY ID DESC`;
             const [rows]: any = await connection.promise().query(query)
             return rows
         }catch(error) {
