@@ -72,30 +72,40 @@ export class InputsControlsRepository {
     public obtenerDeclaracioneJuradas = async(connection: any, params: any) => {
         try {
             const query = `
-                SELECT 
-                procesos.NOMBRE AS PROCESO,
-                CONCAT(registros.AP_PATERNO, ' ', registros.AP_MATERNO, ' ', registros.NOMBRES) AS 'APELLIDOS Y NOMBRES',
-                registros.DNI AS 'CODIGO DE POSTULANTE',
-                registros.DNI AS 'Nº DE DOCUMENTO',
-                registros.TIPO_DOC AS 'TIPO DE DOCUMENTO',
-                dat_complementarios.SEXO AS GENERO,
-                dat_complementarios.FECHA_NACIMIENTO AS 'FECHA DE NACIMIENTO',
-                ubicaciones.DISTRITO AS 'DISTRITO NACIMIENTO',
-                ubicaciones.PROVINCIA AS 'PROVINCIA NACIMIENTO',
-                ubicaciones.DEPARTAMENTO AS 'DEPARTAMENTO NACIMIENTO',
-                dat_complementarios.NOMBRE_COLEGIO AS 'COLEGIO PROCEDENCIA',
-                dat_complementarios.TIPO_COLEGIO AS 'TIPO DE COLEGIO',
-                inscritos.SEDE_EXAM AS SEDE,
-                carreras.FACULTAD,
-                carreras.ESCUELA_COMPLETA AS ESCUELA,
-                inscritos.PREPARATORIA
-            FROM inscritos
-            LEFT JOIN registros ON registros.DNI = inscritos.DNI
-            LEFT JOIN dat_complementarios ON dat_complementarios.DNI = inscritos.DNI
-            LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
-            LEFT JOIN ubicaciones ON ubicaciones.UBIGEO = dat_complementarios.LUGAR_RESIDENCIA
-            LEFT JOIN procesos ON procesos.ID = inscritos.PROCESO
-            WHERE inscritos.PROCESO = ${params.proceso} AND inscritos.SEDE_EXAM = '${params.sede}'
+            SELECT
+            procesos.NOMBRE AS PROCESO,
+            CONCAT(registros.AP_PATERNO, ' ', registros.AP_MATERNO, ' ', registros.NOMBRES) AS 'APELLIDOS Y NOMBRES',
+            registros.DNI AS 'CODIGO DE POSTULANTE',
+            registros.DNI AS 'Nº DE DOCUMENTO',
+            registros.TIPO_DOC AS 'TIPO DE DOCUMENTO',
+            CASE dat_complementarios.SEXO
+              WHEN 'M' THEN 'MASCULINO'
+              ELSE 'FEMENINO'
+            END AS GENERO,
+            dat_complementarios.FECHA_NACIMIENTO AS 'FECHA DE NACIMIENTO',
+            ubicaciones.DISTRITO AS 'DISTRITO NACIMIENTO',
+            ubicaciones.PROVINCIA AS 'PROVINCIA NACIMIENTO',
+            ubicaciones.DEPARTAMENTO AS 'DEPARTAMENTO NACIMIENTO',
+            dat_complementarios.NOMBRE_COLEGIO AS 'COLEGIO PROCEDENCIA',
+            CASE dat_complementarios.TIPO_COLEGIO
+              WHEN 'E' THEN 'ESTATAL'
+              ELSE 'PRIVADO'
+            END AS 'TIPO DE COLEGIO',
+            inscritos.SEDE_EXAM AS SEDE,
+            carreras.FACULTAD,
+            carreras.ESCUELA_COMPLETA AS ESCUELA,
+            CASE inscritos.PREPARATORIA
+              WHEN 0 THEN 'NO'
+              ELSE 'SI'
+            END AS PREPARATORIA
+          FROM inscritos
+          LEFT JOIN registros ON registros.DNI = inscritos.DNI
+          LEFT JOIN dat_complementarios ON dat_complementarios.DNI = inscritos.DNI
+          LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+          LEFT JOIN ubicaciones ON ubicaciones.UBIGEO = dat_complementarios.LUGAR_RESIDENCIA
+          LEFT JOIN procesos ON procesos.ID = inscritos.PROCESO
+          WHERE inscritos.PROCESO = ${params.proceso} AND inscritos.SEDE_EXAM = '${params.sede}'
+          ORDER BY inscritos.DNI ASC
             `
             console.log('Query', query)
             const [rows]: any = await connection.promise().query(query)
