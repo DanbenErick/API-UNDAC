@@ -40,6 +40,17 @@ export class InputsControlsService {
             await dbConexion.close()
         }
     }
+    public obtenerDeclaracioneJuradas = async(params: any) => {
+        const dbConexion: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.inputsControlsRepo.obtenerDeclaracioneJuradas(dbConexion, params)
+            return result
+        }catch(error) {
+            await dbConexion.rollback()
+        }finally {
+            await dbConexion.close()
+        }
+    }
     public validarCordinador = async(params: any) => {
         const dbConexion: any = await connectMysql.connectMysql()
         try {

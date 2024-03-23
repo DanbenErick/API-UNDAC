@@ -56,6 +56,19 @@ class InputsControlsService {
                 yield dbConexion.close();
             }
         });
+        this.obtenerDeclaracioneJuradas = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConexion = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.inputsControlsRepo.obtenerDeclaracioneJuradas(dbConexion, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConexion.rollback();
+            }
+            finally {
+                yield dbConexion.close();
+            }
+        });
         this.validarCordinador = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConexion = yield connection_mysqldb_1.default.connectMysql();
             try {

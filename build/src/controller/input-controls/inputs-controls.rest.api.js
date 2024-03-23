@@ -235,6 +235,19 @@ class InputsControlsController {
                 res.status(500).json(error);
             }
         });
+        this.obtenerDeclaracioneJuradas = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = {
+                    proceso: req.query.proceso,
+                    sede: req.query.sede,
+                };
+                const resp = yield this.inputsControlsService.obtenerDeclaracioneJuradas(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.obtenerResultadosModalidades = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const params = {
@@ -283,6 +296,7 @@ class InputsControlsController {
     routes() {
         //TODO: Revisar cuales son los endpoints que nesesitan permisos
         this.router.post('/validar-cordinador', (0, express_async_handler_1.default)(this.validarCordinador));
+        this.router.get('/obtener-declaraciones-juradas', (0, express_async_handler_1.default)(this.obtenerDeclaracioneJuradas));
         this.router.post('/obtener-ubicacion-autocomplete', (0, express_async_handler_1.default)(this.obtenerLugarAutocomplete));
         this.router.post('/obtener-carreras-por-modalidades', (0, express_async_handler_1.default)(this.obtenerCarrerasPorModalidades));
         this.router.get('/obtener-modalidades', (0, express_async_handler_1.default)(this.obtenerModalidades));
