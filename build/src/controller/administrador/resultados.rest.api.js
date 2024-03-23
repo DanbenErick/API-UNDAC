@@ -41,6 +41,7 @@ class ResultadosAdministradorController {
                 const jsonArray = [];
                 fileContent.pipe((0, csv_parser_1.default)({ separator: ';' }))
                     .on('data', (row) => {
+                    console.log("row: ", row);
                     const jsonObject = {};
                     Object.keys(row).forEach(key => {
                         if (key !== 'APELLIDOS Y NOMBRES' && key !== '') {
