@@ -76,7 +76,7 @@ export class ResultadosAdministradorRepository {
         SET
         ACIERTOS = ${params['Aciertos']},
         ERRORES = ${params['Errores']},
-        PUNT_T = ${params['Nota directa'].substring(0,6).replace(',','.')},
+        PUNT_T = ${params['Nota D'].substring(0,6).replace(',','.')},
         EST_OPCION = CASE WHEN EST_OPCION != 'PREPARATORIA' THEN 'NO INGRESO' ELSE EST_OPCION END
         WHERE DARACOD = ${params.DARACOD};
       `
