@@ -102,6 +102,16 @@ class InputsControlsController {
                 res.status(500).json(error);
             }
         });
+        this.obtenerMencion = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const resp = yield this.inputsControlsService.obtenerMencion(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.obtenerUbicaciones = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const resp = yield this.inputsControlsService.obtenerUbicacionesAutocomplete();
@@ -269,6 +279,15 @@ class InputsControlsController {
                 res.status(500).json(err);
             }
         });
+        this.obtenerIngresantesParaConstancia = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const resp = yield this.inputsControlsService.obtenerIngresantesParaConstancia(req.params);
+                res.status(200).json(resp);
+            }
+            catch (err) {
+                res.status(500).json(err);
+            }
+        });
         this.obtenerSedes = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const params = req.params;
@@ -295,6 +314,8 @@ class InputsControlsController {
     }
     routes() {
         //TODO: Revisar cuales son los endpoints que nesesitan permisos
+        this.router.get('/obtener-constancias-ingreso', (0, express_async_handler_1.default)(this.obtenerIngresantesParaConstancia));
+        this.router.get('/obtener-menciones', (0, express_async_handler_1.default)(this.obtenerMencion));
         this.router.post('/validar-cordinador', (0, express_async_handler_1.default)(this.validarCordinador));
         this.router.get('/obtener-declaraciones-juradas', (0, express_async_handler_1.default)(this.obtenerDeclaracioneJuradas));
         this.router.post('/obtener-ubicacion-autocomplete', (0, express_async_handler_1.default)(this.obtenerLugarAutocomplete));

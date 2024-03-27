@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 DARACOD;AREA;Nota D;Nota T20;Aciertos;Errores;Blancos;Dobles;RESPUESTAS;PRUEBA;
 2000  ;2;133,24000;0,00000;23;68;9;0;A;B;C;D;E;E;D;C;B;A;A;B;C;D;E;E;D;C;B;A;A;B;C;D;E;A;B;C;D;E;A;B;C;D;E;B;A;B;B;B;A;A;A;B;B;B;B;C;D;D; ; ; ;D;E;E;D;C;B;A;A;B;C;D;E; ;E;D;C;B;C;C;C;B;A; ; ; ; ; ;E;D;C;B;A;A;B;C;D;D;D;E;D;C;B;D;C;C;B;A;ABCDEEDCBAABCDEEDCBAABCDEABCDEABCDEBABBBAAABBBBCDD...DEEDCBAABCDE.EDCBCCCBA.....EDCBAABCDDDEDCBDCCBA;
 1975  ;2;51,55000;0,00000;9;35;56;0;A;B;C; ;B;D;E;C;B;A;B;C;D;A;E;B;C;D;C;E;B;C;D;E;A;E;D;C;D;A;E;D;C;B;A; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;B;C;D;E;C;A;B;C;D;E; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;ABC.BDECBABCDAEBCDCEBCDEAEDCDAEDCBA..............................BCDECABCDE.........................;
+=======
+DARACOD;AREA;Nota D;Nota T20;Aciertos;Errores;Blancos;Dobles;RESPUESTAS;PRUEBA;
+2000  ;2;133,24000;0,00000;23;68;9;0;A;B;C;D;E;E;D;C;B;A;A;B;C;D;E;E;D;C;B;A;A;B;C;D;E;A;B;C;D;E;A;B;C;D;E;B;A;B;B;B;A;A;A;B;B;B;B;C;D;D; ; ; ;D;E;E;D;C;B;A;A;B;C;D;E; ;E;D;C;B;C;C;C;B;A; ; ; ; ; ;E;D;C;B;A;A;B;C;D;D;D;E;D;C;B;D;C;C;B;A;ABCDEEDCBAABCDEEDCBAABCDEABCDEABCDEBABBBAAABBBBCDD...DEEDCBAABCDE.EDCBCCCBA.....EDCBAABCDDDEDCBDCCBA;
+1975  ;2;51,55000;0,00000;9;35;56;0;A;B;C; ;B;D;E;C;B;A;B;C;D;A;E;B;C;D;C;E;B;C;D;E;A;E;D;C;D;A;E;D;C;B;A; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;B;C;D;E;C;A;B;C;D;E; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;ABC.BDECBABCDAEBCDCEBCDEAEDCDAEDCBA..............................BCDECABCDE.........................;
+>>>>>>> 103d205a8f867609186b4f324e0b3aef1a8b0b09

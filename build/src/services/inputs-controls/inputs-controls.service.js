@@ -124,6 +124,19 @@ class InputsControlsService {
                 yield dbConexion.close();
             }
         });
+        this.obtenerIngresantesParaConstancia = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConexion = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.inputsControlsRepo.obtenerIngresantesParaConstancia(dbConexion, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConexion.rollback();
+            }
+            finally {
+                yield dbConexion.close();
+            }
+        });
         this.obtenerProcesos = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
             try {
@@ -193,6 +206,19 @@ class InputsControlsService {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
             try {
                 const resp = yield this.inputsControlsRepo.obtenerRazasEtnicas(dbConex);
+                return resp;
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
+        this.obtenerMencion = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const resp = yield this.inputsControlsRepo.obtenerMencion(dbConex, params);
                 return resp;
             }
             catch (error) {

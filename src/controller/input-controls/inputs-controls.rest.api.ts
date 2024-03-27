@@ -89,6 +89,15 @@ class InputsControlsController {
       res.status(500).json(error);
     }
   };
+  public obtenerMencion = async(req: Request, res: Response) => {
+    try {
+      const params = req.body
+      const resp = await this.inputsControlsService.obtenerMencion(params);
+      res.status(200).json(resp);
+    }catch(error) {
+      res.status(500).json(error);
+    }
+  }
   public obtenerUbicaciones = async (req: Request, res: Response) => {
     try {
       const resp =
@@ -240,6 +249,14 @@ class InputsControlsController {
       res.status(500).json(err);
     }
   }
+  public obtenerIngresantesParaConstancia = async(req: Request, res: Response) => {
+    try {
+      const resp = await this.inputsControlsService.obtenerIngresantesParaConstancia(req.params)
+      res.status(200).json(resp)
+    }catch (err) {
+      res.status(500).json(err);
+    }
+  }
   public obtenerSedes = async(req: Request, res: Response) => {
     try {
       const params = req.params
@@ -260,6 +277,8 @@ class InputsControlsController {
   }
   public routes() {
     //TODO: Revisar cuales son los endpoints que nesesitan permisos
+    this.router.get('/obtener-constancias-ingreso', asyncHandler(this.obtenerIngresantesParaConstancia))
+    this.router.get('/obtener-menciones', asyncHandler(this.obtenerMencion))
     this.router.post('/validar-cordinador', asyncHandler(this.validarCordinador))
     this.router.get('/obtener-declaraciones-juradas', asyncHandler(this.obtenerDeclaracioneJuradas))
     this.router.post('/obtener-ubicacion-autocomplete', asyncHandler(this.obtenerLugarAutocomplete))

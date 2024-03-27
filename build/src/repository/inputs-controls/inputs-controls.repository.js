@@ -40,7 +40,7 @@ class InputsControlsRepository {
             WHERE ID_TIPO_MODALIDAD = ${params.modalidad}
             AND
             OLD_COD_CARRERA = resultados.P_OPCION
-            ORDER BY carreras.ESCUELA_COMPLETA ASC, resultados.PUNT_T DESC`;
+            ORDER BY resultados.ORDEN_MERITO_1 ASC, carreras.ESCUELA_COMPLETA ASC, resultados.PUNT_T DESC`;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }
@@ -52,7 +52,29 @@ class InputsControlsRepository {
         this.obtenerResultadosOrdinario = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `
-                SELECT * FROM vista_resultados_ordinario WHERE PROCESO = ${params.id_proceso}
+            SELECT 
+            inscritos.DNI AS DNI,
+            registros.AP_PATERNO AS AP_PATERNO,
+            registros.AP_MATERNO AS AP_MATERNO,
+            registros.NOMBRES AS NOMBRES,
+            inscritos.COD_CARRERA AS COD_CARRERA,
+            carreras.FACULTAD AS FACULTAD,
+            procesos.NOMBRE AS ID_TIPO_MODALIDAD,
+            procesos.NOMBRE AS NOMBRE_PROCESO,
+            concat(registros.AP_PATERNO,' ', registros.AP_MATERNO,' ',registros.NOMBRES) AS NOMBRE_COMPLETO,
+            carreras.ESCUELA_COMPLETA AS CARRERA,
+            resultados.ORDEN_MERITO_1 AS ORDEN_MERITO,
+            resultados.PUNT_T AS PUNTAJE_TOTAL,
+            resultados.EST_OPCION AS ESTADO,
+            resultados.ERRORES AS ERRORES,
+            resultados.PROCESO AS PROCESO
+          from resultados
+            left join inscritos on inscritos.DNI = resultados.DNI
+            left join registros on registros.DNI = resultados.DNI
+            left join procesos  on procesos.ID = resultados.PROCESO
+            left join carreras  on carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+          WHERE inscritos.PROCESO = 27
+            order by inscritos.COD_CARRERA ASC, resultados.ORDEN_MERITO_1 ASC
             `;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
@@ -132,6 +154,61 @@ class InputsControlsRepository {
                 throw error;
             }
         });
+        this.obtenerIngresantesParaConstancia = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                // const query = `
+                // SELECT 
+                //     registros.AP_PATERNO,
+                //     registros.AP_MATERNO,
+                //     registros.NOMBRES,
+                //     registros.DNI,
+                //     inscritos.SEDE_EXAM,
+                //     carreras.FACULTAD,
+                //     procesos.NOMBRE AS NOMBRE_PROCESO,
+                //     resultados.PUNT_T AS PROMEDIO,
+                //     procesos.NOMBRE AS MODALIDAD,
+                //     carreras.ESCUELA_COMPLETA AS CARRERA,
+                //     resultados.ORDEN_MERITO_1
+                // FROM resultados
+                // LEFT JOIN registros ON registros.DNI = resultados.DNI
+                // LEFT JOIN inscritos ON inscritos.DNI = resultados.DNI
+                // LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados.COD_CARRERA
+                // LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
+                // WHERE resultados.PROCESO = 27 AND resultados.EST_OPCION = 'INGRESO'
+                // `
+                const query = `
+            SELECT 
+                registros.AP_PATERNO,
+                registros.AP_MATERNO,
+                registros.NOMBRES,
+                registros.DNI,
+                inscritos.SEDE_EXAM,
+                carreras.FACULTAD,
+                procesos.NOMBRE AS NOMBRE_PROCESO,
+                resultados_2.PUNT_T AS PROMEDIO,
+                procesos.NOMBRE AS MODALIDAD,
+                carreras.ESCUELA_COMPLETA AS CARRERA,
+                resultados_2.MODALIDAD,
+                resultados_2.ORDEN_MERITO_1,
+                resultados_2.CODIGO_MATRICULA,
+                carreras.DIRECCION AS DIRECCION_CARRERA,
+                carreras.SEDE_FACULTAD
+            FROM resultados_2
+            LEFT JOIN registros ON registros.DNI = resultados_2.DNI
+            LEFT JOIN inscritos ON inscritos.DNI = resultados_2.DNI
+            LEFT JOIN carreras ON carreras.OLD_COD_CARRERA = resultados_2.COD_CARRERA
+            LEFT JOIN procesos ON procesos.ID = resultados_2.PROCESO
+            WHERE resultados_2.PROCESO = 26 AND inscritos.PROCESO = 26 AND resultados_2.EST_OPCION = 'INGRESO'
+            `;
+                console.log("Ejecutado esto", query);
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('InputsControlsRepository.obtenerIngresantesParaConstancia =>', error);
+                throw error;
+            }
+        });
         this.obtenerPadronEstudiantes = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `SELECT * FROM view_padron_estudiantes WHERE ID_PROCESO = ${params.id_proceso} AND AREA = ${params.area} AND SEDE_EXAM = '${params.sede}' ORDER BY DNI ASC LIMIT ${params.inicio}, ${params.fin}`;
@@ -203,6 +280,17 @@ class InputsControlsRepository {
         this.obtenerRazasEtnicas = (connection) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `SELECT ID AS value, ETNICA AS label FROM etnicas`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('InputsControlsRepository.obtenerDiscapacidades => ', error);
+                throw error;
+            }
+        });
+        this.obtenerMencion = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT ID AS value, ESCUELA_COMPLETA AS label FROM carreras_postgrado`;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }

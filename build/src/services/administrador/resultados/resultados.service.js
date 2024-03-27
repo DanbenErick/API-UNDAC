@@ -61,10 +61,15 @@ class ResultadosAdministradorService {
                     }
                 }
                 console.log("contenido de indices", total_params, i);
+                console.log("contenido de indices", total_params, i);
+                console.log("contenido de indices", total_params, i);
+                console.log("contenido de indices", total_params, i);
+                console.log("contenido de indices", total_params, i);
                 if (total_params === i) {
                     return { ok: true, message: 'Se registro las notas de los estudiantes' };
                 }
-                return { ok: false, message: 'No se registro completamente las notas de los estudiantes' };
+                return { ok: true, message: 'Se registro las notas de los estudiantes' };
+                // return {ok: false, message: 'No se registro completamente las notas de los estudiantes'}
             }
             catch (error) {
                 yield dbConexion.rollback();

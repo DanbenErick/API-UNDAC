@@ -101,6 +101,17 @@ export class InputsControlsService {
             await dbConexion.close()
         }
     }
+    public obtenerIngresantesParaConstancia = async(params: any) => {
+        const dbConexion: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.inputsControlsRepo.obtenerIngresantesParaConstancia(dbConexion, params)
+            return result
+        }catch(error) {
+            await dbConexion.rollback()
+        }finally {
+            await dbConexion.close()
+        }
+    } 
     public obtenerProcesos = async(params: any) => {
         const dbConex: any = await connectMysql.connectMysql()
         try {
@@ -164,6 +175,17 @@ export class InputsControlsService {
         const dbConex: any = await connectMysql.connectMysql()
         try {
             const resp = await this.inputsControlsRepo.obtenerRazasEtnicas(dbConex)
+            return resp
+        }catch(error) {
+            await dbConex.rollback()
+        }finally {
+            await dbConex.close()
+        }
+    }
+    public obtenerMencion = async(params: any) => {
+        const dbConex: any = await connectMysql.connectMysql()
+        try {
+            const resp = await this.inputsControlsRepo.obtenerMencion(dbConex, params)
             return resp
         }catch(error) {
             await dbConex.rollback()
