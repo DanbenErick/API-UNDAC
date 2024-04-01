@@ -87,7 +87,7 @@ class CordinadorRepository {
         FROM resultados
         LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
         LEFT JOIN registros ON registros.DNI = resultados.DNI
-        LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados.COD_CARRERA
+        LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados.COD_CARRERA OR carreras.OLD_COD_CARRERA = resultados.COD_CARRERA
         WHERE resultados.EST_OPCION = 'INGRESO'
         ORDER BY resultados.ID DESC
         LIMIT 30
@@ -116,7 +116,7 @@ class CordinadorRepository {
         FROM resultados
         LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
         LEFT JOIN registros ON registros.DNI = resultados.DNI
-        LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados.COD_CARRERA
+        LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados.COD_CARRERA OR carreras.OLD_COD_CARRERA = resultados.COD_CARRERA
         WHERE resultados.EST_OPCION = 'INGRESO' AND resultados.DNI = ${params.dni} AND resultados.PROCESO = ${params.proceso}`;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
