@@ -56,11 +56,44 @@ class CordinadorController {
                 res.status(500).json(error);
             }
         });
+        this.modifcarEstadoCordinador = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.query;
+                const result = yield this.cordinadorService.modifcarEstadoCordinador(params);
+                res.status(200).json(result);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
+        this.obtenerIngresantes = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.query;
+                const result = yield this.cordinadorService.obtenerIngresantes(params);
+                res.status(200).json(result);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
+        this.obtenerIngresantesParaContanciaProDNIyProceso = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.query;
+                const result = yield this.cordinadorService.obtenerIngresantesParaContanciaProDNIyProceso(params);
+                res.status(200).json(result);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.cordinadorService = new cordinador_service_1.CordinadorService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
     routes() {
+        this.router.get('/obtener-ingresantes', (0, express_async_handler_1.default)(this.obtenerIngresantes));
+        this.router.get('/obtener-ingresantes-para-contancia-pro-dni-y-proceso', (0, express_async_handler_1.default)(this.obtenerIngresantesParaContanciaProDNIyProceso));
+        this.router.get('/modificar-estado-cordinador', (0, express_async_handler_1.default)(this.modifcarEstadoCordinador));
         this.router.get('/obtener-cordinadores', (0, express_async_handler_1.default)(this.obtenerCordinadores));
         this.router.post('/buscar-cordinador', (0, express_async_handler_1.default)(this.buscarCordinador));
         this.router.post('/crear-cordinador', (0, express_async_handler_1.default)(this.crearCordinador));

@@ -80,6 +80,45 @@ class CordinadorService {
                 yield dbConnect.close();
             }
         });
+        this.modifcarEstadoCordinador = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.cordinadorRepo.modifcarEstadoCordinador(dbConnect, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
+        this.obtenerIngresantesParaContanciaProDNIyProceso = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.cordinadorRepo.obtenerIngresantesParaContanciaProDNIyProceso(dbConnect, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
+        this.obtenerIngresantes = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.cordinadorRepo.obtenerIngresantes(dbConnect, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
         this.cordinadorRepo = new cordinador_repo_1.CordinadorRepository();
     }
 }

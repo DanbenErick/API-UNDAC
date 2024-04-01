@@ -49,8 +49,38 @@ class CordinadorController {
         }
     }
     
+    public modifcarEstadoCordinador = async(req: Request, res: Response) => {
+        try {
+            const params = req.query
+            const result = await this.cordinadorService.modifcarEstadoCordinador(params)
+            res.status(200).json(result)
+        }catch(error){
+            res.status(500).json(error)
+        }
+    }
+    public obtenerIngresantes = async(req: Request, res: Response) => {
+        try {
+            const params = req.query
+            const result = await this.cordinadorService.obtenerIngresantes(params)
+            res.status(200).json(result)
+        }catch(error){
+            res.status(500).json(error)
+        }
+    }
+    public obtenerIngresantesParaContanciaProDNIyProceso = async(req: Request, res: Response) => {
+        try {
+            const params = req.query
+            const result = await this.cordinadorService.obtenerIngresantesParaContanciaProDNIyProceso(params)
+            res.status(200).json(result)
+        }catch(error){
+            res.status(500).json(error)
+        }
+    }
    
     public routes() {
+        this.router.get('/obtener-ingresantes', asyncHandler(this.obtenerIngresantes))
+        this.router.get('/obtener-ingresantes-para-contancia-pro-dni-y-proceso', asyncHandler(this.obtenerIngresantesParaContanciaProDNIyProceso))
+        this.router.get('/modificar-estado-cordinador', asyncHandler(this.modifcarEstadoCordinador))
         this.router.get('/obtener-cordinadores', asyncHandler(this.obtenerCordinadores))
         this.router.post('/buscar-cordinador', asyncHandler(this.buscarCordinador))
         this.router.post('/crear-cordinador', asyncHandler(this.crearCordinador))

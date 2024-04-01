@@ -154,28 +154,8 @@ class InputsControlsRepository {
                 throw error;
             }
         });
-        this.obtenerIngresantesParaConstancia = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+        this.obtenerIngresanteParaContanciaProDNIyProceso = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
-                // const query = `
-                // SELECT 
-                //     registros.AP_PATERNO,
-                //     registros.AP_MATERNO,
-                //     registros.NOMBRES,
-                //     registros.DNI,
-                //     inscritos.SEDE_EXAM,
-                //     carreras.FACULTAD,
-                //     procesos.NOMBRE AS NOMBRE_PROCESO,
-                //     resultados.PUNT_T AS PROMEDIO,
-                //     procesos.NOMBRE AS MODALIDAD,
-                //     carreras.ESCUELA_COMPLETA AS CARRERA,
-                //     resultados.ORDEN_MERITO_1
-                // FROM resultados
-                // LEFT JOIN registros ON registros.DNI = resultados.DNI
-                // LEFT JOIN inscritos ON inscritos.DNI = resultados.DNI
-                // LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados.COD_CARRERA
-                // LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
-                // WHERE resultados.PROCESO = 27 AND resultados.EST_OPCION = 'INGRESO'
-                // `
                 const query = `
             SELECT 
                 registros.AP_PATERNO,
@@ -185,21 +165,77 @@ class InputsControlsRepository {
                 inscritos.SEDE_EXAM,
                 carreras.FACULTAD,
                 procesos.NOMBRE AS NOMBRE_PROCESO,
-                resultados_2.PUNT_T AS PROMEDIO,
+                resultados.PUNT_T AS PROMEDIO,
                 procesos.NOMBRE AS MODALIDAD,
                 carreras.ESCUELA_COMPLETA AS CARRERA,
-                resultados_2.MODALIDAD,
-                resultados_2.ORDEN_MERITO_1,
-                resultados_2.CODIGO_MATRICULA,
+                resultados.MODALIDAD,
+                resultados.ORDEN_MERITO_1,
+                resultados.CODIGO_MATRICULA,
                 carreras.DIRECCION AS DIRECCION_CARRERA,
                 carreras.SEDE_FACULTAD
-            FROM resultados_2
-            LEFT JOIN registros ON registros.DNI = resultados_2.DNI
-            LEFT JOIN inscritos ON inscritos.DNI = resultados_2.DNI
-            LEFT JOIN carreras ON carreras.OLD_COD_CARRERA = resultados_2.COD_CARRERA
-            LEFT JOIN procesos ON procesos.ID = resultados_2.PROCESO
-            WHERE resultados_2.PROCESO = 26 AND inscritos.PROCESO = 26 AND resultados_2.EST_OPCION = 'INGRESO'
+            FROM resultados
+            LEFT JOIN registros ON registros.DNI = resultados.DNI
+            LEFT JOIN inscritos ON inscritos.DNI = resultados.DNI
+            LEFT JOIN carreras ON carreras.OLD_COD_CARRERA = resultados.COD_CARRERA
+            LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
+            WHERE resultados.PROCESO = ${params.proceso} AND inscritos.PROCESO = ${params.proceso} AND resultados.EST_OPCION = 'INGRESO' AND resultados.DNI = ${params.dnicd}
             `;
+                console.log("Ejecutado esto", query);
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('InputsControlsRepository.obtenerIngresanteParaContanciaProDNIyProceso =>', error);
+                throw error;
+            }
+        });
+        this.obtenerIngresantesParaConstancia = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+            SELECT 
+                registros.AP_PATERNO,
+                registros.AP_MATERNO,
+                registros.NOMBRES,
+                registros.DNI,
+                inscritos.SEDE_EXAM,
+                carreras.FACULTAD,
+                procesos.NOMBRE AS NOMBRE_PROCESO,
+                resultados.PUNT_T AS PROMEDIO,
+                resultados.CODIGO_MATRICULA,
+                procesos.NOMBRE AS MODALIDAD,
+                carreras.ESCUELA_COMPLETA AS CARRERA,
+                resultados.ORDEN_MERITO_1
+            FROM resultados
+            LEFT JOIN registros ON registros.DNI = resultados.DNI
+            LEFT JOIN inscritos ON inscritos.DNI = resultados.DNI
+            LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados.COD_CARRERA
+            LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
+            WHERE resultados.PROCESO = 27 AND resultados.EST_OPCION = 'INGRESO'
+            `;
+                // const query = `
+                // SELECT 
+                //     registros.AP_PATERNO,
+                //     registros.AP_MATERNO,
+                //     registros.NOMBRES,
+                //     registros.DNI,
+                //     inscritos.SEDE_EXAM,
+                //     carreras.FACULTAD,
+                //     procesos.NOMBRE AS NOMBRE_PROCESO,
+                //     resultados_2.PUNT_T AS PROMEDIO,
+                //     procesos.NOMBRE AS MODALIDAD,
+                //     carreras.ESCUELA_COMPLETA AS CARRERA,
+                //     resultados_2.MODALIDAD,
+                //     resultados_2.ORDEN_MERITO_1,
+                //     resultados_2.CODIGO_MATRICULA,
+                //     carreras.DIRECCION AS DIRECCION_CARRERA,
+                //     carreras.SEDE_FACULTAD
+                // FROM resultados_2
+                // LEFT JOIN registros ON registros.DNI = resultados_2.DNI
+                // LEFT JOIN inscritos ON inscritos.DNI = resultados_2.DNI
+                // LEFT JOIN carreras ON carreras.OLD_COD_CARRERA = resultados_2.COD_CARRERA
+                // LEFT JOIN procesos ON procesos.ID = resultados_2.PROCESO
+                // WHERE resultados_2.PROCESO = ${params.proceso} AND inscritos.PROCESO = ${params.proceso} AND resultados_2.EST_OPCION = 'INGRESO'
+                // `
                 console.log("Ejecutado esto", query);
                 const [rows] = yield connection.promise().query(query);
                 return rows;
@@ -290,7 +326,7 @@ class InputsControlsRepository {
         });
         this.obtenerMencion = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT ID AS value, ESCUELA_COMPLETA AS label FROM carreras_postgrado`;
+                const query = `SELECT CODIGO_ESCUELA AS value, ESCUELA_COMPLETA AS label FROM carreras_postgrado`;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }

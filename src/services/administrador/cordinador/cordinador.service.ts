@@ -71,4 +71,37 @@ export class CordinadorService {
         await dbConnect.close()
       }
     }
+    public modifcarEstadoCordinador = async(params: any) => {
+      const dbConnect: any = await connectMysql.connectMysql()
+      try {
+        const result = await this.cordinadorRepo.modifcarEstadoCordinador(dbConnect, params)
+        return result
+      }catch(error) {
+        await dbConnect.rollback()
+      }finally {
+        await dbConnect.close()
+      }
+    }
+    public obtenerIngresantesParaContanciaProDNIyProceso = async(params: any) => {
+      const dbConnect: any = await connectMysql.connectMysql()
+      try {
+        const result = await this.cordinadorRepo.obtenerIngresantesParaContanciaProDNIyProceso(dbConnect, params)
+        return result
+      }catch(error) {
+        await dbConnect.rollback()
+      }finally {
+        await dbConnect.close()
+      }
+    }
+    public obtenerIngresantes = async(params: any) => {
+      const dbConnect: any = await connectMysql.connectMysql()
+      try {
+        const result = await this.cordinadorRepo.obtenerIngresantes(dbConnect, params)
+        return result
+      }catch(error) {
+        await dbConnect.rollback()
+      }finally {
+        await dbConnect.close()
+      }
+    }
 }

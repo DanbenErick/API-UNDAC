@@ -281,7 +281,8 @@ class InputsControlsController {
         });
         this.obtenerIngresantesParaConstancia = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const resp = yield this.inputsControlsService.obtenerIngresantesParaConstancia(req.params);
+                const params = req.query;
+                const resp = yield this.inputsControlsService.obtenerIngresantesParaConstancia(params);
                 res.status(200).json(resp);
             }
             catch (err) {

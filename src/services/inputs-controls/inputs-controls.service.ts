@@ -104,7 +104,12 @@ export class InputsControlsService {
     public obtenerIngresantesParaConstancia = async(params: any) => {
         const dbConexion: any = await connectMysql.connectMysql()
         try {
-            const result = await this.inputsControlsRepo.obtenerIngresantesParaConstancia(dbConexion, params)
+            let result
+            if(params.proceso != null && params.dni != null) {
+                // result = await 
+            }else {
+                result = await this.inputsControlsRepo.obtenerIngresantesParaConstancia(dbConexion, params)
+            }
             return result
         }catch(error) {
             await dbConexion.rollback()

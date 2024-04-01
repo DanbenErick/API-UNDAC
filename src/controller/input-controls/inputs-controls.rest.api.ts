@@ -251,7 +251,8 @@ class InputsControlsController {
   }
   public obtenerIngresantesParaConstancia = async(req: Request, res: Response) => {
     try {
-      const resp = await this.inputsControlsService.obtenerIngresantesParaConstancia(req.params)
+      const params = req.query
+      const resp = await this.inputsControlsService.obtenerIngresantesParaConstancia(params)
       res.status(200).json(resp)
     }catch (err) {
       res.status(500).json(err);

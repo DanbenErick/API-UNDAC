@@ -62,6 +62,40 @@ class EstudianteGeneralRepository {
                 manager_log_resource_1.logger.error('EstudianteGeneralRepository.obtenerDatosEstudianteCarnet =>', error);
             }
         });
+        this.obtenerConstanciaEstudiante = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+        SELECT 
+            registros.AP_PATERNO,
+            registros.AP_MATERNO,
+            registros.NOMBRES,
+            registros.DNI,
+            inscritos.SEDE_EXAM,
+            carreras.FACULTAD,
+            resultados.CODIGO_MATRICULA,
+            resultados.ID,
+            carreras.SEDE_FACULTAD,
+            carreras.DIRECCION AS DIRECCION_CARRERA,
+            procesos.NOMBRE AS NOMBRE_PROCESO,
+            resultados.PUNT_T AS PROMEDIO,
+            procesos.NOMBRE AS MODALIDAD,
+            carreras.ESCUELA_COMPLETA AS CARRERA,
+            resultados.ORDEN_MERITO_1
+        FROM resultados
+        LEFT JOIN registros ON registros.DNI = resultados.DNI
+        LEFT JOIN inscritos ON inscritos.DNI = resultados.DNI
+        LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados.COD_CARRERA
+        LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
+        WHERE resultados.PROCESO = ${params.proceso} AND resultados.EST_OPCION = 'INGRESO' AND resultados.DNI = ${params.dni}
+        `;
+                const [rows] = yield connection.promise().query(query);
+                console.log(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.obtenerConstanciaEstudiante =>', error);
+            }
+        });
         this.consultarDatosDNIPorProceso = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = yield `

@@ -236,11 +236,22 @@ class EstudianteController {
                 res.status(500).json(err);
             }
         });
+        this.obtenerConstanciaEstudiante = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.query;
+                const resp = yield this.estudianteService.obtenerConstanciaEstudiante(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.estudianteService = new EstudianteGeneral_service_1.EstudiantesGeneralService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
     routes() {
+        this.router.get('/obtener-constancia-estudiante', (0, express_async_handler_1.default)(this.obtenerConstanciaEstudiante));
         this.router.post('/consultar-dni', (0, express_async_handler_1.default)(this.consultarEstudianteExiste));
         this.router.get('/consultar-datos-dni-por-proceso/:DNI/:ID_PROCESO', (0, express_async_handler_1.default)(this.consultarDatosDNIPorProceso));
         this.router.post('/registrar-estudiante', (0, express_async_handler_1.default)(this.registrarEstudiante));

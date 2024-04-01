@@ -217,7 +217,17 @@ class EstudianteController {
             res.status(500).json(err)
         }
     }
+    public obtenerConstanciaEstudiante = async(req: Request, res: Response) => {
+        try {
+            const params: any = req.query
+            const resp = await this.estudianteService.obtenerConstanciaEstudiante(params);
+            res.status(200).json(resp)
+        }catch(error) {
+            res.status(500).json(error)
+        }
+    }
     public routes() {
+        this.router.get('/obtener-constancia-estudiante', asyncHandler(this.obtenerConstanciaEstudiante))
         this.router.post('/consultar-dni', asyncHandler(this.consultarEstudianteExiste))
         this.router.get('/consultar-datos-dni-por-proceso/:DNI/:ID_PROCESO', asyncHandler(this.consultarDatosDNIPorProceso))
         this.router.post('/registrar-estudiante', asyncHandler(this.registrarEstudiante))

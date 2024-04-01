@@ -69,6 +69,17 @@ export class EstudiantesGeneralService {
       await dbConex.close()
     }
   }
+  public obtenerConstanciaEstudiante = async(params: any) => {
+    const dbConex: any = await connectMysql.connectMysql()
+    try {
+      const result:[] = await this.estudianteRepo.obtenerConstanciaEstudiante(dbConex, params)
+      return result
+    }catch(error) {
+      await dbConex.rollback()
+    }finally {
+      await dbConex.close()
+    }
+  }
   public obtenerMisPagos = async(params: any) => {
     const dbConex: any = await connectMysql.connectMysql()
     try {

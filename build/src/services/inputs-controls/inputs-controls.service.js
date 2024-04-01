@@ -127,7 +127,13 @@ class InputsControlsService {
         this.obtenerIngresantesParaConstancia = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConexion = yield connection_mysqldb_1.default.connectMysql();
             try {
-                const result = yield this.inputsControlsRepo.obtenerIngresantesParaConstancia(dbConexion, params);
+                let result;
+                if (params.proceso != null && params.dni != null) {
+                    // result = await 
+                }
+                else {
+                    result = yield this.inputsControlsRepo.obtenerIngresantesParaConstancia(dbConexion, params);
+                }
                 return result;
             }
             catch (error) {
