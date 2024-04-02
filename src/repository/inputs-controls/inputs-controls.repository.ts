@@ -195,7 +195,7 @@ export class InputsControlsRepository {
             LEFT JOIN inscritos ON inscritos.DNI = resultados.DNI
             LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados.COD_CARRERA
             LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
-            WHERE resultados.PROCESO = ${params.proceso} AND resultados.EST_OPCION = 'INGRESO'
+            WHERE resultados.PROCESO = ${params.proceso} AND inscritos.PROCESO = ${params.proceso} AND resultados.EST_OPCION = 'INGRESO'
             `
             // const query = `
             // SELECT 
