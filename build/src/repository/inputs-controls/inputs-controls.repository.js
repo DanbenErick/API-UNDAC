@@ -202,7 +202,7 @@ class InputsControlsRepository {
                 procesos.NOMBRE AS NOMBRE_PROCESO,
                 resultados.PUNT_T AS PROMEDIO,
                 resultados.CODIGO_MATRICULA,
-                procesos.NOMBRE AS MODALIDAD,
+                opc_modalidades.NOMBRE AS MODALIDAD,
                 carreras.ESCUELA_COMPLETA AS CARRERA,
                 resultados.ORDEN_MERITO_1,
                 resultados.CODIGO_MATRICULA,
@@ -214,6 +214,7 @@ class InputsControlsRepository {
             LEFT JOIN inscritos ON inscritos.DNI = resultados.DNI
             LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados.COD_CARRERA OR carreras.OLD_COD_CARRERA = resultados.COD_CARRERA
             LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
+            LEFT JOIN opc_modalidades ON opc_modalidades.ID = inscritos.ID_TIPO_MODALIDAD
             WHERE resultados.PROCESO = ${params.proceso} AND inscritos.PROCESO = ${params.proceso} AND resultados.EST_OPCION = 'INGRESO'
             `;
                 // const query = `
