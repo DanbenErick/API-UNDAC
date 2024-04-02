@@ -207,7 +207,8 @@ class InputsControlsRepository {
                 resultados.ORDEN_MERITO_1,
                 resultados.CODIGO_MATRICULA,
                 carreras.DIRECCION AS DIRECCION_CARRERA,
-                carreras.SEDE_FACULTAD
+                carreras.SEDE_FACULTAD,
+                resultados.ID
             FROM resultados
             LEFT JOIN registros ON registros.DNI = resultados.DNI
             LEFT JOIN inscritos ON inscritos.DNI = resultados.DNI
