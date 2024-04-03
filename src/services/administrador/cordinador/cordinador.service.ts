@@ -85,6 +85,10 @@ export class CordinadorService {
     public obtenerIngresantesParaContanciaProDNIyProceso = async(params: any) => {
       const dbConnect: any = await connectMysql.connectMysql()
       try {
+        params = {
+          dni: params.dni || '',
+          proceso: params.proceso || ''
+        }
         const result = await this.cordinadorRepo.obtenerIngresantesParaContanciaProDNIyProceso(dbConnect, params)
         return result
       }catch(error) {

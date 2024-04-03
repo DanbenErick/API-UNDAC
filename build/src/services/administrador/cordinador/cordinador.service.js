@@ -96,6 +96,10 @@ class CordinadorService {
         this.obtenerIngresantesParaContanciaProDNIyProceso = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConnect = yield connection_mysqldb_1.default.connectMysql();
             try {
+                params = {
+                    dni: params.dni || '',
+                    proceso: params.proceso || ''
+                };
                 const result = yield this.cordinadorRepo.obtenerIngresantesParaContanciaProDNIyProceso(dbConnect, params);
                 return result;
             }
