@@ -80,6 +80,7 @@ class EstudianteGeneralRepository {
             resultados.PUNT_T AS PROMEDIO,
             procesos.NOMBRE AS MODALIDAD,
             carreras.ESCUELA_COMPLETA AS CARRERA,
+            resultados.NUM_CONSTANCIA,
             resultados.ORDEN_MERITO_1
         FROM resultados
         LEFT JOIN registros ON registros.DNI = resultados.DNI

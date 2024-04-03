@@ -207,6 +207,7 @@ class InputsControlsRepository {
                 resultados.ORDEN_MERITO_1,
                 resultados.CODIGO_MATRICULA,
                 carreras.DIRECCION AS DIRECCION_CARRERA,
+                resultados.NUM_CONSTANCIA,
                 carreras.SEDE_FACULTAD,
                 resultados.ID
             FROM resultados
@@ -216,6 +217,7 @@ class InputsControlsRepository {
             LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
             LEFT JOIN opc_modalidades ON opc_modalidades.ID = inscritos.ID_TIPO_MODALIDAD
             WHERE resultados.PROCESO = ${params.proceso} AND inscritos.PROCESO = ${params.proceso} AND resultados.EST_OPCION = 'INGRESO'
+            ORDER BY carreras.SEDE_FACULTAD ASC
             `;
                 // const query = `
                 // SELECT 
