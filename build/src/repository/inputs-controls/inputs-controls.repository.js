@@ -469,7 +469,7 @@ class InputsControlsRepository {
                 pagos.FECHA_PAGO,
                 procesos.NOMBRE AS NOMBRE_PROCESO,
                 usuarios.NOMBRES AS CORDINADOR,
-                SUM(pagos.MONTO) AS TOTAL
+                usuarios.SEDE
             FROM registros 
             LEFT JOIN pagos ON pagos.DNI = registros.DNI
             LEFT JOIN procesos ON procesos.ID = pagos.ID_PROCESO
