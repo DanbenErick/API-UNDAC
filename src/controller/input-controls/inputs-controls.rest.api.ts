@@ -223,6 +223,7 @@ class InputsControlsController {
         proceso: req.query.proceso,
         sede: req.query.sede,
       }
+      console.log('params recividos', params)
       const resp = await this.inputsControlsService.obtenerDeclaracioneJuradas(params)
       res.status(200).json(resp)
     }catch(error) {
@@ -276,8 +277,20 @@ class InputsControlsController {
       res.status(500).json(error);
     }
   }
+
+  public obtenerInscritosPorCordinador = async(req: Request, res: Response) => {
+    try {
+      const params = req.query
+      const resp = await this.inputsControlsService.obtenerInscritosPorCordinador(params)
+      res.status(200).json(resp)
+
+    }catch(error) {
+      res.status(500).json(error);
+    }
+  }
   public routes() {
     //TODO: Revisar cuales son los endpoints que nesesitan permisos
+    this.router.get('/obtener-inscritos-por-cordinador', asyncHandler(this.obtenerInscritosPorCordinador))
     this.router.get('/obtener-constancias-ingreso', asyncHandler(this.obtenerIngresantesParaConstancia))
     this.router.get('/obtener-menciones', asyncHandler(this.obtenerMencion))
     this.router.post('/validar-cordinador', asyncHandler(this.validarCordinador))

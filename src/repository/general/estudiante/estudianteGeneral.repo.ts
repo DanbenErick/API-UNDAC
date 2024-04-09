@@ -30,7 +30,7 @@ export class EstudianteGeneralRepository {
     }
     public verificarPagoRequisitos = async(connection: any, params: any ) => {
       try {
-        const query = `SELECT * FROM pagos WHERE DNI = '${params.DNI}' AND ID_PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1);`
+        const query = `SELECT * FROM pagos WHERE DNI = '${params.DNI}' AND ID_PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1 AND TIPO_PROCESO <> 'G');`
         const [rows]: any = await connection.promise().query(query)
         console.log(query)
         return rows

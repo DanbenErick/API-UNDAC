@@ -251,6 +251,7 @@ class InputsControlsController {
                     proceso: req.query.proceso,
                     sede: req.query.sede,
                 };
+                console.log('params recividos', params);
                 const resp = yield this.inputsControlsService.obtenerDeclaracioneJuradas(params);
                 res.status(200).json(resp);
             }
@@ -309,12 +310,23 @@ class InputsControlsController {
                 res.status(500).json(error);
             }
         });
+        this.obtenerInscritosPorCordinador = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.query;
+                const resp = yield this.inputsControlsService.obtenerInscritosPorCordinador(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.inputsControlsService = new inputs_controls_service_1.InputsControlsService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
     routes() {
         //TODO: Revisar cuales son los endpoints que nesesitan permisos
+        this.router.get('/obtener-inscritos-por-cordinador', (0, express_async_handler_1.default)(this.obtenerInscritosPorCordinador));
         this.router.get('/obtener-constancias-ingreso', (0, express_async_handler_1.default)(this.obtenerIngresantesParaConstancia));
         this.router.get('/obtener-menciones', (0, express_async_handler_1.default)(this.obtenerMencion));
         this.router.post('/validar-cordinador', (0, express_async_handler_1.default)(this.validarCordinador));

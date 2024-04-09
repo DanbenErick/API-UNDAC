@@ -364,6 +364,19 @@ class InputsControlsService {
                 yield dbConex.close();
             }
         });
+        this.obtenerInscritosPorCordinador = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const resp = yield this.inputsControlsRepo.obtenerInscritosPorCordinador(dbConex, params);
+                return resp;
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
         this.inputsControlsRepo = new inputs_controls_repository_1.InputsControlsRepository();
     }
 }

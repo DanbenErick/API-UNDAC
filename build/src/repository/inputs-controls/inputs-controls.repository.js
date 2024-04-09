@@ -139,10 +139,11 @@ class InputsControlsRepository {
           FROM inscritos
           LEFT JOIN registros ON registros.DNI = inscritos.DNI
           LEFT JOIN dat_complementarios ON dat_complementarios.DNI = inscritos.DNI
-          LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+          LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA OR carreras.OLD_COD_CARRERA = inscritos.COD_CARRERA
           LEFT JOIN ubicaciones ON ubicaciones.UBIGEO = dat_complementarios.LUGAR_RESIDENCIA
+          LEFT JOIN resultados ON resultados.DNI = inscritos.DNI
           LEFT JOIN procesos ON procesos.ID = inscritos.PROCESO
-          WHERE inscritos.PROCESO = ${params.proceso} AND inscritos.SEDE_EXAM = '${params.sede}'
+          WHERE inscritos.PROCESO = ${params.proceso} AND inscritos.SEDE_EXAM = '${params.sede}' AND resultados.EST_OPCION = 'INGRESO'
           ORDER BY inscritos.DNI ASC
             `;
                 console.log('Query', query);
@@ -178,7 +179,7 @@ class InputsControlsRepository {
             LEFT JOIN inscritos ON inscritos.DNI = resultados.DNI
             LEFT JOIN carreras ON carreras.OLD_COD_CARRERA = resultados.COD_CARRERA
             LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
-            WHERE resultados.PROCESO = ${params.proceso} AND inscritos.PROCESO = ${params.proceso} AND resultados.EST_OPCION = 'INGRESO' AND resultados.DNI = ${params.dnicd}
+            WHERE resultados.PROCESO = '${params.proceso}' AND inscritos.PROCESO = '${params.proceso}' AND resultados.EST_OPCION = 'INGRESO' AND resultados.DNI = ${params.dnicd}
             `;
                 console.log("Ejecutado esto", query);
                 const [rows] = yield connection.promise().query(query);
@@ -455,6 +456,31 @@ class InputsControlsRepository {
             }
             catch (error) {
                 manager_log_resource_1.logger.error('InputControlRepostiry.obtenerCarrerasPorModalidades => ', error);
+                throw error;
+            }
+        });
+        this.obtenerInscritosPorCordinador = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+            SELECT
+                CONCAT(registros.AP_PATERNO, ' ', registros.AP_MATERNO, ' ', registros.NOMBRES) AS NOMBRE_COMPLETO,
+                pagos.CODIGO,
+                pagos.MONTO,
+                pagos.FECHA_PAGO,
+                procesos.NOMBRE AS NOMBRE_PROCESO,
+                usuarios.NOMBRES AS CORDINADOR,
+                SUM(pagos.MONTO) AS TOTAL
+            FROM registros 
+            LEFT JOIN pagos ON pagos.DNI = registros.DNI
+            LEFT JOIN procesos ON procesos.ID = pagos.ID_PROCESO
+            LEFT JOIN usuarios ON usuarios.ID = registros.CORDINADOR
+            WHERE usuarios.DNI = '${params.dni}' AND usuarios.ROL = 3 AND pagos.ID_PROCESO = '${params.proceso}'
+            `;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('InputControlRepostiry.obtenerInscritosPorCordinador => ', error);
                 throw error;
             }
         });

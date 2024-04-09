@@ -42,7 +42,7 @@ class EstudianteGeneralRepository {
         });
         this.verificarPagoRequisitos = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT * FROM pagos WHERE DNI = '${params.DNI}' AND ID_PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1);`;
+                const query = `SELECT * FROM pagos WHERE DNI = '${params.DNI}' AND ID_PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1 AND TIPO_PROCESO <> 'G');`;
                 const [rows] = yield connection.promise().query(query);
                 console.log(query);
                 return rows;
