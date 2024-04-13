@@ -53,28 +53,28 @@ class InputsControlsRepository {
             try {
                 const query = `
             SELECT 
-            inscritos.DNI AS DNI,
-            registros.AP_PATERNO AS AP_PATERNO,
-            registros.AP_MATERNO AS AP_MATERNO,
-            registros.NOMBRES AS NOMBRES,
-            inscritos.COD_CARRERA AS COD_CARRERA,
-            carreras.FACULTAD AS FACULTAD,
-            procesos.NOMBRE AS ID_TIPO_MODALIDAD,
-            procesos.NOMBRE AS NOMBRE_PROCESO,
-            concat(registros.AP_PATERNO,' ', registros.AP_MATERNO,' ',registros.NOMBRES) AS NOMBRE_COMPLETO,
-            carreras.ESCUELA_COMPLETA AS CARRERA,
-            resultados.ORDEN_MERITO_1 AS ORDEN_MERITO,
-            resultados.PUNT_T AS PUNTAJE_TOTAL,
-            resultados.EST_OPCION AS ESTADO,
-            resultados.ERRORES AS ERRORES,
-            resultados.PROCESO AS PROCESO
-          from resultados
-            left join inscritos on inscritos.DNI = resultados.DNI
-            left join registros on registros.DNI = resultados.DNI
-            left join procesos  on procesos.ID = resultados.PROCESO
-            left join carreras  on carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
-          WHERE inscritos.PROCESO = 27
-            order by inscritos.COD_CARRERA ASC, resultados.ORDEN_MERITO_1 ASC
+                inscritos.DNI AS DNI,
+                registros.AP_PATERNO AS AP_PATERNO,
+                registros.AP_MATERNO AS AP_MATERNO,
+                registros.NOMBRES AS NOMBRES,
+                inscritos.COD_CARRERA AS COD_CARRERA,
+                carreras.FACULTAD AS FACULTAD,
+                procesos.NOMBRE AS ID_TIPO_MODALIDAD,
+                procesos.NOMBRE AS NOMBRE_PROCESO,
+                concat(registros.AP_PATERNO,' ', registros.AP_MATERNO,' ',registros.NOMBRES) AS NOMBRE_COMPLETO,
+                carreras.ESCUELA_COMPLETA AS CARRERA,
+                resultados.ORDEN_MERITO_1 AS ORDEN_MERITO,
+                resultados.PUNT_T AS PUNTAJE_TOTAL,
+                resultados.EST_OPCION AS ESTADO,
+                resultados.ERRORES AS ERRORES,
+                resultados.PROCESO AS PROCESO
+            from resultados
+                left join inscritos on inscritos.DNI = resultados.DNI
+                left join registros on registros.DNI = resultados.DNI
+                left join procesos  on procesos.ID = resultados.PROCESO
+                left join carreras  on carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+            WHERE inscritos.PROCESO = 28
+                order by inscritos.COD_CARRERA ASC, resultados.ORDEN_MERITO_1 ASC
             `;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
