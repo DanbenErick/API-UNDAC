@@ -69,7 +69,7 @@ class ResultadosAdministradorRepository {
                 const query = `
         UPDATE resultados
         SET
-        DARACOD = ${params.DARACOD},
+        DARACOD = '${params.DARACOD}',
         ASISTENCIA = 'SE PRESENTO',
         AULA = ${params.AULA}
         WHERE DNI = ${params.DNI};
