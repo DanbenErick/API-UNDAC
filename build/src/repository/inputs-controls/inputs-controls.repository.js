@@ -73,7 +73,7 @@ class InputsControlsRepository {
                 left join registros on registros.DNI = resultados.DNI
                 left join procesos  on procesos.ID = resultados.PROCESO
                 left join carreras  on carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
-            WHERE inscritos.PROCESO = 28
+            WHERE inscritos.PROCESO = 28 AND resultados.COD_CARRERA IN (729001,730001,707001,731001,736001,727001,704001)
                 order by inscritos.COD_CARRERA ASC, resultados.ORDEN_MERITO_1 ASC
             `;
                 const [rows] = yield connection.promise().query(query);

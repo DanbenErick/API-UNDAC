@@ -27,12 +27,23 @@ class ResultadoGeneralController {
                 res.status(500).json(error);
             }
         });
+        this.obtenerResultadoEstudiante = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { query } = req;
+                const result = yield this.resultadoService.obtenerResultadoEstudiante(query);
+                res.status(200).json(result);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.resultadoService = new resultados_service_1.ResultadosGeneralService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
     routes() {
-        this.router.get('/obtener-resultados-carrera/:carrera', (0, express_async_handler_1.default)(this.obtenerResultadosPorCarreraYProceso));
+        this.router.get("/obtener-resultados-carrera/:carrera", (0, express_async_handler_1.default)(this.obtenerResultadosPorCarreraYProceso));
+        this.router.get('/obtener-resultado-estudiante', (0, express_async_handler_1.default)(this.obtenerResultadoEstudiante));
     }
 }
 exports.default = ResultadoGeneralController;

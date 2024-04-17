@@ -90,7 +90,7 @@ class ResultadosAdministradorRepository {
         ERRORES = ${params['Errores']},
         PUNT_T = ${params['Nota D'].substring(0, 6).replace(',', '.')},
         EST_OPCION = CASE WHEN EST_OPCION != 'PREPARATORIA' THEN 'NO INGRESO' ELSE EST_OPCION END
-        WHERE DARACOD = ${params.DARACOD};
+        WHERE DARACOD = '${params.DARACOD}';
       `;
                 const resp = yield connection.promise().query(query);
                 return resp;

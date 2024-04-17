@@ -32,6 +32,19 @@ class ResultadosGeneralService {
                 yield dbConex.close();
             }
         });
+        this.obtenerResultadoEstudiante = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.resultadosRepo.obtenerResultadoEstudiante(dbConex, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
         this.resultadosRepo = new resultado_repo_1.ResultadoGeneralRepository();
     }
 }
