@@ -165,6 +165,29 @@ class ProcesosRepository {
                 throw error;
             }
         });
+        this.actualizarProceso = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `UPDATE procesos SET NOMBRE = '${params.NOMBRE}', TIPO_PROCESO = '${params.TIPO_PROCESO}', IMAGEN_PROCESO = '${params.IMAGEN_PROCESO}', FECHA_REGISTRO = '${params.FECHA_REGISTRO}' WHERE ID = '${params.ID_PROCESO}'`;
+                console.log("query", query);
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('ProcesosRepo.actualizarProceso', error);
+                throw error;
+            }
+        });
+        this.abrirProceso = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `UPDATE procesos SET ESTADO = 1 WHERE ID = '${params.ID_PROCESO}'`;
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('ProcesosRepo.abrirProceso', error);
+                throw error;
+            }
+        });
     }
 }
 exports.ProcesosRepository = ProcesosRepository;

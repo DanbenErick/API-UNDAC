@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 import asyncHandler from 'express-async-handler'
 import { EstudiantesGeneralService } from '../../services/general/estudiantes/EstudianteGeneral.service'
 import { EstudianteInterface } from '../../interfaces/administrador/estudiantes.interface'
@@ -7,7 +7,23 @@ import jwt from 'jsonwebtoken'
 import fs from 'fs'
 import { EstudianteCompleto } from '../../interfaces/administrador/EstudianteCompleto.interface'
 import ip from 'ip'
+import sharp from 'sharp'
 
+// const processImage = (req: any, res: Response, next: NextFunction) => {
+//     if(!req.file) {
+//         return res.status(400).json({ error: 'No se subio algun aarchivo' })
+//     }
+
+//     sharp(req.file.path)
+//         .jpeg()
+//         .toFile(`./build/uploads/${req.file.filename}.jpeg`, (err, info) => {
+//             if(err) {
+//                 return res.status(500).json({ ok: false, message: 'Error al proceso imagen' })
+//             }
+//             req.file.path = `./build/uploads/${req.file.filename}.jpeg`
+//             next()
+//         })
+// }
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -226,7 +242,27 @@ class EstudianteController {
             res.status(500).json(error)
         }
     }
+    public obtenerProcesosHome = async(req: Request, res: Response) => {
+        try {
+            const resp = await this.estudianteService.obtenerProcesosHome()
+            res.status(200).json(resp)
+        }catch(error) {
+            res.status(500).json(error)
+        }
+    }
+    public validarRequisitosParaInscripcion = async(req: Request, res: Response) => {
+        try {
+            const params: any = req.body
+            const resp = await this.estudianteService.validarRequisitosParaInscripcion(params);
+            res.status(200).json(resp)
+        }catch(error) {
+            res.status(500).json(error)
+        }
+    }
     public routes() {
+        this.router.post('/validar-requisitos-para-inscripcion', asyncHandler(this.validarRequisitosParaInscripcion))
+
+        this.router.get('/obtener-procesos-home', asyncHandler(this.obtenerProcesosHome))
         this.router.get('/obtener-constancia-estudiante', asyncHandler(this.obtenerConstanciaEstudiante))
         this.router.post('/consultar-dni', asyncHandler(this.consultarEstudianteExiste))
         this.router.get('/consultar-datos-dni-por-proceso/:DNI/:ID_PROCESO', asyncHandler(this.consultarDatosDNIPorProceso))

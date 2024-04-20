@@ -115,4 +115,34 @@ export class ProcesosService {
             await dbConnect.close()
         }
     }
+    public abrirProceso = async(params: ProcesosInterface) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
+            const resp = await this.procesosRepo.abrirProceso(dbConnect, params)
+            if(resp[0].affectedRows > 0) {
+                return { ok: true, message: 'Proceso abierto exitosamente' }
+            }else {
+                return { ok: false, message: 'Proceso no abierto correctamente' }
+            }
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+    }
+    public actualizarProceso = async(params: ProcesosInterface) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
+            const resp = await this.procesosRepo.actualizarProceso(dbConnect,  params)
+            if(resp[0].affectedRows > 0) {
+                return { ok: true, message: 'Proceso abierto exitosamente' }
+            }else {
+                return { ok: false, message: 'Proceso no abierto correctamente' }
+            }
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+    }
 }

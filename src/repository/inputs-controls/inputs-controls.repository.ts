@@ -36,6 +36,43 @@ export class InputsControlsRepository {
             throw error
         }
     }
+    public obtenerResultadosCeprePrimerExamen = async(connection: any, params: any) => {
+        try {
+            const query = `
+            SELECT 
+            inscritos.DNI AS DNI,
+            registros.AP_PATERNO AS AP_PATERNO,
+            registros.AP_MATERNO AS AP_MATERNO,
+            registros.NOMBRES AS NOMBRES,
+        --    inscritos.COD_CARRERA AS COD_CARRERA,
+             carreras.AREA AS COD_CARRERA,
+            carreras.AREA AS FACULTAD,
+            carreras.AREA,
+            procesos.NOMBRE AS ID_TIPO_MODALIDAD,
+            procesos.NOMBRE AS NOMBRE_PROCESO,
+            concat(registros.AP_PATERNO,' ', registros.AP_MATERNO,' ',registros.NOMBRES) AS NOMBRE_COMPLETO,
+            carreras.AREA AS CARRERA,
+            resultados.ORDEN_MERITO_1 AS ORDEN_MERITO,
+            resultados.PUNT_T AS PUNTAJE_TOTAL,
+        --    resultados.EST_OPCION AS ESTADO,
+            'PRIMER EXAMEN' AS ESTADO,
+            resultados.ERRORES AS ERRORES,
+            resultados.PROCESO AS PROCESO
+        from resultados
+            left join inscritos on inscritos.DNI = resultados.DNI
+            left join registros on registros.DNI = resultados.DNI
+            left join procesos  on procesos.ID = resultados.PROCESO
+            left join carreras  on carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA OR carreras.OLD_COD_CARRERA = inscritos.COD_CARRERA
+        WHERE inscritos.PROCESO = ${params.id_proceso} AND resultados.PROCESO = ${params.id_proceso}
+            ORDER BY carreras.AREA ASC, CONCAT(registros.AP_PATERNO, ' ', registros.AP_MATERNO, ' ', registros.NOMBRES) ASC
+            `
+            const [rows] = await connection.promise().query(query)
+            return rows
+        }catch(error) {
+            logger.error('InputsControlsRepository.obtenerResultadosCeprePrimerExamen =>', error)
+            throw error
+        }
+    }
     public obtenerResultadosOrdinario = async(connection: any, params: any) => {
         try {
             const query = `
@@ -60,7 +97,8 @@ export class InputsControlsRepository {
                 left join registros on registros.DNI = resultados.DNI
                 left join procesos  on procesos.ID = resultados.PROCESO
                 left join carreras  on carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
-            WHERE inscritos.PROCESO = 28 AND resultados.COD_CARRERA IN (729001,730001,707001,731001,736001,727001,704001)
+            WHERE inscritos.PROCESO = ${params.id_proceso} AND resultados.PROCESO = ${params.id_proceso}
+            -- AND resultados.COD_CARRERA IN (729001,730001,707001,731001,736001,727001,704001)
                 order by inscritos.COD_CARRERA ASC, resultados.ORDEN_MERITO_1 ASC
             `
             const [rows] = await connection.promise().query(query)
@@ -248,7 +286,7 @@ export class InputsControlsRepository {
     }
     public obtenerProcesos = async(connection: any, params: any) => {
         try {
-            const query = `SELECT ID as value, NOMBRE as label FROM procesos ORDER BY id DESC`;
+            const query = `SELECT ID as value, NOMBRE as label, IMAGEN_PROCESO, TIPO_PROCESO FROM procesos ORDER BY id DESC`;
             // const query = `SELECT ID, NOMBRE, FECHA_REGISTRO, ESTADO FROM procesos ORDER BY id DESC`;
             const [rows, fields]: any = await connection.promise().query(query)
             return rows

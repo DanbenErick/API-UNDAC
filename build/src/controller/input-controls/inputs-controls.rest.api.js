@@ -271,6 +271,16 @@ class InputsControlsController {
                 res.status(500).json(err);
             }
         });
+        this.obtenerResultadosCeprePrimerExamen = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { params } = req;
+                const resp = yield this.inputsControlsService.obtenerResultadosCeprePrimerExamen(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.obtenerResultadosOrdinario = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const resp = yield this.inputsControlsService.obtenerResultadosOrdinario(req.params);
@@ -326,6 +336,7 @@ class InputsControlsController {
     }
     routes() {
         //TODO: Revisar cuales son los endpoints que nesesitan permisos
+        this.router.get('/obtener-resultados-cepre-primer-examen/:id_proceso', (0, express_async_handler_1.default)(this.obtenerResultadosCeprePrimerExamen));
         this.router.get('/obtener-inscritos-por-cordinador', (0, express_async_handler_1.default)(this.obtenerInscritosPorCordinador));
         this.router.get('/obtener-constancias-ingreso', (0, express_async_handler_1.default)(this.obtenerIngresantesParaConstancia));
         this.router.get('/obtener-menciones', (0, express_async_handler_1.default)(this.obtenerMencion));

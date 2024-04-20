@@ -19,6 +19,20 @@ const multer_1 = __importDefault(require("multer"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const fs_1 = __importDefault(require("fs"));
 const ip_1 = __importDefault(require("ip"));
+// const processImage = (req: any, res: Response, next: NextFunction) => {
+//     if(!req.file) {
+//         return res.status(400).json({ error: 'No se subio algun aarchivo' })
+//     }
+//     sharp(req.file.path)
+//         .jpeg()
+//         .toFile(`./build/uploads/${req.file.filename}.jpeg`, (err, info) => {
+//             if(err) {
+//                 return res.status(500).json({ ok: false, message: 'Error al proceso imagen' })
+//             }
+//             req.file.path = `./build/uploads/${req.file.filename}.jpeg`
+//             next()
+//         })
+// }
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
         const nombreSinExtension = file.originalname.split('.')[0];
@@ -246,11 +260,32 @@ class EstudianteController {
                 res.status(500).json(error);
             }
         });
+        this.obtenerProcesosHome = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const resp = yield this.estudianteService.obtenerProcesosHome();
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
+        this.validarRequisitosParaInscripcion = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const resp = yield this.estudianteService.validarRequisitosParaInscripcion(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.estudianteService = new EstudianteGeneral_service_1.EstudiantesGeneralService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
     routes() {
+        this.router.post('/validar-requisitos-para-inscripcion', (0, express_async_handler_1.default)(this.validarRequisitosParaInscripcion));
+        this.router.get('/obtener-procesos-home', (0, express_async_handler_1.default)(this.obtenerProcesosHome));
         this.router.get('/obtener-constancia-estudiante', (0, express_async_handler_1.default)(this.obtenerConstanciaEstudiante));
         this.router.post('/consultar-dni', (0, express_async_handler_1.default)(this.consultarEstudianteExiste));
         this.router.get('/consultar-datos-dni-por-proceso/:DNI/:ID_PROCESO', (0, express_async_handler_1.default)(this.consultarDatosDNIPorProceso));

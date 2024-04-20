@@ -108,9 +108,29 @@ class ProcesosController {
         res.status(500).json(error)
       }
     }
+    public abrirProceso = async(req: Request, res: Response) => {
+      try {
+        const params = req.body
+        const result = await this.procesosService.abrirProceso(params)
+        res.status(200).json(result)
+      }catch(error) {
+        res.status(500).json(error)
+      }
+    }
+    public actualizarProceso = async(req: Request, res: Response) => {
+      try {
+        const params = req.body
+        const result = await this.procesosService.actualizarProceso(params)
+        res.status(200).json(result)
+      }catch(error) {
+        res.status(500).json(error)
+      }
+    }
     routes() {
+      this.router.put('/actualizar-proceso', asyncHandler(this.actualizarProceso))
       this.router.get('/obtener-procesos', asyncHandler(this.obtenerProcesos))
       this.router.post('/crear-proceso', asyncHandler(this.crearProceso))
+      this.router.post('/abrir-proceso', asyncHandler(this.abrirProceso))
       this.router.post('/cerrar-proceso', asyncHandler(this.cerrarProceso))
       this.router.post('/obtener-inscritos-por-sede', asyncHandler(this.obtenerInscritosPorSede))
 

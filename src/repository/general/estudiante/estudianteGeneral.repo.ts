@@ -30,7 +30,7 @@ export class EstudianteGeneralRepository {
     }
     public verificarPagoRequisitos = async(connection: any, params: any ) => {
       try {
-        const query = `SELECT * FROM pagos WHERE DNI = '${params.DNI}' AND ID_PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1 AND TIPO_PROCESO <> 'G');`
+        const query = `SELECT ID FROM pagos WHERE DNI = '${params.DNI}' AND ID_PROCESO = '${params.PROCESO}'`
         const [rows]: any = await connection.promise().query(query)
         console.log(query)
         return rows
@@ -243,6 +243,26 @@ export class EstudianteGeneralRepository {
         logger.error('EstudianteGeneralRepository.registrarTestPsicologicoEstudiante => ', error)
       }
     }
+    public obtenerProcesosHome = async(connection: any) => {
+      try {
+        const query = `SELECT ID, NOMBRE, ESTADO, TIPO_PROCESO, IMAGEN_PROCESO FROM procesos WHERE TIPO_PROCESO <> 'G' AND ESTADO = 1`
+        console.log('query ', query)
+        const [rows]: any = await connection.promise().query(query)
+        return rows
+      }catch(error) {
+        logger.error('EstudianteGeneralRespository.obtenerProcesosHome => ', error)
+      }
+    }
+    // public validarPagoEstudianteRequisito = async(connection: any, params: any) => {
+    //   try {
+    //     const query = `SELECT ID FROM pagos WHERE `
+    //   }catch(error) {
+    //     logger.error('EstudianteGeneralRepository.validarPagoEstudianteRequisito => ', error)
+    //   }
+    // }
+
+
+    
     public consultarSiSeRegistroEstudiante = async(connection: any, params: any) => {
       try {
 

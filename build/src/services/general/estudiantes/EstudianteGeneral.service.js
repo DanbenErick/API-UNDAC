@@ -379,6 +379,49 @@ class EstudiantesGeneralService {
                 yield dbConex.close();
             }
         });
+        this.obtenerProcesosHome = () => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const resp = yield this.estudianteRepo.obtenerProcesosHome(dbConex);
+                return resp;
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
+        this.validarRequisitosParaInscripcion = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                // const resp = await this.estudianteRepo.validarRequisitosParaInscripcion(dbConex)
+                const resp_1 = yield this.estudianteRepo.verificarTestpsicologicoInscrito(dbConex, params);
+                const resp_2 = yield this.estudianteRepo.verificarDatosCompletamerioEstudiante(dbConex, params);
+                const resp_3 = yield this.estudianteRepo.verificarPagoRequisitos(dbConex, params);
+                const resp_4 = yield this.estudianteRepo.verificarInscripcionEstudiante(dbConex, params);
+                return {
+                    proceso: params.PROCESO,
+                    inscrito: resp_4.length > 0 ? true : false,
+                    datos_complementarios: resp_2.length > 0 ? true : false,
+                    test_psicologico: resp_1.length > 0 ? true : false,
+                    pago: resp_3.length > 0 ? true : false,
+                    carnet: (resp_1.length > 0 && resp_2.length > 0 && resp_3.length > 0 && resp_4.length > 0) ? true : false,
+                };
+                if (resp_1.length > 0 && resp_2.length > 0 && resp_3.length > 0 && resp_4.length > 0) {
+                }
+                console.log(resp_1);
+                console.log(resp_2);
+                console.log(resp_3);
+                console.log(resp_4);
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
         this.estudianteRepo = new estudianteGeneral_repo_1.EstudianteGeneralRepository();
     }
 }

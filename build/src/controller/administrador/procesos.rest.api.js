@@ -123,13 +123,35 @@ class ProcesosController {
                 res.status(500).json(error);
             }
         });
+        this.abrirProceso = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const result = yield this.procesosService.abrirProceso(params);
+                res.status(200).json(result);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
+        this.actualizarProceso = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const result = yield this.procesosService.actualizarProceso(params);
+                res.status(200).json(result);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.procesosService = new Procesos_service_1.ProcesosService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
     routes() {
+        this.router.put('/actualizar-proceso', (0, express_async_handler_1.default)(this.actualizarProceso));
         this.router.get('/obtener-procesos', (0, express_async_handler_1.default)(this.obtenerProcesos));
         this.router.post('/crear-proceso', (0, express_async_handler_1.default)(this.crearProceso));
+        this.router.post('/abrir-proceso', (0, express_async_handler_1.default)(this.abrirProceso));
         this.router.post('/cerrar-proceso', (0, express_async_handler_1.default)(this.cerrarProceso));
         this.router.post('/obtener-inscritos-por-sede', (0, express_async_handler_1.default)(this.obtenerInscritosPorSede));
         this.router.post('/obtener-inscritos-por-carrera', (0, express_async_handler_1.default)(this.obtenerInscritosPorCarrera));

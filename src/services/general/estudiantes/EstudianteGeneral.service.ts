@@ -382,4 +382,48 @@ export class EstudiantesGeneralService {
       await dbConex.close();
     }
   };
+  public obtenerProcesosHome = async() => {
+    const dbConex: any = await connectMysql.connectMysql();
+    try {
+      const resp = await this.estudianteRepo.obtenerProcesosHome(dbConex)
+      return resp
+    }catch(error) {
+      await dbConex.rollback();
+    }finally {
+      await dbConex.close();
+    }
+  }
+  public validarRequisitosParaInscripcion = async(params: any) => {
+    const dbConex: any = await connectMysql.connectMysql();
+    try {
+      // const resp = await this.estudianteRepo.validarRequisitosParaInscripcion(dbConex)
+      const resp_1 = await this.estudianteRepo.verificarTestpsicologicoInscrito(dbConex, params)
+      const resp_2 = await this.estudianteRepo.verificarDatosCompletamerioEstudiante(dbConex, params)
+      const resp_3 = await this.estudianteRepo.verificarPagoRequisitos(dbConex, params)
+      const resp_4 = await this.estudianteRepo.verificarInscripcionEstudiante(dbConex, params)
+
+      return {
+        proceso: params.PROCESO,
+        inscrito: resp_4.length > 0 ? true: false,
+        datos_complementarios: resp_2.length > 0 ? true: false,
+        test_psicologico: resp_1.length > 0 ? true: false,
+        pago: resp_3.length > 0 ? true: false,
+        carnet: (resp_1.length > 0 && resp_2.length > 0 && resp_3.length > 0 && resp_4.length > 0) ? true: false,
+      }
+
+      if(resp_1.length > 0 && resp_2.length > 0 && resp_3.length > 0 && resp_4.length > 0) {
+
+      }
+      
+      console.log(resp_1)
+      console.log(resp_2)
+      console.log(resp_3)
+      console.log(resp_4)
+
+    }catch(error) {
+      await dbConex.rollback();
+    }finally {
+      await dbConex.close();
+    }
+  }
 }

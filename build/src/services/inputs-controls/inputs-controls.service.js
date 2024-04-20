@@ -143,6 +143,19 @@ class InputsControlsService {
                 yield dbConexion.close();
             }
         });
+        this.obtenerResultadosCeprePrimerExamen = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.inputsControlsRepo.obtenerResultadosCeprePrimerExamen(dbConnect, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
         this.obtenerProcesos = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
             try {

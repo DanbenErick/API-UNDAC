@@ -242,6 +242,15 @@ class InputsControlsController {
       res.status(500).json(err);
     }
   }
+  public obtenerResultadosCeprePrimerExamen = async(req: Request, res: Response) => {
+    try {
+      const { params } = req
+      const resp = await this.inputsControlsService.obtenerResultadosCeprePrimerExamen(params)
+      res.status(200).json(resp)
+    }catch(error) {
+      res.status(500).json(error)
+    }
+  }
   public obtenerResultadosOrdinario = async(req: Request, res: Response) => {
     try {
       const resp = await this.inputsControlsService.obtenerResultadosOrdinario(req.params)
@@ -290,6 +299,7 @@ class InputsControlsController {
   }
   public routes() {
     //TODO: Revisar cuales son los endpoints que nesesitan permisos
+    this.router.get('/obtener-resultados-cepre-primer-examen/:id_proceso', asyncHandler(this.obtenerResultadosCeprePrimerExamen))
     this.router.get('/obtener-inscritos-por-cordinador', asyncHandler(this.obtenerInscritosPorCordinador))
     this.router.get('/obtener-constancias-ingreso', asyncHandler(this.obtenerIngresantesParaConstancia))
     this.router.get('/obtener-menciones', asyncHandler(this.obtenerMencion))

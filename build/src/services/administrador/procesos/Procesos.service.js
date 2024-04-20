@@ -138,6 +138,42 @@ class ProcesosService {
                 yield dbConnect.close();
             }
         });
+        this.abrirProceso = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const resp = yield this.procesosRepo.abrirProceso(dbConnect, params);
+                if (resp[0].affectedRows > 0) {
+                    return { ok: true, message: 'Proceso abierto exitosamente' };
+                }
+                else {
+                    return { ok: false, message: 'Proceso no abierto correctamente' };
+                }
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
+        this.actualizarProceso = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const resp = yield this.procesosRepo.actualizarProceso(dbConnect, params);
+                if (resp[0].affectedRows > 0) {
+                    return { ok: true, message: 'Proceso abierto exitosamente' };
+                }
+                else {
+                    return { ok: false, message: 'Proceso no abierto correctamente' };
+                }
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
         this.procesosRepo = new procesos_repository_1.ProcesosRepository();
         // this.asignarOpcionesRolRepository = new MantenimientoOpcionesRolRepository();
     }

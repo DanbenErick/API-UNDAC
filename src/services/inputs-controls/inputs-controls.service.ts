@@ -116,7 +116,18 @@ export class InputsControlsService {
         }finally {
             await dbConexion.close()
         }
-    } 
+    }
+    public obtenerResultadosCeprePrimerExamen = async(params: any) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.inputsControlsRepo.obtenerResultadosCeprePrimerExamen(dbConnect, params)
+            return result
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+    }
     public obtenerProcesos = async(params: any) => {
         const dbConex: any = await connectMysql.connectMysql()
         try {

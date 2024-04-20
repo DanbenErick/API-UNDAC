@@ -42,7 +42,7 @@ class EstudianteGeneralRepository {
         });
         this.verificarPagoRequisitos = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT * FROM pagos WHERE DNI = '${params.DNI}' AND ID_PROCESO = (SELECT ID FROM procesos WHERE ESTADO = 1 AND TIPO_PROCESO <> 'G');`;
+                const query = `SELECT ID FROM pagos WHERE DNI = '${params.DNI}' AND ID_PROCESO = '${params.PROCESO}'`;
                 const [rows] = yield connection.promise().query(query);
                 console.log(query);
                 return rows;
@@ -272,6 +272,24 @@ class EstudianteGeneralRepository {
                 manager_log_resource_1.logger.error('EstudianteGeneralRepository.registrarTestPsicologicoEstudiante => ', error);
             }
         });
+        this.obtenerProcesosHome = (connection) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT ID, NOMBRE, ESTADO, TIPO_PROCESO, IMAGEN_PROCESO FROM procesos WHERE TIPO_PROCESO <> 'G' AND ESTADO = 1`;
+                console.log('query ', query);
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRespository.obtenerProcesosHome => ', error);
+            }
+        });
+        // public validarPagoEstudianteRequisito = async(connection: any, params: any) => {
+        //   try {
+        //     const query = `SELECT ID FROM pagos WHERE `
+        //   }catch(error) {
+        //     logger.error('EstudianteGeneralRepository.validarPagoEstudianteRequisito => ', error)
+        //   }
+        // }
         this.consultarSiSeRegistroEstudiante = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
             }
