@@ -40,7 +40,7 @@ export class EstudianteGeneralRepository {
     }
     public obtenerDatosEstudianteCarnet = async(connection: any, params: any) => {
       try {
-        const query = `SELECT * FROM vista_datos_generales_estudiante_qr WHERE UUID = '${params.UUID}';`
+        const query = `SELECT * FROM vista_datos_generales_estudiante_qr WHERE UUID = '${params.UUID}' AND PROCESO = '${params.PROCESO}';`
         const [rows]: any = await connection.promise().query(query)
         console.log(query)
         return rows

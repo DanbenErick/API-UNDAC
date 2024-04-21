@@ -53,7 +53,7 @@ class EstudianteGeneralRepository {
         });
         this.obtenerDatosEstudianteCarnet = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT * FROM vista_datos_generales_estudiante_qr WHERE UUID = '${params.UUID}';`;
+                const query = `SELECT * FROM vista_datos_generales_estudiante_qr WHERE UUID = '${params.UUID}' AND PROCESO = '${params.PROCESO}';`;
                 const [rows] = yield connection.promise().query(query);
                 console.log(query);
                 return rows;
