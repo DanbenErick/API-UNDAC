@@ -1,7 +1,8 @@
-import { Request, Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 import asyncHandler from 'express-async-handler'
 import { EstudiantesService } from '../../services/administrador/estudiantes/Estudiante.service'
 import multer from 'multer';
+import sharp from 'sharp';
 import fs from 'fs';
 
 const storageEst = multer.diskStorage({
@@ -21,6 +22,34 @@ const storageEst = multer.diskStorage({
 });
 const upload = multer({ storage: storageEst });
 
+// Middleware para procesar imágenes con Sharp
+const processImage = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+      if (!req.file) {
+          throw new Error('No file uploaded');
+      }
+
+      // Ruta del archivo original
+      const originalFilePath = req.file.path;
+      // Ruta de la imagen procesada
+      const processedFilePath = `${originalFilePath.split('.')[0]}.jpeg`;
+
+      await sharp(originalFilePath)
+          .jpeg() // Convertir a JPEG
+          .toFile(processedFilePath); // Guardar la imagen procesada como JPEG
+
+      // Eliminar el archivo original
+      fs.unlinkSync(originalFilePath);
+
+      // Actualizar la información del archivo en req.file
+      req.file.filename = req.file.filename.split('.')[0] + '.jpeg';
+      req.file.path = processedFilePath;
+
+      next();
+  } catch (error) {
+      next(error);
+  }
+};
 
 class EstudianteController {
     public router: Router
@@ -149,7 +178,7 @@ class EstudianteController {
         this.router.post('/modificar-datos-complementarios-estudiante', asyncHandler(this.modificarDatosComplementariosEstudiante))
         // this.router.post('/editar-documento-estudiante', asyncHandler(this.editarDocumentacionEstudiante))
         this.router.post('/editar-documento-estudiante', upload.single('archivo'), asyncHandler(this.editarDocumentacionEstudiante))
-        this.router.post('/editar-foto-estudiante', upload.single('fotoEstudiante'), asyncHandler(this.editarFotoEstudiante))
+        this.router.post('/editar-foto-estudiante', upload.single('fotoEstudiante'), processImage, asyncHandler(this.editarFotoEstudiante))
         this.router.get('/buscar-estudiante-por-nombre', asyncHandler(this.buscarEstudiantePorNombre))
         // this.router.post('/editar-foto-estudiante',  asyncHandler(this.editarFotoEstudiante))
     }

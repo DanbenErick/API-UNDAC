@@ -86,11 +86,22 @@ class CordinadorController {
                 res.status(500).json(error);
             }
         });
+        this.procesarCodigosMatricula = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const result = yield this.cordinadorService.procesarCodigosMatricula(params);
+                res.status(200).json(result);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.cordinadorService = new cordinador_service_1.CordinadorService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
     routes() {
+        this.router.post('/procesar-codigos-matricula', (0, express_async_handler_1.default)(this.procesarCodigosMatricula));
         this.router.get('/obtener-ingresantes', (0, express_async_handler_1.default)(this.obtenerIngresantes));
         this.router.get('/obtener-ingresantes-para-contancia-pro-dni-y-proceso', (0, express_async_handler_1.default)(this.obtenerIngresantesParaContanciaProDNIyProceso));
         this.router.get('/modificar-estado-cordinador', (0, express_async_handler_1.default)(this.modifcarEstadoCordinador));

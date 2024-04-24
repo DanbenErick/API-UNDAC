@@ -97,6 +97,20 @@ export class CordinadorService {
         await dbConnect.close()
       }
     }
+    public procesarCodigosMatricula = async(params: any) => {
+      const dbConnect: any = await connectMysql.connectMysql()
+      try {
+        console.log(params)
+        for(let i = 0; i < params.dataExcel.length; i++) {
+          const result = await this.cordinadorRepo.procesarprocesarCodigosMatricula(dbConnect, {PROCESO: params.proceso, DNI: params.dataExcel[i].DNI,CODIGO_MATRICULA: params.dataExcel[i].CODIGO_MATRICULA})
+        }
+        return true
+      }catch(error) {
+        await dbConnect.rollback()
+      }finally {
+        await dbConnect.close()
+      }
+    }
     public obtenerIngresantes = async(params: any) => {
       const dbConnect: any = await connectMysql.connectMysql()
       try {

@@ -126,6 +126,19 @@ class CordinadorRepository {
                 throw error;
             }
         });
+        this.procesarprocesarCodigosMatricula = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log("paramtros recibidos", params);
+                const query = `UPDATE resultados SET CODIGO_MATRICULA = '${params.CODIGO_MATRICULA}' WHERE DNI = '${params.DNI}' AND PROCESO = '${params.PROCESO}'`;
+                console.log("Query", query);
+                const resp = yield connection.promise().execute(query);
+                return resp;
+            }
+            catch (err) {
+                manager_log_resource_1.logger.error("CordinadorRepository.procesarprocesarCodigosMatricula =>", (err));
+                throw err;
+            }
+        });
     }
 }
 exports.CordinadorRepository = CordinadorRepository;

@@ -109,4 +109,16 @@ export class CordinadorRepository {
       throw error
     }
   }
+  public procesarprocesarCodigosMatricula = async(connection: any, params: any) => {
+    try {
+      console.log("paramtros recibidos", params)
+      const query = `UPDATE resultados SET CODIGO_MATRICULA = '${params.CODIGO_MATRICULA}' WHERE DNI = '${params.DNI}' AND PROCESO = '${params.PROCESO}'`
+      console.log("Query", query)
+      const resp = await connection.promise().execute(query)
+      return resp
+    }catch(err) {
+      logger.error("CordinadorRepository.procesarprocesarCodigosMatricula =>", (err))
+      throw err
+    }
+  }
 }

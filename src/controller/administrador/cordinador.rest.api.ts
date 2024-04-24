@@ -76,8 +76,19 @@ class CordinadorController {
             res.status(500).json(error)
         }
     }
-   
+
+    public procesarCodigosMatricula = async(req: Request, res: Response) => {
+        try {
+            const params = req.body
+            const result = await this.cordinadorService.procesarCodigosMatricula(params)
+            res.status(200).json(result)
+        }catch(error) {
+            res.status(500).json(error)
+        }
+    }
+
     public routes() {
+        this.router.post('/procesar-codigos-matricula', asyncHandler(this.procesarCodigosMatricula))
         this.router.get('/obtener-ingresantes', asyncHandler(this.obtenerIngresantes))
         this.router.get('/obtener-ingresantes-para-contancia-pro-dni-y-proceso', asyncHandler(this.obtenerIngresantesParaContanciaProDNIyProceso))
         this.router.get('/modificar-estado-cordinador', asyncHandler(this.modifcarEstadoCordinador))

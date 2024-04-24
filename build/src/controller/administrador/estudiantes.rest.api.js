@@ -16,6 +16,7 @@ const express_1 = require("express");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const Estudiante_service_1 = require("../../services/administrador/estudiantes/Estudiante.service");
 const multer_1 = __importDefault(require("multer"));
+const sharp_1 = __importDefault(require("sharp"));
 const fs_1 = __importDefault(require("fs"));
 const storageEst = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
@@ -32,6 +33,30 @@ const storageEst = multer_1.default.diskStorage({
     },
 });
 const upload = (0, multer_1.default)({ storage: storageEst });
+// Middleware para procesar imágenes con Sharp
+const processImage = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.file) {
+            throw new Error('No file uploaded');
+        }
+        // Ruta del archivo original
+        const originalFilePath = req.file.path;
+        // Ruta de la imagen procesada
+        const processedFilePath = `${originalFilePath.split('.')[0]}.jpeg`;
+        yield (0, sharp_1.default)(originalFilePath)
+            .jpeg() // Convertir a JPEG
+            .toFile(processedFilePath); // Guardar la imagen procesada como JPEG
+        // Eliminar el archivo original
+        fs_1.default.unlinkSync(originalFilePath);
+        // Actualizar la información del archivo en req.file
+        req.file.filename = req.file.filename.split('.')[0] + '.jpeg';
+        req.file.path = processedFilePath;
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+});
 class EstudianteController {
     constructor() {
         this.obtenerEstudiantes = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -160,7 +185,7 @@ class EstudianteController {
         this.router.post('/modificar-datos-complementarios-estudiante', (0, express_async_handler_1.default)(this.modificarDatosComplementariosEstudiante));
         // this.router.post('/editar-documento-estudiante', asyncHandler(this.editarDocumentacionEstudiante))
         this.router.post('/editar-documento-estudiante', upload.single('archivo'), (0, express_async_handler_1.default)(this.editarDocumentacionEstudiante));
-        this.router.post('/editar-foto-estudiante', upload.single('fotoEstudiante'), (0, express_async_handler_1.default)(this.editarFotoEstudiante));
+        this.router.post('/editar-foto-estudiante', upload.single('fotoEstudiante'), processImage, (0, express_async_handler_1.default)(this.editarFotoEstudiante));
         this.router.get('/buscar-estudiante-por-nombre', (0, express_async_handler_1.default)(this.buscarEstudiantePorNombre));
         // this.router.post('/editar-foto-estudiante',  asyncHandler(this.editarFotoEstudiante))
     }

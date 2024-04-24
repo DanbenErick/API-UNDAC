@@ -110,6 +110,22 @@ class CordinadorService {
                 yield dbConnect.close();
             }
         });
+        this.procesarCodigosMatricula = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                console.log(params);
+                for (let i = 0; i < params.dataExcel.length; i++) {
+                    const result = yield this.cordinadorRepo.procesarprocesarCodigosMatricula(dbConnect, { PROCESO: params.proceso, DNI: params.dataExcel[i].DNI, CODIGO_MATRICULA: params.dataExcel[i].CODIGO_MATRICULA });
+                }
+                return true;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
         this.obtenerIngresantes = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConnect = yield connection_mysqldb_1.default.connectMysql();
             try {
