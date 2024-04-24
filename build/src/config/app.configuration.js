@@ -21,10 +21,14 @@ class AppConfiguration {
         this.app.use(express_1.default.static(path_1.default.join(__dirname, './../public')));
         this.app.use(express_1.default.json());
         this.app.use(express_1.default.urlencoded({ extended: true }));
-        this.app.use((0, cors_1.default)({
-            origin: '*',
-            exposedHeaders: 'Content-Disposition',
-        }));
+        // this.app.use(
+        //   cors({
+        //     origin: '*',
+        //     exposedHeaders: 'Content-Disposition',
+        //   })
+        // );
+        // Habilitar CORS para todas las solicitudes
+        this.app.use((0, cors_1.default)());
         this.app.use((0, morgan_1.default)('HTTP=:method RUTA=:url CODIDO_RESPUESTA=:status RES=:res[content-length] - TIEMPO_RESPUESTA=:response-time ms ORIGEN=:remote-addr'));
         this.app.use(this.ApiRoutes.app);
     }

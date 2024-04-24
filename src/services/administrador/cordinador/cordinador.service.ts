@@ -101,10 +101,21 @@ export class CordinadorService {
       const dbConnect: any = await connectMysql.connectMysql()
       try {
         console.log(params)
+        let okRows = 0
+        let fails = []
         for(let i = 0; i < params.dataExcel.length; i++) {
-          const result = await this.cordinadorRepo.procesarprocesarCodigosMatricula(dbConnect, {PROCESO: params.proceso, DNI: params.dataExcel[i].DNI,CODIGO_MATRICULA: params.dataExcel[i].CODIGO_MATRICULA})
+          const [result] = await this.cordinadorRepo.procesarprocesarCodigosMatricula(dbConnect, {PROCESO: params.proceso, DNI: params.dataExcel[i].DNI,CODIGO_MATRICULA: params.dataExcel[i].CODIGO_MATRICULA})
+          if(result.affectedRows) {
+            okRows += 1
+          }else {
+            fails.push(params.dataExcel[i].DNI)
+          }
         }
-        return true
+        return {
+          ok: true,
+          correctas: `${okRows}`,
+          errores: fails
+        }
       }catch(error) {
         await dbConnect.rollback()
       }finally {
