@@ -174,6 +174,23 @@ class ProcesosService {
                 yield dbConnect.close();
             }
         });
+        this.generarReporte = ({ ID_PROCESO, COD_CARRERA }) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const params = {
+                    ID_PROCESO: ID_PROCESO || '',
+                    COD_CARRERA: COD_CARRERA || ''
+                };
+                const resp = yield this.procesosRepo.generarReporte(dbConnect, params);
+                return resp;
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
         this.procesosRepo = new procesos_repository_1.ProcesosRepository();
         // this.asignarOpcionesRolRepository = new MantenimientoOpcionesRolRepository();
     }

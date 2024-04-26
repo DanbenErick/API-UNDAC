@@ -126,7 +126,18 @@ class ProcesosController {
         res.status(500).json(error)
       }
     }
+    public generarReporte = async(req: Request, res: Response) => {
+      try {
+        const {body: params} = req
+        const resp = await this.procesosService.generarReporte(params)
+        res.status(200).json(resp)
+        
+      }catch(error) {
+        res.status(500).json(error)
+      }
+    }
     routes() {
+      this.router.post('/generar-reporte', asyncHandler(this.generarReporte))
       this.router.put('/actualizar-proceso', asyncHandler(this.actualizarProceso))
       this.router.get('/obtener-procesos', asyncHandler(this.obtenerProcesos))
       this.router.post('/crear-proceso', asyncHandler(this.crearProceso))

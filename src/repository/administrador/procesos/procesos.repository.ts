@@ -167,4 +167,33 @@ export class ProcesosRepository {
             throw error
         }
     }
+    public generarReporte = async(connection: any, params: any) => {
+        try {
+            console.log(params)
+            const query = `
+            SELECT
+                procesos.NOMBRE AS PROCESO,
+                registros.DNI,
+                registros.AP_PATERNO AS 'APELLIDO PATERNO',
+                registros.AP_MATERNO AS 'APELLIDO MATERNO',
+                registros.NOMBRES AS 'NOMBRES',
+                registros.CELULAR,
+                registros.CORREO,
+                carreras.ESCUELA_COMPLETA AS 'CARRERA'
+            FROM inscritos 
+            LEFT JOIN procesos  ON procesos.ID = inscritos.PROCESO
+            LEFT JOIN registros ON registros.DNI = inscritos.DNI
+            LEFT JOIN carreras  ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+            WHERE PROCESO = ${params.ID_PROCESO}
+            ${params.COD_CARRERA != ''?  `AND COD_CARRERA = ${params.COD_CARRERA}` : ''}
+            ORDER BY carreras.ESCUELA_COMPLETA ASC
+            `
+            console.log(query)
+            const [resp] = await connection.promise().query(query)
+            return resp
+        }catch(error) {
+            logger.error('ProcesosRepo.generarReporte', error)
+            throw error
+        }
+    }
 }

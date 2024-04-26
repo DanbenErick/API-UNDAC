@@ -188,6 +188,36 @@ class ProcesosRepository {
                 throw error;
             }
         });
+        this.generarReporte = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log(params);
+                const query = `
+            SELECT
+                procesos.NOMBRE AS PROCESO,
+                registros.DNI,
+                registros.AP_PATERNO AS 'APELLIDO PATERNO',
+                registros.AP_MATERNO AS 'APELLIDO MATERNO',
+                registros.NOMBRES AS 'NOMBRES',
+                registros.CELULAR,
+                registros.CORREO,
+                carreras.ESCUELA_COMPLETA AS 'CARRERA'
+            FROM inscritos 
+            LEFT JOIN procesos  ON procesos.ID = inscritos.PROCESO
+            LEFT JOIN registros ON registros.DNI = inscritos.DNI
+            LEFT JOIN carreras  ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+            WHERE PROCESO = ${params.ID_PROCESO}
+            ${params.COD_CARRERA != '' ? `AND COD_CARRERA = ${params.COD_CARRERA}` : ''}
+            ORDER BY carreras.ESCUELA_COMPLETA ASC
+            `;
+                console.log(query);
+                const [resp] = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('ProcesosRepo.generarReporte', error);
+                throw error;
+            }
+        });
     }
 }
 exports.ProcesosRepository = ProcesosRepository;

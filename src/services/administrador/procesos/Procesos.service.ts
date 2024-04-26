@@ -145,4 +145,19 @@ export class ProcesosService {
             await dbConnect.close()
         }
     }
+    public generarReporte = async({ID_PROCESO, COD_CARRERA}: any) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
+            const params: any = {
+                ID_PROCESO: ID_PROCESO || '',
+                COD_CARRERA: COD_CARRERA || ''
+            }
+            const resp = await this.procesosRepo.generarReporte(dbConnect, params)
+            return resp
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+    }
 }
