@@ -101,6 +101,17 @@ export class InputsControlsService {
             await dbConexion.close()
         }
     }
+    public obtenerReporteAulaCepre = async(params: any) => {
+        const dbConexion: any = await connectMysql.connectMysql()
+        try {
+            const result = await this.inputsControlsRepo.obtenerReporteAulaCepre(dbConexion, params)
+            return result
+        }catch(error) {
+            await dbConexion.rollback()
+        }finally {
+            await dbConexion.close()
+        }
+    }
     public obtenerIngresantesParaConstancia = async(params: any) => {
         const dbConexion: any = await connectMysql.connectMysql()
         try {

@@ -38,6 +38,7 @@ class AdministradorRouting {
                 }
             }
             catch (err) {
+                console.log("Error", err);
                 res.status(401).send({ ok: 'error', message: 'Se vencio tu token' });
             }
         };

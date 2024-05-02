@@ -157,6 +157,7 @@ class ResultadosAdministradorRepository {
       WHERE ID_PROCESO = ${params.ID_PROCESO}
       ORDER BY ID_CARRERA ASC
       `;
+                console.log("AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIi");
                 console.log("Consulta, ", query);
                 const [rows] = yield connection.promise().query(query);
                 return rows;
@@ -178,7 +179,7 @@ class ResultadosAdministradorRepository {
         ORDER BY PUNT_T DESC
         LIMIT ${params.LIMIT}
       `;
-                console.log("Consulta0. ", query);
+                console.log("Asignando ingresante: ", query);
                 const resp = yield connection.promise().query(query);
                 return resp;
             }

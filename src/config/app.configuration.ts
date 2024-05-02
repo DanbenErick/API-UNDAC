@@ -23,10 +23,12 @@ class AppConfiguration {
     this.app.use(express.json()) 
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(
-      cors({
-        origin: '*',
-        exposedHeaders: 'Content-Disposition',
-      })
+      cors(
+      //   {
+      //   origin: '*',
+      //   exposedHeaders: 'Content-Disposition',
+      // }
+    )
     );
 
     this.app.use(

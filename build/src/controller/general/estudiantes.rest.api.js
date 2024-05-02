@@ -19,20 +19,7 @@ const multer_1 = __importDefault(require("multer"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const fs_1 = __importDefault(require("fs"));
 const ip_1 = __importDefault(require("ip"));
-// const processImage = (req: any, res: Response, next: NextFunction) => {
-//     if(!req.file) {
-//         return res.status(400).json({ error: 'No se subio algun aarchivo' })
-//     }
-//     sharp(req.file.path)
-//         .jpeg()
-//         .toFile(`./build/uploads/${req.file.filename}.jpeg`, (err, info) => {
-//             if(err) {
-//                 return res.status(500).json({ ok: false, message: 'Error al proceso imagen' })
-//             }
-//             req.file.path = `./build/uploads/${req.file.filename}.jpeg`
-//             next()
-//         })
-// }
+const sharp_1 = __importDefault(require("sharp"));
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
         const nombreSinExtension = file.originalname.split('.')[0];
@@ -48,6 +35,31 @@ const storage = multer_1.default.diskStorage({
     },
 });
 const upload = (0, multer_1.default)({ storage: storage });
+const processImage = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.file) {
+            throw new Error('No file uploaded');
+        }
+        const originalFilePath = req.file.path;
+        const processedFilePath = `${originalFilePath.split('.')[0]}.jpeg`;
+        // Verificar si el archivo ya es JPEG
+        const isJPEG = req.file.mimetype === 'image/jpeg' || req.file.mimetype === 'image/jpg';
+        // Si ya es JPEG, no es necesario convertirlo
+        if (!isJPEG) {
+            // console.log("Ingreso aqui")
+            yield (0, sharp_1.default)(originalFilePath)
+                .jpeg()
+                .toFile(processedFilePath);
+            fs_1.default.unlinkSync(originalFilePath);
+        }
+        req.file.filename = req.file.filename.split('.')[0] + '.jpeg';
+        req.file.path = processedFilePath;
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+});
 class EstudianteController {
     constructor() {
         this.consultarEstudianteExiste = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -291,7 +303,7 @@ class EstudianteController {
         this.router.get('/consultar-datos-dni-por-proceso/:DNI/:ID_PROCESO', (0, express_async_handler_1.default)(this.consultarDatosDNIPorProceso));
         this.router.post('/registrar-estudiante', (0, express_async_handler_1.default)(this.registrarEstudiante));
         this.router.post('/inscribir-estudiante', this.authenticateToken, (0, express_async_handler_1.default)(this.inscribirEstudiante));
-        this.router.post('/subir-foto-estudiante', this.authenticateToken, upload.single('foto'), (0, express_async_handler_1.default)(this.subirFotoEstudiante));
+        this.router.post('/subir-foto-estudiante', this.authenticateToken, upload.single('foto'), processImage, (0, express_async_handler_1.default)(this.subirFotoEstudiante));
         this.router.post('/subir-documentos-estudiante', this.authenticateToken, upload.single('documento'), (0, express_async_handler_1.default)(this.subirDocumentacionEstudiante));
         this.router.post('/registrar-test-psicologico', this.authenticateToken, (0, express_async_handler_1.default)(this.registrarTestPsicologico));
         this.router.post('/verificar-test-psicologico-inscrito', this.authenticateToken, (0, express_async_handler_1.default)(this.verificarTestpsicologicoInscrito));

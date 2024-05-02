@@ -19,7 +19,9 @@ class AulasRepository {
                 const query = `
             SELECT 
                 aulas.*, 
+                aulas.ID AS ID_AULA,
                 procesos.NOMBRE AS NOMBRE_PROCESO,
+                procesos.ID AS ID_PROCESO,
                 CONCAT(COUNT(inscritos.ID_AULA), ' / ', aulas.CAPACIDAD) AS INSCRITOS_CAPACIDAD
             FROM aulas 
             LEFT JOIN procesos ON aulas.ID_PROCESO = procesos.ID 

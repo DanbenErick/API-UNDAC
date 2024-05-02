@@ -124,6 +124,19 @@ class InputsControlsService {
                 yield dbConexion.close();
             }
         });
+        this.obtenerReporteAulaCepre = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConexion = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.inputsControlsRepo.obtenerReporteAulaCepre(dbConexion, params);
+                return result;
+            }
+            catch (error) {
+                yield dbConexion.rollback();
+            }
+            finally {
+                yield dbConexion.close();
+            }
+        });
         this.obtenerIngresantesParaConstancia = (params) => __awaiter(this, void 0, void 0, function* () {
             const dbConexion = yield connection_mysqldb_1.default.connectMysql();
             try {

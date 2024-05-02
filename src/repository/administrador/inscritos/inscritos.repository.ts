@@ -5,7 +5,7 @@ import { generarConsulta } from "../../../util/util";
 export class InscritosRepository {
   public obtenerInscritos = async (connection: any) => {
     try {
-      const query = `SELECT * FROM vista_obtener_inscritos_admin ORDER BY ID DESC LIMIT 30`;
+      const query = `SELECT * FROM vista_obtener_inscritos_admin ORDER BY ID DESC LIMIT 10`;
       const [rows]: any = await connection.promise().query(query);
       return rows;
     } catch (error) {

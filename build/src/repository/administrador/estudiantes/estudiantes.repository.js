@@ -16,7 +16,7 @@ class EstudianteRepository {
     constructor() {
         this.obtenerEstudiantes = (connection) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT *, CONCAT(AP_PATERNO, ' ', AP_MATERNO, ' ', NOMBRES) as NOMBRE_COMPLETO FROM registros ORDER BY ID DESC`;
+                const query = `SELECT *, CONCAT(AP_PATERNO, ' ', AP_MATERNO, ' ', NOMBRES) as NOMBRE_COMPLETO FROM registros ORDER BY ID DESC LIMIT 10`;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }

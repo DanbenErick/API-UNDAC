@@ -153,11 +153,22 @@ class ProcesosController {
                 res.status(500).json(error);
             }
         });
+        this.obtenerReporteIngresantesPorProceso = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.query;
+                const resp = yield this.procesosService.obtenerReporteIngresantesPorProceso(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.procesosService = new Procesos_service_1.ProcesosService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
     routes() {
+        this.router.get('/obtener-reporte-ingresantes-por-proceso', (0, express_async_handler_1.default)(this.obtenerReporteIngresantesPorProceso));
         this.router.post('/generar-reporte', (0, express_async_handler_1.default)(this.generarReporte));
         this.router.put('/actualizar-proceso', (0, express_async_handler_1.default)(this.actualizarProceso));
         this.router.get('/obtener-procesos', (0, express_async_handler_1.default)(this.obtenerProcesos));

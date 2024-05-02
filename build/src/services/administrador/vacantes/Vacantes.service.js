@@ -92,6 +92,24 @@ class VacantesService {
                 yield dbConnect.close();
             }
         });
+        this.modificarVacante = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const resp = yield this.vacantesRepo.modificarVacante(dbConnect, params);
+                if (resp[0].affectedRows > 0) {
+                    return { ok: true, message: 'Se modifico correctamente la vacante' };
+                }
+                else {
+                    return { ok: false, message: 'No se llego a modificar la vacante' };
+                }
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
         this.vacantesRepo = new vacantes_repository_1.default();
     }
 }

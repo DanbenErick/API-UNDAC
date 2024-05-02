@@ -58,7 +58,17 @@ class VacantesController {
             res.status(500).json(error)
         }
     }
+    public modificarVacante = async(req: Request, res: Response) => {
+        try {
+            const params = req.body
+            const resp = await this.vacantesService.modificarVacante(params)
+            res.status(200).json(resp)
+        }catch(error) {
+            res.status(500).json(error)
+        }
+    }
     public routes() {
+        this.router.put('/modificar-vacante', asyncHandler(this.modificarVacante))
         this.router.get('/obtener-vacantes', asyncHandler(this.obtenerVacantes))
         this.router.get('/obtener-vacantes-proceso', asyncHandler(this.obtenerVacantesPorProceso))
         this.router.get('/verificar-proceso-id', asyncHandler(this.verificarDisponibilidadProceso))

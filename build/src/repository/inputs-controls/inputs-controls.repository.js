@@ -87,15 +87,47 @@ class InputsControlsRepository {
                 throw error;
             }
         });
+        this.obtenerReporteAulaCepre = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+            SELECT
+                ROW_NUMBER() OVER () AS N,
+                aulas.NOMBRE_AULA,
+                inscritos.DNI,
+                CONCAT(registros.AP_PATERNO, ' ', registros.AP_MATERNO, ' ', registros.NOMBRES) AS NOMBRE_COMPLETO,
+                carreras.ESCUELA_COMPLETA,
+                aulas.TURNO,
+                procesos.NOMBRE AS NOMBRE_PROCESO,
+                SUM(pagos.MONTO) AS PAGO
+            FROM inscritos 
+            LEFT JOIN aulas ON aulas.ID = inscritos.ID_AULA
+            LEFT JOIN registros ON registros.DNI = inscritos.DNI
+            LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
+            LEFT JOIN pagos ON pagos.DNI = inscritos.DNI
+            LEFT JOIN procesos ON procesos.ID = inscritos.PROCESO
+            WHERE inscritos.PROCESO = ${params.PROCESO} AND pagos.ID_PROCESO = ${params.PROCESO} AND aulas.ID = ${params.AULA}
+            GROUP BY inscritos.DNI, registros.AP_PATERNO, registros.AP_MATERNO, registros.NOMBRES, carreras.ESCUELA_COMPLETA, aulas.TURNO, procesos.NOMBRE
+            ORDER BY registros.AP_PATERNO ASC, registros.AP_MATERNO ASC, registros.NOMBRES ASC        
+            `;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('ObtenerReporteAulaCepre =>', error);
+                throw error;
+            }
+        });
         this.obtenerResultadosOrdinario = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `
             SELECT 
-                inscritos.DNI AS DNI,
+                -- inscritos.DNI AS DNI,
+                resultados.DNI,
                 registros.AP_PATERNO AS AP_PATERNO,
                 registros.AP_MATERNO AS AP_MATERNO,
                 registros.NOMBRES AS NOMBRES,
-                inscritos.COD_CARRERA AS COD_CARRERA,
+                -- inscritos.COD_CARRERA AS COD_CARRERA,
+                resultados.COD_CARRERA AS COD_CARRERA,
                 carreras.FACULTAD AS FACULTAD,
                 procesos.NOMBRE AS ID_TIPO_MODALIDAD,
                 procesos.NOMBRE AS NOMBRE_PROCESO,
@@ -107,14 +139,19 @@ class InputsControlsRepository {
                 resultados.ERRORES AS ERRORES,
                 resultados.PROCESO AS PROCESO
             from resultados
-                left join inscritos on inscritos.DNI = resultados.DNI
+                -- left join inscritos on inscritos.DNI = resultados.DNI
                 left join registros on registros.DNI = resultados.DNI
                 left join procesos  on procesos.ID = resultados.PROCESO
-                left join carreras  on carreras.CODIGO_ESCUELA = inscritos.COD_CARRERA
-            WHERE inscritos.PROCESO = ${params.id_proceso} AND resultados.PROCESO = ${params.id_proceso}
-            -- AND resultados.COD_CARRERA IN (729001,730001,707001,731001,736001,727001,704001)
-                order by inscritos.COD_CARRERA ASC, resultados.ORDEN_MERITO_1 ASC
+                left join carreras  on carreras.CODIGO_ESCUELA = resultados.COD_CARRERA OR carreras.OLD_COD_CARRERA = resultados.COD_CARRERA
+            WHERE 
+            -- inscritos.PROCESO = ${params.id_proceso} AND 
+            resultados.PROCESO = ${params.id_proceso} 
+            AND resultados.EST_OPCION != 'PREPARATORIA'
+            
+                order by resultados.COD_CARRERA ASC, resultados.ORDEN_MERITO_1 ASC
+                -- , resultados.PUNT_T DESC
             `;
+                console.log("Query", query);
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }
@@ -329,7 +366,7 @@ class InputsControlsRepository {
         });
         this.obtenerCarrerasPorCodigoCarrera = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `SELECT CODIGO_ESCUELA as value, ESCUELA_COMPLETA as label FROM carreras`;
+                const query = `SELECT CODIGO_ESCUELA as value, ESCUELA_COMPLETA as label FROM carreras ORDER BY TIPO DESC, ESCUELA_COMPLETA ASC`;
                 const [rows] = yield connection.promise().query(query);
                 return rows;
             }

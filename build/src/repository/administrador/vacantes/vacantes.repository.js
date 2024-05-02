@@ -15,7 +15,7 @@ class VacantesRepository {
     constructor() {
         this.obtenerVacantes = (connection) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const query = `select * from vista_obtener_vacantes_proceso_ult_activo where ESTADO = 1 `;
+                const query = `select * from vista_obtener_vacantes_proceso_ult_activo ORDER BY ID DESC LIMIT 10`;
                 const [rows, fields] = yield connection.promise().query(query);
                 return rows;
             }
@@ -39,6 +39,7 @@ class VacantesRepository {
         });
         this.obtenerVacantesPorProceso = (connection, params) => __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log(params);
                 const query = `select * from vista_obtener_vacantes_proceso_ult_activo where ID_PROCESO = ${params.ID_PROCESO}`;
                 const [rows, fields] = yield connection.promise().query(query);
                 return rows;
@@ -68,6 +69,19 @@ class VacantesRepository {
             }
             catch (error) {
                 manager_log_resource_1.logger.error('VacantesRepo.crearVacante => ', error);
+                throw error;
+            }
+        });
+        this.modificarVacante = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = yield (0, util_1.generarConsulta)('vacantes', params, 'ID = ' + params.ID);
+                console.log(query);
+                const data = Object.values(params);
+                const result = yield connection.promise().execute(query, data);
+                return result;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('VacantesRepo.modificarVacante => ', error);
                 throw error;
             }
         });

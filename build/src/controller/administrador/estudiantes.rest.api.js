@@ -33,22 +33,23 @@ const storageEst = multer_1.default.diskStorage({
     },
 });
 const upload = (0, multer_1.default)({ storage: storageEst });
-// Middleware para procesar imágenes con Sharp
 const processImage = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!req.file) {
             throw new Error('No file uploaded');
         }
-        // Ruta del archivo original
         const originalFilePath = req.file.path;
-        // Ruta de la imagen procesada
         const processedFilePath = `${originalFilePath.split('.')[0]}.jpeg`;
-        yield (0, sharp_1.default)(originalFilePath)
-            .jpeg() // Convertir a JPEG
-            .toFile(processedFilePath); // Guardar la imagen procesada como JPEG
-        // Eliminar el archivo original
-        fs_1.default.unlinkSync(originalFilePath);
-        // Actualizar la información del archivo en req.file
+        // Verificar si el archivo ya es JPEG
+        const isJPEG = req.file.mimetype === 'image/jpeg' || req.file.mimetype === 'image/jpg';
+        // Si ya es JPEG, no es necesario convertirlo
+        if (!isJPEG) {
+            // console.log("Ingreso aqui")
+            yield (0, sharp_1.default)(originalFilePath)
+                .jpeg()
+                .toFile(processedFilePath);
+            fs_1.default.unlinkSync(originalFilePath);
+        }
         req.file.filename = req.file.filename.split('.')[0] + '.jpeg';
         req.file.path = processedFilePath;
         next();

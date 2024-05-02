@@ -160,4 +160,15 @@ export class ProcesosService {
             await dbConnect.close()
         }
     }
+    public obtenerReporteIngresantesPorProceso = async(params: any) => {
+        const dbConex: any = await connectMysql.connectMysql()
+        try {
+            const resp = await this.procesosRepo.obtenerReporteIngresantesPorProceso(dbConex, params)
+            return resp
+        }catch(error) {
+            await dbConex.rollback()
+        }finally {
+            await dbConex.close()
+        }
+    }
 }

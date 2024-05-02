@@ -297,8 +297,20 @@ class InputsControlsController {
       res.status(500).json(error);
     }
   }
+  public obtenerReporteAulaCepre = async(req: Request, res: Response) => {
+    try {
+      const params = req.query
+      const resp = await this.inputsControlsService.obtenerReporteAulaCepre(params)
+      res.status(200).json(resp)
+    }catch(error) {
+      res.status(500).json(error);
+    }
+  }
+  
   public routes() {
     //TODO: Revisar cuales son los endpoints que nesesitan permisos
+    
+    this.router.get('/obtener-reporte-aulas', asyncHandler(this.obtenerReporteAulaCepre))
     this.router.get('/obtener-resultados-cepre-primer-examen/:id_proceso', asyncHandler(this.obtenerResultadosCeprePrimerExamen))
     this.router.get('/obtener-inscritos-por-cordinador', asyncHandler(this.obtenerInscritosPorCordinador))
     this.router.get('/obtener-constancias-ingreso', asyncHandler(this.obtenerIngresantesParaConstancia))

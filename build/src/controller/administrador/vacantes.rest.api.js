@@ -68,11 +68,22 @@ class VacantesController {
                 res.status(500).json(error);
             }
         });
+        this.modificarVacante = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.body;
+                const resp = yield this.vacantesService.modificarVacante(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.vacantesService = new Vacantes_service_1.VacantesService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
     routes() {
+        this.router.put('/modificar-vacante', (0, express_async_handler_1.default)(this.modificarVacante));
         this.router.get('/obtener-vacantes', (0, express_async_handler_1.default)(this.obtenerVacantes));
         this.router.get('/obtener-vacantes-proceso', (0, express_async_handler_1.default)(this.obtenerVacantesPorProceso));
         this.router.get('/verificar-proceso-id', (0, express_async_handler_1.default)(this.verificarDisponibilidadProceso));

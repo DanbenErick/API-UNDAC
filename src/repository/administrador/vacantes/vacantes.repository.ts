@@ -5,7 +5,7 @@ import { generarConsulta } from '../../../util/util'
 class VacantesRepository {
     public obtenerVacantes = async(connection:any) => {
         try {
-            const query = `select * from vista_obtener_vacantes_proceso_ult_activo where ESTADO = 1 `
+            const query = `select * from vista_obtener_vacantes_proceso_ult_activo ORDER BY ID DESC LIMIT 10`
             const [rows, fields]: any = await connection.promise().query(query)
             return rows
         }catch(error) {
@@ -27,7 +27,9 @@ class VacantesRepository {
     }
     public obtenerVacantesPorProceso = async(connection: any, params: VacantesInterface) => {
         try { 
+            console.log(params)
             const query = `select * from vista_obtener_vacantes_proceso_ult_activo where ID_PROCESO = ${params.ID_PROCESO}`
+                
             const [rows, fields]: any = await connection.promise().query(query)
             return rows
         }catch(error) {
@@ -53,6 +55,18 @@ class VacantesRepository {
             return result
         }catch(error) {
             logger.error('VacantesRepo.crearVacante => ', error)
+            throw error
+        }
+    }
+    public modificarVacante = async(connection: any, params: VacantesInterface) => {
+        try {
+            const query = await generarConsulta('vacantes', params, 'ID = ' + params.ID)
+            console.log(query)
+            const data = Object.values(params)
+            const result = await connection.promise().execute(query, data)
+            return result
+        }catch(error) {
+            logger.error('VacantesRepo.modificarVacante => ', error)
             throw error
         }
     }

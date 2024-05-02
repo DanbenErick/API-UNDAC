@@ -72,4 +72,20 @@ export class VacantesService {
             await dbConnect.close()
         }
     }
+    public modificarVacante = async(params: VacantesInterface) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
+            const resp = await this.vacantesRepo.modificarVacante(dbConnect, params)
+            if(resp[0].affectedRows > 0) {
+                return { ok: true, message: 'Se modifico correctamente la vacante' }
+            }else {
+                return { ok: false, message: 'No se llego a modificar la vacante' }
+            }
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+
+    }
 }

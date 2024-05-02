@@ -330,12 +330,23 @@ class InputsControlsController {
                 res.status(500).json(error);
             }
         });
+        this.obtenerReporteAulaCepre = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = req.query;
+                const resp = yield this.inputsControlsService.obtenerReporteAulaCepre(params);
+                res.status(200).json(resp);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.inputsControlsService = new inputs_controls_service_1.InputsControlsService();
         this.router = (0, express_1.Router)();
         this.routes();
     }
     routes() {
         //TODO: Revisar cuales son los endpoints que nesesitan permisos
+        this.router.get('/obtener-reporte-aulas', (0, express_async_handler_1.default)(this.obtenerReporteAulaCepre));
         this.router.get('/obtener-resultados-cepre-primer-examen/:id_proceso', (0, express_async_handler_1.default)(this.obtenerResultadosCeprePrimerExamen));
         this.router.get('/obtener-inscritos-por-cordinador', (0, express_async_handler_1.default)(this.obtenerInscritosPorCordinador));
         this.router.get('/obtener-constancias-ingreso', (0, express_async_handler_1.default)(this.obtenerIngresantesParaConstancia));

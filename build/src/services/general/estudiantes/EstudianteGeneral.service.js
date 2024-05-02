@@ -169,7 +169,7 @@ class EstudiantesGeneralService {
             const dbConex = yield connection_mysqldb_1.default.connectMysql();
             const date = new Date();
             const year = date.getFullYear();
-            const prepa = params.YEAR_CONCLU >= year ? 1 : 0;
+            const prepa = params.YEAR_CONCLU > year ? 1 : 0;
             const data = [
                 params.DNI || '',
                 params.COD_CARRERA || '',

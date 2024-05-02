@@ -87,8 +87,9 @@ export class CordinadorService {
       try {
         params = {
           dni: params.dni || '',
-          proceso: params.proceso || ''
+          proceso: typeof params.proceso == undefined ? params.proceso : ''
         }
+        console.table(params)
         const result = await this.cordinadorRepo.obtenerIngresantesParaContanciaProDNIyProceso(dbConnect, params)
         return result
       }catch(error) {

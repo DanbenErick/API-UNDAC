@@ -218,6 +218,45 @@ class ProcesosRepository {
                 throw error;
             }
         });
+        this.obtenerReporteIngresantesPorProceso = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+            SELECT
+                procesos.YEAR AS AÑO,
+                procesos.NOMBRE AS PROCESO,
+                opc_modalidades.NOMBRE AS MODALIDAD,
+                '' AS COD_ALUMNO,
+                registros.AP_PATERNO AS AP_PAT,
+                registros.AP_MATERNO AS AP_MAT,
+                registros.NOMBRES,
+                carreras.ESCID,
+                dat_complementarios.SEXO,
+                '' AS ESCUELA,
+                carreras.ESCUELA_COMPLETA AS PRIMERA_OPCION,
+                resultados.PUNT_T AS PROMEDIO_FINAL,
+                'PRIMERA OPCION' AS OPCION_DE_INGRESO,
+                resultados.ORDEN_MERITO_1 AS ORDEN_MERITO,
+                resultados.DNI,
+                registros.CORREO,
+                dat_complementarios.NOMBRE_COLEGIO AS NOMBRE_DE_LA_ESCUELA,
+                inscritos.YEAR_CONCLU
+            FROM resultados
+            LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
+            LEFT JOIN opc_modalidades ON opc_modalidades.ID = resultados.MODALIDAD
+            LEFT JOIN carreras ON carreras.CODIGO_ESCUELA = resultados.COD_CARRERA OR carreras.OLD_COD_CARRERA = resultados.COD_CARRERA
+            LEFT JOIN dat_complementarios ON dat_complementarios.DNI = resultados.DNI
+            LEFT JOIN inscritos ON inscritos.DNI = resultados.DNI
+            LEFT JOIN registros ON registros.DNI = resultados.DNI
+            WHERE inscritos.PROCESO = ${params.PROCESO} AND resultados.PROCESO = ${params.PROCESO} and resultados.EST_OPCION = 'INGRESO';
+            `;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('ObtenerReporteIngresantesPorProceso => ', error);
+                throw error;
+            }
+        });
     }
 }
 exports.ProcesosRepository = ProcesosRepository;

@@ -191,6 +191,19 @@ class ProcesosService {
                 yield dbConnect.close();
             }
         });
+        this.obtenerReporteIngresantesPorProceso = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const resp = yield this.procesosRepo.obtenerReporteIngresantesPorProceso(dbConex, params);
+                return resp;
+            }
+            catch (error) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
         this.procesosRepo = new procesos_repository_1.ProcesosRepository();
         // this.asignarOpcionesRolRepository = new MantenimientoOpcionesRolRepository();
     }

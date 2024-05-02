@@ -9,22 +9,6 @@ import { EstudianteCompleto } from '../../interfaces/administrador/EstudianteCom
 import ip from 'ip'
 import sharp from 'sharp'
 
-// const processImage = (req: any, res: Response, next: NextFunction) => {
-//     if(!req.file) {
-//         return res.status(400).json({ error: 'No se subio algun aarchivo' })
-//     }
-
-//     sharp(req.file.path)
-//         .jpeg()
-//         .toFile(`./build/uploads/${req.file.filename}.jpeg`, (err, info) => {
-//             if(err) {
-//                 return res.status(500).json({ ok: false, message: 'Error al proceso imagen' })
-//             }
-//             req.file.path = `./build/uploads/${req.file.filename}.jpeg`
-//             next()
-//         })
-// }
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const nombreSinExtension = file.originalname.split('.')[0];
@@ -41,6 +25,37 @@ const storage = multer.diskStorage({
     },
 });
 const upload = multer({ storage: storage });
+const processImage = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        if (!req.file) {
+            throw new Error('No file uploaded');
+        }
+  
+        const originalFilePath = req.file.path;
+        const processedFilePath = `${originalFilePath.split('.')[0]}.jpeg`;
+  
+        // Verificar si el archivo ya es JPEG
+        const isJPEG = req.file.mimetype === 'image/jpeg' || req.file.mimetype === 'image/jpg';
+  
+        // Si ya es JPEG, no es necesario convertirlo
+        if (!isJPEG) {
+            // console.log("Ingreso aqui")
+            await sharp(originalFilePath)
+                .jpeg()
+                .toFile(processedFilePath);
+            fs.unlinkSync(originalFilePath);
+        }
+  
+        
+  
+        req.file.filename = req.file.filename.split('.')[0] + '.jpeg';
+        req.file.path = processedFilePath;
+  
+        next();
+    } catch (error) {
+        next(error);
+    }
+};
 
 class EstudianteController {
     public router: Router
@@ -268,7 +283,7 @@ class EstudianteController {
         this.router.get('/consultar-datos-dni-por-proceso/:DNI/:ID_PROCESO', asyncHandler(this.consultarDatosDNIPorProceso))
         this.router.post('/registrar-estudiante', asyncHandler(this.registrarEstudiante))
         this.router.post('/inscribir-estudiante', this.authenticateToken, asyncHandler(this.inscribirEstudiante))
-        this.router.post('/subir-foto-estudiante', this.authenticateToken, upload.single('foto'), asyncHandler(this.subirFotoEstudiante))
+        this.router.post('/subir-foto-estudiante', this.authenticateToken, upload.single('foto'), processImage, asyncHandler(this.subirFotoEstudiante))
         this.router.post('/subir-documentos-estudiante', this.authenticateToken, upload.single('documento'), asyncHandler(this.subirDocumentacionEstudiante))
         this.router.post('/registrar-test-psicologico', this.authenticateToken, asyncHandler(this.registrarTestPsicologico))
         this.router.post('/verificar-test-psicologico-inscrito', this.authenticateToken,  asyncHandler(this.verificarTestpsicologicoInscrito))
