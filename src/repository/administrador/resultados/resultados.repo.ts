@@ -53,7 +53,7 @@ export class ResultadosAdministradorRepository {
       logger.error('EstudianteGeneralRepository.duplicarDNIInscritosAResultados =>', error)
     }
   }
-  public actualizarDaraCodePorDNI = async(connection: any, params: any) => {
+  public actualizarDaraCodePorDNI = async(connection: any, params: any, proceso: any) => {
     try {
       const query = `
         UPDATE resultados
@@ -61,7 +61,34 @@ export class ResultadosAdministradorRepository {
         DARACOD = '${params.DARACOD}',
         ASISTENCIA = 'SE PRESENTO',
         AULA = ${params.AULA}
-        WHERE DNI = ${params.DNI};
+        WHERE DNI = ${params.DNI} AND PROCESO = ${proceso};
+      `
+      const resp : any = await connection.promise().query(query)
+      return resp
+    }catch(error) {
+      logger.error('EstudianteGeneralRepository.actualizarDaraCodePorDNI =>', error)
+    }
+  }
+  public establecerNoPresentoSegundoExamen = async(connection: any, params: any, proceso: any) => {
+    try {
+      const query = `
+        UPDATE resultados SET ASISTENCIA_2 = 'NSP' WHERE PROCESO = ${proceso}
+      `
+      const resp : any = await connection.promise().query(query)
+      return resp
+    }catch(error) {
+      logger.error('EstudianteGeneralRepository.establecerNoPresentoSegundoExamen =>', error)
+    }
+  }
+  public actualizarDaraCodePorDNISE = async(connection: any, params: any, proceso: any) => {
+    try {
+      const query = `
+        UPDATE resultados
+        SET
+        DARACOD_2 = '${params.DARACOD}',
+        ASISTENCIA_2 = 'SE PRESENTO',
+        AULA = ${params.AULA}
+        WHERE DNI = ${params.DNI} AND PROCESO = ${proceso};
       `
       const resp : any = await connection.promise().query(query)
       return resp
@@ -79,6 +106,41 @@ export class ResultadosAdministradorRepository {
         PUNT_T = ${params['Nota D'].substring(0,6).replace(',','.')},
         EST_OPCION = CASE WHEN EST_OPCION != 'PREPARATORIA' THEN 'NO INGRESO' ELSE EST_OPCION END
         WHERE DARACOD = '${params.DARACOD}';
+      `
+      const resp : any = await connection.promise().query(query)
+      return resp
+    }catch(error) {
+      logger.error('EstudianteGeneralRepository.establecerNotasPorDaraCode =>', error)
+    }
+  }
+  public establecerNotasPorDaraCodePE = async(connection: any, params: any) => {
+    try {
+      const query = `
+        UPDATE resultados
+        SET
+        ACIERTOS = ${params['Aciertos']},
+        ERRORES = ${params['Errores']},
+        PUNT_1 = ${params['Nota D'].substring(0,6).replace(',','.')},
+        EST_OPCION = CASE WHEN EST_OPCION != 'PREPARATORIA' THEN 'NO INGRESO' ELSE EST_OPCION END
+        WHERE DARACOD = '${params.DARACOD}';
+      `
+      console.log(query)
+      const resp : any = await connection.promise().query(query)
+      return resp
+    }catch(error) {
+      logger.error('EstudianteGeneralRepository.establecerNotasPorDaraCode =>', error)
+    }
+  }
+  public establecerNotasPorDaraCodeEF = async(connection: any, params: any) => {
+    try {
+      const query = `
+        UPDATE resultados
+        SET
+        ACIERTOS = ${params['Aciertos']},
+        ERRORES = ${params['Errores']},
+        PUNT_2 = ${params['Nota D'].substring(0,6).replace(',','.')},
+        EST_OPCION = CASE WHEN EST_OPCION != 'PREPARATORIA' THEN 'NO INGRESO' ELSE EST_OPCION END
+        WHERE DARACOD_2 = '${params.DARACOD}';
       `
       const resp : any = await connection.promise().query(query)
       return resp
@@ -169,6 +231,24 @@ export class ResultadosAdministradorRepository {
       return resp
     }catch(error) {
       logger.error('EstudianteGeneralRepository.establecerIngresantesPorCarreraOrdinario =>', error)
+    }
+  }
+  public obtenerNotasParaSacarPromedio = async(connection: any, params: any, params_2: any) => {
+    try {
+      const query = `SELECT DNI, PROCESO, PUNT_1, PUNT_2 FROM resultados WHERE PROCESO = ${params_2.ID_PROCESO};`
+      const [rows] = await connection.promise().query(query)
+      return rows
+    }catch(error) {
+      logger.error('EstudianteGeneralRepository.obtenerNotasParaSacarPromedio =>', error)
+    }
+  }
+  public establecerNotaFinalCepre = async(connection:any, params: any, params_2: any) => {
+    try {
+      const query = `UPDATE resultados SET PUNT_T = ${params.PUNT_T} WHERE PROCESO = ${params_2.ID_PROCESO} AND DNI = ${params.DNI};`
+      const resp = await connection.promise().query(query)
+      return resp
+    }catch(error) {
+      logger.error('EstudianteGeneralRepository.establecerNotaFinalCepre =>', error)
     }
   }
 }

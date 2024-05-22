@@ -64,7 +64,7 @@ class ResultadosAdministradorRepository {
                 manager_log_resource_1.logger.error('EstudianteGeneralRepository.duplicarDNIInscritosAResultados =>', error);
             }
         });
-        this.actualizarDaraCodePorDNI = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+        this.actualizarDaraCodePorDNI = (connection, params, proceso) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = `
         UPDATE resultados
@@ -72,7 +72,36 @@ class ResultadosAdministradorRepository {
         DARACOD = '${params.DARACOD}',
         ASISTENCIA = 'SE PRESENTO',
         AULA = ${params.AULA}
-        WHERE DNI = ${params.DNI};
+        WHERE DNI = ${params.DNI} AND PROCESO = ${proceso};
+      `;
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.actualizarDaraCodePorDNI =>', error);
+            }
+        });
+        this.establecerNoPresentoSegundoExamen = (connection, params, proceso) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+        UPDATE resultados SET ASISTENCIA_2 = 'NSP' WHERE PROCESO = ${proceso}
+      `;
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.establecerNoPresentoSegundoExamen =>', error);
+            }
+        });
+        this.actualizarDaraCodePorDNISE = (connection, params, proceso) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+        UPDATE resultados
+        SET
+        DARACOD_2 = '${params.DARACOD}',
+        ASISTENCIA_2 = 'SE PRESENTO',
+        AULA = ${params.AULA}
+        WHERE DNI = ${params.DNI} AND PROCESO = ${proceso};
       `;
                 const resp = yield connection.promise().query(query);
                 return resp;
@@ -91,6 +120,43 @@ class ResultadosAdministradorRepository {
         PUNT_T = ${params['Nota D'].substring(0, 6).replace(',', '.')},
         EST_OPCION = CASE WHEN EST_OPCION != 'PREPARATORIA' THEN 'NO INGRESO' ELSE EST_OPCION END
         WHERE DARACOD = '${params.DARACOD}';
+      `;
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.establecerNotasPorDaraCode =>', error);
+            }
+        });
+        this.establecerNotasPorDaraCodePE = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+        UPDATE resultados
+        SET
+        ACIERTOS = ${params['Aciertos']},
+        ERRORES = ${params['Errores']},
+        PUNT_1 = ${params['Nota D'].substring(0, 6).replace(',', '.')},
+        EST_OPCION = CASE WHEN EST_OPCION != 'PREPARATORIA' THEN 'NO INGRESO' ELSE EST_OPCION END
+        WHERE DARACOD = '${params.DARACOD}';
+      `;
+                console.log(query);
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.establecerNotasPorDaraCode =>', error);
+            }
+        });
+        this.establecerNotasPorDaraCodeEF = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+        UPDATE resultados
+        SET
+        ACIERTOS = ${params['Aciertos']},
+        ERRORES = ${params['Errores']},
+        PUNT_2 = ${params['Nota D'].substring(0, 6).replace(',', '.')},
+        EST_OPCION = CASE WHEN EST_OPCION != 'PREPARATORIA' THEN 'NO INGRESO' ELSE EST_OPCION END
+        WHERE DARACOD_2 = '${params.DARACOD}';
       `;
                 const resp = yield connection.promise().query(query);
                 return resp;
@@ -185,6 +251,26 @@ class ResultadosAdministradorRepository {
             }
             catch (error) {
                 manager_log_resource_1.logger.error('EstudianteGeneralRepository.establecerIngresantesPorCarreraOrdinario =>', error);
+            }
+        });
+        this.obtenerNotasParaSacarPromedio = (connection, params, params_2) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `SELECT DNI, PROCESO, PUNT_1, PUNT_2 FROM resultados WHERE PROCESO = ${params_2.ID_PROCESO};`;
+                const [rows] = yield connection.promise().query(query);
+                return rows;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.obtenerNotasParaSacarPromedio =>', error);
+            }
+        });
+        this.establecerNotaFinalCepre = (connection, params, params_2) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `UPDATE resultados SET PUNT_T = ${params.PUNT_T} WHERE PROCESO = ${params_2.ID_PROCESO} AND DNI = ${params.DNI};`;
+                const resp = yield connection.promise().query(query);
+                return resp;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error('EstudianteGeneralRepository.establecerNotaFinalCepre =>', error);
             }
         });
     }

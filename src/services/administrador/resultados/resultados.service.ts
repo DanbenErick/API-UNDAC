@@ -53,12 +53,6 @@ export class ResultadosAdministradorService {
                     i++
                 }
             }
-            console.log("contenido de indices", total_params, i)
-            console.log("contenido de indices", total_params, i)
-            console.log("contenido de indices", total_params, i)
-            console.log("contenido de indices", total_params, i)
-            console.log("contenido de indices", total_params, i)
-
             if(total_params === i) {
                 return {ok: true, message: 'Se registro las notas de los estudiantes'}
             }
@@ -70,14 +64,100 @@ export class ResultadosAdministradorService {
             await dbConexion.close()
         }
     }
+    public establecerNotasPorDaraCodePE = async(params: any, params_2: any) => {
+        const dbConexion: any = await connectMysql.connectMysql()
+        try {
+            const total_params = params.length
+            let i = 0
+            for(const element of params) {
+                const result = await this.resultadosRepo.establecerNotasPorDaraCodePE(dbConexion, element)
+                if(result && result[0].affectedRows === 1) {
+                    i++
+                }
+            }
+            if(total_params === i) {
+                return {ok: true, message: 'Se registro las notas de los estudiantes'}
+            }
+            return {ok: true, message: 'Se registro las notas de los estudiantes'}
+            // return {ok: false, message: 'No se registro completamente las notas de los estudiantes'}
+        }catch(error) {
+            await dbConexion.rollback()
+        }finally {
+            await dbConexion.close()
+        }
+    }
+    public establecerNotasPorDaraCodeEF = async(params: any, params_2: any) => {
+        const dbConexion: any = await connectMysql.connectMysql()
+        try {
+            // console.log(params)
+            const total_params = params.length
+            let i = 0
+            let j = 0
+            for(const element of params) {
+                const result = await this.resultadosRepo.establecerNotasPorDaraCodeEF(dbConexion, element)
+                if(result && result[0].affectedRows === 1) {
+                    i++
+                }
+            }
+            const obtenerPrimerYUltimaNotas = await this.resultadosRepo.obtenerNotasParaSacarPromedio(dbConexion, params, params_2)
+            for(const element of obtenerPrimerYUltimaNotas) {
+                const result = await this.resultadosRepo.establecerNotaFinalCepre(dbConexion, {...element, PUNT_T: (parseFloat(element.PUNT_1) + parseFloat(element.PUNT_2)) / 2}, params_2)
+                if(result && result[0].affectedRows === 1) {
+                    j++
+                }
+            }
+            if(total_params === i) {
+                console.log('Sacado promedio de estos estuaintes', j)
+                return {ok: true, message: 'Se registro las notas de los estudiantes'}
+            }
+            return {ok: true, message: 'Se registro las notas de los estudiantes'}
+            // return {ok: false, message: 'No se registro completamente las notas de los estudiantes'}
+        }catch(error) {
+            await dbConexion.rollback()
+        }finally {
+            await dbConexion.close()
+        }
+    }
+    public establecerPromedioCepre = async(params: any) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
 
-    public actualizarDaraCodePorDNI = async(params: []) => {
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+    }
+
+    public actualizarDaraCodePorDNI = async(params: [], proceso: any) => {
         const dbConnect: any = await connectMysql.connectMysql()
         try {
             const total_params = params.length
             let i = 0
             for(const element of params) {
-                const result = await this.resultadosRepo.actualizarDaraCodePorDNI(dbConnect, element)
+                const result = await this.resultadosRepo.actualizarDaraCodePorDNI(dbConnect, element, proceso)
+                if(result && result[0].affectedRows === 1) {
+                    i++
+                }
+            }
+            if(total_params === i) {
+                return {ok: true, message: 'Se registro correctamente todos los daracodes'}
+            }
+            return {ok: false, message: 'Ocurrio un error al registrar los daracodes'}
+        }catch(error) {
+            await dbConnect.rollback()
+        }finally {
+            await dbConnect.close()
+        }
+    }
+    public actualizarDaraCodePorDNISE = async(params: [], proceso: any) => {
+        const dbConnect: any = await connectMysql.connectMysql()
+        try {
+            const resp_establecer_nsp_se = await this.resultadosRepo.establecerNoPresentoSegundoExamen(dbConnect, params, proceso)
+            const total_params = params.length
+            let i = 0
+            for(const element of params) {
+                const result = await this.resultadosRepo.actualizarDaraCodePorDNISE(dbConnect, element, proceso)
                 if(result && result[0].affectedRows === 1) {
                     i++
                 }

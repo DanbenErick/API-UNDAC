@@ -60,11 +60,6 @@ class ResultadosAdministradorService {
                         i++;
                     }
                 }
-                console.log("contenido de indices", total_params, i);
-                console.log("contenido de indices", total_params, i);
-                console.log("contenido de indices", total_params, i);
-                console.log("contenido de indices", total_params, i);
-                console.log("contenido de indices", total_params, i);
                 if (total_params === i) {
                     return { ok: true, message: 'Se registro las notas de los estudiantes' };
                 }
@@ -78,13 +73,106 @@ class ResultadosAdministradorService {
                 yield dbConexion.close();
             }
         });
-        this.actualizarDaraCodePorDNI = (params) => __awaiter(this, void 0, void 0, function* () {
+        this.establecerNotasPorDaraCodePE = (params, params_2) => __awaiter(this, void 0, void 0, function* () {
+            const dbConexion = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const total_params = params.length;
+                let i = 0;
+                for (const element of params) {
+                    const result = yield this.resultadosRepo.establecerNotasPorDaraCodePE(dbConexion, element);
+                    if (result && result[0].affectedRows === 1) {
+                        i++;
+                    }
+                }
+                if (total_params === i) {
+                    return { ok: true, message: 'Se registro las notas de los estudiantes' };
+                }
+                return { ok: true, message: 'Se registro las notas de los estudiantes' };
+                // return {ok: false, message: 'No se registro completamente las notas de los estudiantes'}
+            }
+            catch (error) {
+                yield dbConexion.rollback();
+            }
+            finally {
+                yield dbConexion.close();
+            }
+        });
+        this.establecerNotasPorDaraCodeEF = (params, params_2) => __awaiter(this, void 0, void 0, function* () {
+            const dbConexion = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                // console.log(params)
+                const total_params = params.length;
+                let i = 0;
+                let j = 0;
+                for (const element of params) {
+                    const result = yield this.resultadosRepo.establecerNotasPorDaraCodeEF(dbConexion, element);
+                    if (result && result[0].affectedRows === 1) {
+                        i++;
+                    }
+                }
+                const obtenerPrimerYUltimaNotas = yield this.resultadosRepo.obtenerNotasParaSacarPromedio(dbConexion, params, params_2);
+                for (const element of obtenerPrimerYUltimaNotas) {
+                    const result = yield this.resultadosRepo.establecerNotaFinalCepre(dbConexion, Object.assign(Object.assign({}, element), { PUNT_T: (parseFloat(element.PUNT_1) + parseFloat(element.PUNT_2)) / 2 }), params_2);
+                    if (result && result[0].affectedRows === 1) {
+                        j++;
+                    }
+                }
+                if (total_params === i) {
+                    console.log('Sacado promedio de estos estuaintes', j);
+                    return { ok: true, message: 'Se registro las notas de los estudiantes' };
+                }
+                return { ok: true, message: 'Se registro las notas de los estudiantes' };
+                // return {ok: false, message: 'No se registro completamente las notas de los estudiantes'}
+            }
+            catch (error) {
+                yield dbConexion.rollback();
+            }
+            finally {
+                yield dbConexion.close();
+            }
+        });
+        this.establecerPromedioCepre = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
+        this.actualizarDaraCodePorDNI = (params, proceso) => __awaiter(this, void 0, void 0, function* () {
             const dbConnect = yield connection_mysqldb_1.default.connectMysql();
             try {
                 const total_params = params.length;
                 let i = 0;
                 for (const element of params) {
-                    const result = yield this.resultadosRepo.actualizarDaraCodePorDNI(dbConnect, element);
+                    const result = yield this.resultadosRepo.actualizarDaraCodePorDNI(dbConnect, element, proceso);
+                    if (result && result[0].affectedRows === 1) {
+                        i++;
+                    }
+                }
+                if (total_params === i) {
+                    return { ok: true, message: 'Se registro correctamente todos los daracodes' };
+                }
+                return { ok: false, message: 'Ocurrio un error al registrar los daracodes' };
+            }
+            catch (error) {
+                yield dbConnect.rollback();
+            }
+            finally {
+                yield dbConnect.close();
+            }
+        });
+        this.actualizarDaraCodePorDNISE = (params, proceso) => __awaiter(this, void 0, void 0, function* () {
+            const dbConnect = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const resp_establecer_nsp_se = yield this.resultadosRepo.establecerNoPresentoSegundoExamen(dbConnect, params, proceso);
+                const total_params = params.length;
+                let i = 0;
+                for (const element of params) {
+                    const result = yield this.resultadosRepo.actualizarDaraCodePorDNISE(dbConnect, element, proceso);
                     if (result && result[0].affectedRows === 1) {
                         i++;
                     }

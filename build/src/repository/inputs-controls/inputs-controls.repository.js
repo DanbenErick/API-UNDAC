@@ -66,6 +66,8 @@ class InputsControlsRepository {
             concat(registros.AP_PATERNO,' ', registros.AP_MATERNO,' ',registros.NOMBRES) AS NOMBRE_COMPLETO,
             carreras.AREA AS CARRERA,
             resultados.ORDEN_MERITO_1 AS ORDEN_MERITO,
+            resultados.PUNT_1,
+            resultados.ASISTENCIA,
             resultados.PUNT_T AS PUNTAJE_TOTAL,
         --    resultados.EST_OPCION AS ESTADO,
             'PRIMER EXAMEN' AS ESTADO,
@@ -294,7 +296,8 @@ class InputsControlsRepository {
             LEFT JOIN procesos ON procesos.ID = resultados.PROCESO
             LEFT JOIN opc_modalidades ON opc_modalidades.ID = inscritos.ID_TIPO_MODALIDAD
             WHERE resultados.PROCESO = ${params.proceso} AND inscritos.PROCESO = ${params.proceso} AND resultados.EST_OPCION = 'INGRESO'
-            ORDER BY carreras.SEDE_FACULTAD ASC
+            
+            ORDER BY carreras.ESCUELA_COMPLETA ASC
             `;
                 // const query = `
                 // SELECT 

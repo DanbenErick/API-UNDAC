@@ -52,18 +52,48 @@ class ResultadosAdministradorController {
                 })
                     .on('end', () => __awaiter(this, void 0, void 0, function* () {
                     console.log(req.query);
+                    const proceso = req.query.ID_PROCESO;
                     const resp_duplicado_dni = yield this.resultadosService.duplicarDNIInscritosAResultados({ ID_PROCESO: req.query.ID_PROCESO });
-                    console.log("Console 1: ", resp_duplicado_dni);
-                    console.log("Console 2: ", resp_duplicado_dni.affectedRows);
-                    console.log("Console 3: ", jsonArray.length);
-                    console.log("Console 4: ", resp_duplicado_dni.affectedRows >= jsonArray.length);
                     if (resp_duplicado_dni.affectedRows >= jsonArray.length) {
-                        const resp_actualiza_daracod_dni = yield this.resultadosService.actualizarDaraCodePorDNI(jsonArray);
+                        const resp_actualiza_daracod_dni = yield this.resultadosService.actualizarDaraCodePorDNI(jsonArray, proceso);
                         res.status(200).json(resp_actualiza_daracod_dni);
                     }
                     else {
                         res.status(200).json({ ok: false, message: 'Hay mas estudiantes en la solapa que la cantidad de inscritos para este proceso' });
                     }
+                }))
+                    .on('error', (error) => {
+                    console.log('Error al procesar el csv', error);
+                });
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
+        this.procesarSolapasSECSV = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const fileContent = fs_1.default.createReadStream(req.file.path, 'utf-8');
+                const jsonArray = [];
+                fileContent.pipe((0, csv_parser_1.default)({ separator: ';' }))
+                    .on('data', (row) => {
+                    console.log("row: ", row);
+                    const jsonObject = {};
+                    Object.keys(row).forEach(key => {
+                        if (key !== 'APELLIDOS Y NOMBRES' && key !== '') {
+                            jsonObject[key.trim()] = row[key].trim();
+                        }
+                    });
+                    jsonArray.push(jsonObject);
+                })
+                    .on('end', () => __awaiter(this, void 0, void 0, function* () {
+                    const proceso = req.query.ID_PROCESO;
+                    const resp_actualiza_daracod_dni = yield this.resultadosService.actualizarDaraCodePorDNISE(jsonArray, proceso);
+                    res.status(200).json(resp_actualiza_daracod_dni);
+                    // if(resp_actualiza_daracod_dni.affectedRows === jsonArray.length) {
+                    // }else {
+                    //   res.status(200).json({ok: false, message: 'Hay mas estudiantes en la solapa que la cantidad de inscritos para este proceso'})
+                    // }
+                    // res.status(200).json(resp_actualiza_daracod_dni)
                 }))
                     .on('error', (error) => {
                     console.log('Error al procesar el csv', error);
@@ -103,6 +133,69 @@ class ResultadosAdministradorController {
                 res.status(500).json(error);
             }
         });
+        this.procesarMultiPCSVPE = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const fileContent = fs_1.default.createReadStream(req.file.path, 'utf-8');
+                const jsonArray = [];
+                fileContent.pipe((0, csv_parser_1.default)({ separator: ';' }))
+                    .on('data', (row) => {
+                    const jsonObject = {};
+                    Object.keys(row).forEach(key => {
+                        if (key !== 'APELLIDOS Y NOMBRES' && key !== '') {
+                            jsonObject[key.trim()] = row[key].trim();
+                        }
+                    });
+                    jsonArray.push(jsonObject);
+                })
+                    .on('end', () => __awaiter(this, void 0, void 0, function* () {
+                    // console.log(jsonArray)
+                    // req.query.ID_PROCESO = 26
+                    const resp_notas_daras = yield this.resultadosService.establecerNotasPorDaraCodePE(jsonArray, req.query);
+                    const params = {};
+                    // const resp_asignarIngresantes: any = await this.resultadosService.asignarIngresantesPorCarreraOrdinario(req.query)
+                    res.status(200).json(resp_notas_daras);
+                }))
+                    .on('error', (error) => {
+                    console.log('Error al procesar el csv', error);
+                });
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
+        this.procesarMultiPCSVEF = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const fileContent = fs_1.default.createReadStream(req.file.path, 'utf-8');
+                const jsonArray = [];
+                fileContent.pipe((0, csv_parser_1.default)({ separator: ';' }))
+                    .on('data', (row) => {
+                    const jsonObject = {};
+                    Object.keys(row).forEach(key => {
+                        if (key !== 'APELLIDOS Y NOMBRES' && key !== '') {
+                            jsonObject[key.trim()] = row[key].trim();
+                        }
+                    });
+                    jsonArray.push(jsonObject);
+                })
+                    .on('end', () => __awaiter(this, void 0, void 0, function* () {
+                    // console.log(jsonArray)
+                    // req.query.ID_PROCESO = 26
+                    const resp_notas_daras = yield this.resultadosService.establecerNotasPorDaraCodeEF(jsonArray, req.query);
+                    const resp_asignarIngresantes = yield this.resultadosService.asignarIngresantesPorCarreraOrdinario(req.query);
+                    res.status(200).json(Object.assign(Object.assign({}, resp_notas_daras), resp_asignarIngresantes));
+                    // const params = {}
+                    // const resp_asignarIngresantes: any = await this.resultadosService.asignarIngresantesPorCarreraOrdinario(req.query)
+                    // res.status(200).json({...resp_notas_daras, ...resp_asignarIngresantes})
+                    res.status(200).json(resp_notas_daras);
+                }))
+                    .on('error', (error) => {
+                    console.log('Error al procesar el csv', error);
+                });
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.resultadosService = new resultados_service_1.ResultadosAdministradorService();
         this.router = (0, express_1.Router)();
         this.routes();
@@ -110,6 +203,9 @@ class ResultadosAdministradorController {
     routes() {
         this.router.post('/procesar-solapas-csv', upload.single('solapa'), (0, express_async_handler_1.default)(this.procesarSolapasCSV));
         this.router.post('/procesar-multip-csv', upload.single('multip'), (0, express_async_handler_1.default)(this.procesarMultiPCSV));
+        this.router.post('/procesar-solapas-segundo-examen', upload.single('solapa'), (0, express_async_handler_1.default)(this.procesarSolapasSECSV));
+        this.router.post('/procesar-multip-primer-examen-csv', upload.single('multip'), (0, express_async_handler_1.default)(this.procesarMultiPCSVPE));
+        this.router.post('/procesar-multip-ultimo-examen-csv', upload.single('multip'), (0, express_async_handler_1.default)(this.procesarMultiPCSVEF));
     }
 }
 exports.default = ResultadosAdministradorController;
