@@ -16,17 +16,34 @@ from vacantes
 
 CREATE OR REPLACE VIEW vista_obtener_inscritos_admin AS 
 SELECT
-    CONCAT(re.AP_MATERNO, ' ', re.AP_MATERNO, ' ', re.NOMBRES) AS NOMBRE_COMPLETO,
+    CONCAT(re.AP_PATERNO, ' ', re.AP_MATERNO, ' ', re.NOMBRES) AS NOMBRE_COMPLETO,
     re.UUID,
-	i.*,
+	i.ID
+    ,i.DNI
+    ,i.COD_CARRERA
+    ,i.PROCESO
+    ,i.SEDE_EXAM
+    ,i.PAGO_1
+    ,i.PAGO_2
+    ,i.PREPARATORIA
+    ,i.YEAR_CONCLU
+    ,aulas.TURNO
+    ,aulas.NOMBRE_AULA AS 'AULA_ASIGNADA'
+	 ,usuarios.NOMBRES AS 'CORDINADOR'
+    ,i.ID_AULA
+    ,i.FECHA_REGISTRO
     ,ca.ESCUELA_COMPLETA
     ,po.NOMBRE AS NOMBRE_PROCESO,
     po.ID AS ID_PROCESO
 FROM 
     inscritos i
 LEFT JOIN registros re ON re.DNI = i.DNI
+LEFT JOIN usuarios ON usuarios.ID = re.CORDINADOR
+LEFT JOIN aulas ON aulas.ID = i.ID_AULA
 LEFT JOIN carreras ca ON ca.CODIGO_ESCUELA = i.COD_CARRERA OR ca.OLD_COD_CARRERA = i.COD_CARRERA
 LEFT JOIN procesos po ON po.ID = i.PROCESO;
+
+
 
 SELECT * FROM vista_obtener_inscritos_admin ORDER BY ID DESC;
 
