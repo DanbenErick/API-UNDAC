@@ -67,6 +67,8 @@ class ReporteController {
       }
     }
 
+    
+
     /**
        * Este método establece las rutas para el ReporteController.
        * Mapea las solicitudes HTTP GET a las funciones de generación de informes correspondientes.

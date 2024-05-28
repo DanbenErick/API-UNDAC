@@ -7,6 +7,7 @@ const express_1 = require("express");
 const estudiantes_rest_api_1 = __importDefault(require("./estudiantes.rest.api"));
 const resultado_rest_api_1 = __importDefault(require("./resultado.rest.api"));
 const reporte_rest_api_1 = __importDefault(require("./reporte.rest.api"));
+const middleware_1 = __importDefault(require("../../middleware/middleware"));
 class generalRouting {
     constructor() {
         this.estudiante = new estudiantes_rest_api_1.default();
@@ -16,6 +17,7 @@ class generalRouting {
         this.routes();
     }
     routes() {
+        this.router.use(middleware_1.default);
         this.router.use('/estudiantes', this.estudiante.router);
         this.router.use('/resultados', this.resultado.router);
         this.router.use('/reportes', this.reporte.router);

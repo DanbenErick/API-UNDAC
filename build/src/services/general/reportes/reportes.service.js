@@ -117,6 +117,19 @@ class ReporteService {
                 yield dbConex.close();
             }
         });
+        this.registrarLog = (params) => __awaiter(this, void 0, void 0, function* () {
+            const dbConex = yield connection_mysqldb_1.default.connectMysql();
+            try {
+                const result = yield this.reporteRepo.registrarLog(dbConex, params);
+                return result;
+            }
+            catch (err) {
+                yield dbConex.rollback();
+            }
+            finally {
+                yield dbConex.close();
+            }
+        });
         this.reporteRepo = new reportesGeneral_repo_1.ReportesGeneralRepository();
     }
 }

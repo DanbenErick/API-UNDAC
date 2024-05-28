@@ -12,6 +12,7 @@ const administrador_routing_1 = __importDefault(require("./controller/administra
 const inputs_controls_routing_1 = __importDefault(require("./controller/input-controls/inputs-controls.routing"));
 const sistema_routing_1 = __importDefault(require("./controller/sistema/sistema.routing"));
 const general_routing_1 = __importDefault(require("./controller/general/general.routing"));
+const middleware_1 = __importDefault(require("./middleware/middleware"));
 class ApiRoutes {
     constructor() {
         this.app = (0, express_1.default)();
@@ -21,6 +22,7 @@ class ApiRoutes {
         this.routes();
     }
     routes() {
+        this.app.use(middleware_1.default);
         this.app.use('/administrador', this.trimRequest, administrador_routing_1.default);
         this.app.use('/input-controls', this.trimRequest, inputs_controls_routing_1.default);
         this.app.use('/sistema', this.trimRequest, sistema_routing_1.default);

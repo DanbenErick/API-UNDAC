@@ -97,4 +97,15 @@ export class ReporteService {
       await dbConex.close()
     }
   }
+  public registrarLog = async(params: any) => {
+    const dbConex: any = await connectMysql.connectMysql()
+    try {
+      const result = await this.reporteRepo.registrarLog(dbConex, params)
+      return result
+    }catch(err) {
+      await dbConex.rollback()
+    }finally {
+      await dbConex.close()
+    }
+  }
 }

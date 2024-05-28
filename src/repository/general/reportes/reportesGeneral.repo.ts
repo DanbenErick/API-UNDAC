@@ -155,4 +155,20 @@ export class ReportesGeneralRepository {
       logger.error("ReportesGeneralRepository.obtenerReporteInscritosPorSede =>", (err))
     }
   }
+  public registrarLog = async(connection: any, params: any) => {
+    try {
+      const query = `
+        INSERT INTO 
+          audit_logs
+          (user, method, endpoint, requestBody, responseStatus, timestamp) 
+        VALUES 
+          ('${params.USER}', '${params.METHOD}', '${params.ENDPOINT}', '${params.REQUESTBODY}', '${params.RESPONSESTATUS}', '${params.TIME}')
+      `
+      console.log("consulta", query)
+      const result = await connection.promise().query(query)
+      return result
+    }catch(error) {
+      logger.error("ReportesGeneralRepository.registrarLog =>", (error))
+    }
+  }
 }

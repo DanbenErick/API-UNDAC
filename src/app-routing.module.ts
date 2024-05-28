@@ -7,6 +7,7 @@ import administradorRouting from './controller/administrador/administrador.routi
 import inputControlsRouting from './controller/input-controls/inputs-controls.routing'
 import sistemaRouting from './controller/sistema/sistema.routing';
 import generalRouting from './controller/general/general.routing';
+import auditMiddleware from './middleware/middleware';
 
 class ApiRoutes {
   public app = express();
@@ -19,7 +20,7 @@ class ApiRoutes {
   }
 
   public routes() {
-    
+    this.app.use(auditMiddleware)
     this.app.use('/administrador', this.trimRequest, administradorRouting)
     this.app.use('/input-controls', this.trimRequest, inputControlsRouting)
     this.app.use('/sistema', this.trimRequest, sistemaRouting)

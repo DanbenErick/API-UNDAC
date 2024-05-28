@@ -173,6 +173,23 @@ class ReportesGeneralRepository {
                 manager_log_resource_1.logger.error("ReportesGeneralRepository.obtenerReporteInscritosPorSede =>", (err));
             }
         });
+        this.registrarLog = (connection, params) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const query = `
+        INSERT INTO 
+          audit_logs
+          (user, method, endpoint, requestBody, responseStatus, timestamp) 
+        VALUES 
+          ('${params.USER}', '${params.METHOD}', '${params.ENDPOINT}', '${params.REQUESTBODY}', '${params.RESPONSESTATUS}', '${params.TIME}')
+      `;
+                console.log("consulta", query);
+                const result = yield connection.promise().query(query);
+                return result;
+            }
+            catch (error) {
+                manager_log_resource_1.logger.error("ReportesGeneralRepository.registrarLog =>", (error));
+            }
+        });
     }
 }
 exports.ReportesGeneralRepository = ReportesGeneralRepository;

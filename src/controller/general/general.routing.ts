@@ -2,7 +2,7 @@ import { Router } from 'express';
 import EstudianteController from './estudiantes.rest.api';
 import ResultadoController from './resultado.rest.api';
 import ReporteController from './reporte.rest.api'
-
+import auditMiddleware from '../../middleware/middleware'
 
 
 class generalRouting {
@@ -23,6 +23,7 @@ class generalRouting {
   }
 
   public routes() {
+    this.router.use(auditMiddleware)
     this.router.use('/estudiantes', this.estudiante.router)
     this.router.use('/resultados', this.resultado.router)
     this.router.use('/reportes', this.reporte.router)
