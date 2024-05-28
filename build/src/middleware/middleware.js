@@ -22,10 +22,12 @@ const auditMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     console.log('Ingreso a middleware');
     const token = req.token;
     console.log("Token", token);
-    if (req.originalUrl.contains('/general/reportes/'))
-        if (!process.env.JWT_TOKEN_SECRET) {
-            throw new Error('JWT_TOKEN_SECRET must be defined');
-        }
+    // if(req.originalUrl.contains('/general/reportes/')) {
+    //   req
+    // }
+    if (!process.env.JWT_TOKEN_SECRET) {
+        throw new Error('JWT_TOKEN_SECRET must be defined');
+    }
     let verified;
     if (token) {
         verified = jsonwebtoken_1.default.verify(token, process.env.JWT_TOKEN_SECRET);

@@ -12,7 +12,9 @@ const auditMiddleware = async (req: any, res: any, next: NextFunction) => {
   const token = req.token
   console.log( "Token", token)
 
-  if(req.originalUrl.contains('/general/reportes/'))
+  // if(req.originalUrl.contains('/general/reportes/')) {
+  //   req
+  // }
 
   if(!process.env.JWT_TOKEN_SECRET) {
     throw new Error('JWT_TOKEN_SECRET must be defined');
